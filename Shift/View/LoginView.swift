@@ -9,22 +9,20 @@ import SwiftUI
 import Firebase
 
 struct LoginView: View {
-    @State private var isLoggedIn = false
+    @StateObject private var auth = LoginViewModel()
     @State private var email: String = ""
     @State private var password: String = ""
-    
-    @ObservedObject var loginViewModel = LoginViewModel()
     
     var body: some View {
         NavigationView {
         VStack {
-            NavigationLink(destination: MainView(), isActive: $isLoggedIn) {EmptyView()}
+            NavigationLink(destination: MainView(), isActive: $auth.isLoggedIn) {EmptyView()}
             Spacer()
             Text("Swift Shift").bold()
             Spacer()
             TextField("Login", text: $email).textContentType(.emailAddress).keyboardType(.emailAddress).autocapitalization(.none).disableAutocorrection(true)
             SecureField("Password", text: $password)
-            Button(action: {loginViewModel.login(withEmail: email, withPassword: password)}) {
+            Button(action: {auth.login(withEmail: email, withPassword: password)}) {
                 Text("Log in")
             }
             Spacer()
