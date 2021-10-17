@@ -7,18 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		68122CA4271C2359000CCD38 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68122CA3271C2359000CCD38 /* LoginViewModel.swift */; };
+		6866B26C2716D76D0045C250 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6866B26B2716D76D0045C250 /* GoogleService-Info.plist */; };
 		689E224727132CC80018F720 /* ShiftApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689E224627132CC80018F720 /* ShiftApp.swift */; };
-		689E224927132CC80018F720 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689E224827132CC80018F720 /* ContentView.swift */; };
+		689E224927132CC80018F720 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689E224827132CC80018F720 /* LoginView.swift */; };
 		689E224B27132CCA0018F720 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 689E224A27132CCA0018F720 /* Assets.xcassets */; };
 		689E224E27132CCA0018F720 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 689E224D27132CCA0018F720 /* Preview Assets.xcassets */; };
+		68B01CBD2716CDFC009A3728 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B01CBC2716CDFC009A3728 /* MainView.swift */; };
+		D736DA9AA42D46861EA7A877 /* Pods_Shift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E8B99B755D3635B7349E8FA /* Pods_Shift.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5E8B99B755D3635B7349E8FA /* Pods_Shift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		658410C08E8972FDE5DB241D /* Pods-Shift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shift.debug.xcconfig"; path = "Target Support Files/Pods-Shift/Pods-Shift.debug.xcconfig"; sourceTree = "<group>"; };
+		68122CA3271C2359000CCD38 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		6866B26A2716D72C0045C250 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		6866B26B2716D76D0045C250 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		689E224327132CC80018F720 /* Shift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		689E224627132CC80018F720 /* ShiftApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftApp.swift; sourceTree = "<group>"; };
-		689E224827132CC80018F720 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		689E224827132CC80018F720 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		689E224A27132CCA0018F720 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		689E224D27132CCA0018F720 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		68B01CBC2716CDFC009A3728 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		8C0B88B656DCB2242646B7DD /* Pods-Shift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shift.release.xcconfig"; path = "Target Support Files/Pods-Shift/Pods-Shift.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,17 +37,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D736DA9AA42D46861EA7A877 /* Pods_Shift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		68122CA2271C2333000CCD38 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				68122CA3271C2359000CCD38 /* LoginViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		689E223A27132CC80018F720 = {
 			isa = PBXGroup;
 			children = (
 				689E224527132CC80018F720 /* Shift */,
 				689E224427132CC80018F720 /* Products */,
+				CFE9C6BE1322BB594EA0A0CF /* Pods */,
+				DDBED5B6964F6497F664CAB4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -51,8 +73,11 @@
 		689E224527132CC80018F720 /* Shift */ = {
 			isa = PBXGroup;
 			children = (
-				689E224627132CC80018F720 /* ShiftApp.swift */,
-				689E224827132CC80018F720 /* ContentView.swift */,
+				6866B26A2716D72C0045C250 /* Info.plist */,
+				6866B26B2716D76D0045C250 /* GoogleService-Info.plist */,
+				68B01CBF2716CF08009A3728 /* Model */,
+				68B01CBE2716CEFB009A3728 /* View */,
+				68122CA2271C2333000CCD38 /* ViewModel */,
 				689E224A27132CCA0018F720 /* Assets.xcassets */,
 				689E224C27132CCA0018F720 /* Preview Content */,
 			);
@@ -67,6 +92,40 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		68B01CBE2716CEFB009A3728 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				689E224627132CC80018F720 /* ShiftApp.swift */,
+				68B01CBC2716CDFC009A3728 /* MainView.swift */,
+				689E224827132CC80018F720 /* LoginView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		68B01CBF2716CF08009A3728 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CFE9C6BE1322BB594EA0A0CF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				658410C08E8972FDE5DB241D /* Pods-Shift.debug.xcconfig */,
+				8C0B88B656DCB2242646B7DD /* Pods-Shift.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		DDBED5B6964F6497F664CAB4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5E8B99B755D3635B7349E8FA /* Pods_Shift.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -74,9 +133,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 689E225127132CCA0018F720 /* Build configuration list for PBXNativeTarget "Shift" */;
 			buildPhases = (
+				4824AC907D4352636B5157E1 /* [CP] Check Pods Manifest.lock */,
 				689E223F27132CC80018F720 /* Sources */,
 				689E224027132CC80018F720 /* Frameworks */,
 				689E224127132CC80018F720 /* Resources */,
+				F5E3CD397F6D5D34562B28E3 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -127,17 +188,62 @@
 			files = (
 				689E224E27132CCA0018F720 /* Preview Assets.xcassets in Resources */,
 				689E224B27132CCA0018F720 /* Assets.xcassets in Resources */,
+				6866B26C2716D76D0045C250 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4824AC907D4352636B5157E1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Shift-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F5E3CD397F6D5D34562B28E3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Shift/Pods-Shift-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Shift/Pods-Shift-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Shift/Pods-Shift-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		689E223F27132CC80018F720 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				689E224927132CC80018F720 /* ContentView.swift in Sources */,
+				68122CA4271C2359000CCD38 /* LoginViewModel.swift in Sources */,
+				689E224927132CC80018F720 /* LoginView.swift in Sources */,
+				68B01CBD2716CDFC009A3728 /* MainView.swift in Sources */,
 				689E224727132CC80018F720 /* ShiftApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -263,6 +369,7 @@
 		};
 		689E225227132CCA0018F720 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 658410C08E8972FDE5DB241D /* Pods-Shift.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -272,6 +379,7 @@
 				DEVELOPMENT_TEAM = P4BK8322VD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Shift/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -293,6 +401,7 @@
 		};
 		689E225327132CCA0018F720 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8C0B88B656DCB2242646B7DD /* Pods-Shift.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -302,6 +411,7 @@
 				DEVELOPMENT_TEAM = P4BK8322VD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Shift/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
