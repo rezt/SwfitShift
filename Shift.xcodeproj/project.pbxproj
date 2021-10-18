@@ -13,6 +13,7 @@
 		689E224927132CC80018F720 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689E224827132CC80018F720 /* LoginView.swift */; };
 		689E224B27132CCA0018F720 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 689E224A27132CCA0018F720 /* Assets.xcassets */; };
 		689E224E27132CCA0018F720 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 689E224D27132CCA0018F720 /* Preview Assets.xcassets */; };
+		68AEC999271DE2820063B5EE /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AEC998271DE2820063B5EE /* CalendarView.swift */; };
 		68B01CBD2716CDFC009A3728 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B01CBC2716CDFC009A3728 /* MainView.swift */; };
 		D736DA9AA42D46861EA7A877 /* Pods_Shift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E8B99B755D3635B7349E8FA /* Pods_Shift.framework */; };
 /* End PBXBuildFile section */
@@ -28,6 +29,7 @@
 		689E224827132CC80018F720 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		689E224A27132CCA0018F720 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		689E224D27132CCA0018F720 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		68AEC998271DE2820063B5EE /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		68B01CBC2716CDFC009A3728 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		8C0B88B656DCB2242646B7DD /* Pods-Shift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shift.release.xcconfig"; path = "Target Support Files/Pods-Shift/Pods-Shift.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -98,6 +100,7 @@
 				689E224627132CC80018F720 /* ShiftApp.swift */,
 				68B01CBC2716CDFC009A3728 /* MainView.swift */,
 				689E224827132CC80018F720 /* LoginView.swift */,
+				68AEC998271DE2820063B5EE /* CalendarView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -241,6 +244,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68AEC999271DE2820063B5EE /* CalendarView.swift in Sources */,
 				68122CA4271C2359000CCD38 /* LoginViewModel.swift in Sources */,
 				689E224927132CC80018F720 /* LoginView.swift in Sources */,
 				68B01CBD2716CDFC009A3728 /* MainView.swift in Sources */,

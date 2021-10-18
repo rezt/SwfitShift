@@ -9,7 +9,12 @@ import SwiftUI
 
 struct MainView: View {
     var body: some View {
-        Text("Hello, World!")
+        CalendarView(interval: .init()) { _ in
+                    Text("30")
+                        .padding(8)
+                        .background(Color.blue)
+                        .cornerRadius(8)
+                }
     }
 }
 
