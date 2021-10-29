@@ -13,7 +13,7 @@ fileprivate extension DateFormatter {
         formatter.dateFormat = "MMMM"
         return formatter
     }
-
+    
     static var monthAndYear: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"
@@ -28,7 +28,7 @@ fileprivate extension Calendar {
     ) -> [Date] {
         var dates: [Date] = []
         dates.append(interval.start)
-
+        
         enumerateDates(
             startingAfter: interval.start,
             matching: components,
@@ -42,18 +42,18 @@ fileprivate extension Calendar {
                 }
             }
         }
-
+        
         return dates
     }
 }
 
 struct CalendarView<DateView>: View where DateView: View {
     @Environment(\.calendar) var calendar
-
+    
     let interval: DateInterval
     let showHeaders: Bool
     let content: (Date) -> DateView
-
+    
     init(
         interval: DateInterval,
         showHeaders: Bool = true,
@@ -63,7 +63,7 @@ struct CalendarView<DateView>: View where DateView: View {
         self.showHeaders = showHeaders
         self.content = content
     }
-
+    
     var body: some View {
         LazyVGrid(columns: Array(repeating: GridItem(), count: 7)) {
             ForEach(months, id: \.self) { month in
@@ -79,18 +79,18 @@ struct CalendarView<DateView>: View where DateView: View {
             }
         }
     }
-
+    
     private var months: [Date] {
         calendar.generateDates(
             inside: interval,
             matching: DateComponents(day: 1, hour: 0, minute: 0, second: 0)
         )
     }
-
+    
     private func header(for month: Date) -> some View {
         let component = calendar.component(.month, from: month)
         let formatter = component == 1 ? DateFormatter.monthAndYear : .month
-
+        
         return Group {
             if showHeaders {
                 Text(formatter.string(from: month))
@@ -99,7 +99,7 @@ struct CalendarView<DateView>: View where DateView: View {
             }
         }
     }
-
+    
     private func days(for month: Date) -> [Date] {
         guard
             let monthInterval = calendar.dateInterval(of: .month, for: month),

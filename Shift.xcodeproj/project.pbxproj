@@ -8,11 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		68122CA4271C2359000CCD38 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68122CA3271C2359000CCD38 /* LoginViewModel.swift */; };
+		6831B75D2727159700EFF1FF /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6831B75C2727159700EFF1FF /* CalendarViewModel.swift */; };
 		6866B26C2716D76D0045C250 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6866B26B2716D76D0045C250 /* GoogleService-Info.plist */; };
 		689E224727132CC80018F720 /* ShiftApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689E224627132CC80018F720 /* ShiftApp.swift */; };
 		689E224927132CC80018F720 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689E224827132CC80018F720 /* LoginView.swift */; };
 		689E224B27132CCA0018F720 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 689E224A27132CCA0018F720 /* Assets.xcassets */; };
 		689E224E27132CCA0018F720 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 689E224D27132CCA0018F720 /* Preview Assets.xcassets */; };
+		68A1BA0B272C3D6C007B19E9 /* Shift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A1BA0A272C3D6C007B19E9 /* Shift.swift */; };
+		68A1BA0D272C3FCF007B19E9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A1BA0C272C3FCF007B19E9 /* Constants.swift */; };
 		68AEC999271DE2820063B5EE /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AEC998271DE2820063B5EE /* CalendarView.swift */; };
 		68B01CBD2716CDFC009A3728 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B01CBC2716CDFC009A3728 /* MainView.swift */; };
 		D736DA9AA42D46861EA7A877 /* Pods_Shift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E8B99B755D3635B7349E8FA /* Pods_Shift.framework */; };
@@ -22,6 +25,7 @@
 		5E8B99B755D3635B7349E8FA /* Pods_Shift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		658410C08E8972FDE5DB241D /* Pods-Shift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shift.debug.xcconfig"; path = "Target Support Files/Pods-Shift/Pods-Shift.debug.xcconfig"; sourceTree = "<group>"; };
 		68122CA3271C2359000CCD38 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		6831B75C2727159700EFF1FF /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		6866B26A2716D72C0045C250 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		6866B26B2716D76D0045C250 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		689E224327132CC80018F720 /* Shift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shift.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -29,6 +33,8 @@
 		689E224827132CC80018F720 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		689E224A27132CCA0018F720 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		689E224D27132CCA0018F720 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		68A1BA0A272C3D6C007B19E9 /* Shift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shift.swift; sourceTree = "<group>"; };
+		68A1BA0C272C3FCF007B19E9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		68AEC998271DE2820063B5EE /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		68B01CBC2716CDFC009A3728 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		8C0B88B656DCB2242646B7DD /* Pods-Shift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shift.release.xcconfig"; path = "Target Support Files/Pods-Shift/Pods-Shift.release.xcconfig"; sourceTree = "<group>"; };
@@ -50,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				68122CA3271C2359000CCD38 /* LoginViewModel.swift */,
+				6831B75C2727159700EFF1FF /* CalendarViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -82,6 +89,7 @@
 				68122CA2271C2333000CCD38 /* ViewModel */,
 				689E224A27132CCA0018F720 /* Assets.xcassets */,
 				689E224C27132CCA0018F720 /* Preview Content */,
+				68A1BA0C272C3FCF007B19E9 /* Constants.swift */,
 			);
 			path = Shift;
 			sourceTree = "<group>";
@@ -108,6 +116,7 @@
 		68B01CBF2716CF08009A3728 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				68A1BA0A272C3D6C007B19E9 /* Shift.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -244,11 +253,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6831B75D2727159700EFF1FF /* CalendarViewModel.swift in Sources */,
 				68AEC999271DE2820063B5EE /* CalendarView.swift in Sources */,
 				68122CA4271C2359000CCD38 /* LoginViewModel.swift in Sources */,
+				68A1BA0B272C3D6C007B19E9 /* Shift.swift in Sources */,
 				689E224927132CC80018F720 /* LoginView.swift in Sources */,
 				68B01CBD2716CDFC009A3728 /* MainView.swift in Sources */,
 				689E224727132CC80018F720 /* ShiftApp.swift in Sources */,
+				68A1BA0D272C3FCF007B19E9 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

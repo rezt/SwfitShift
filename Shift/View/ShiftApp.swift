@@ -11,6 +11,8 @@ import Firebase
 @main
 struct ShiftApp: App {
     
+    
+    
     init() {
         FirebaseApp.configure()
     }

@@ -8,13 +8,25 @@
 import SwiftUI
 
 struct MainView: View {
+    
+    private var calendarViewModel = CalendarViewModel()
+    
     var body: some View {
-        CalendarView(interval: .init()) { _ in
-                    Text("30")
-                        .padding(8)
-                        .background(Color.blue)
-                        .cornerRadius(8)
-                }
+//        CalendarView(interval: .init()) { _ in
+//                    Text("1")
+//                        .padding(8)
+//                        .background(Color.blue)
+//                        .cornerRadius(8)
+//                }
+        NavigationView {
+            Button(action: {self.calendarViewModel.printShifts()}) {
+                Text("Button")
+            }
+
+        }.onAppear() {
+            self.calendarViewModel.loadShifts()
+            
+        }
     }
 }
 
