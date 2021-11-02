@@ -68,15 +68,26 @@ struct CalendarView: View {
             LazyVGrid(columns: columns, spacing: 20) {
                 ForEach(getDate()) { value in
                     CardView(value: value)
+                        .onTapGesture {
+                            currentDate = value.date
+                        }
                 }
             }
             .onChange(of: currentMonth, perform: { newValue in
                 // Update month
                 currentDate = getCurrentMonth()
             })
+            
+            VStack(spacing: 15) {
+                Text("Grafik:")
+                    .font(.title2.bold())
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+
+            
         }
     }
-
+    
     
     @ViewBuilder
     func CardView(value: DateValue) -> some View {

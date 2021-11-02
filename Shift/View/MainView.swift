@@ -20,9 +20,8 @@ struct MainView: View {
             }
         }
         
-        .toolbar {
-            /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Content@*/Text("Placeholder")/*@END_MENU_TOKEN@*/
-        }
+        Spacer()
+        
     }
 }
 
