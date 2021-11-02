@@ -29,4 +29,10 @@ struct K {
         static let endField = "endDate"
         static let roleField = "role"
     }
+    
+    struct calendar {
+        static let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        static let buttonPrevious = "chevron.left"
+        static let buttonNext = "chevron.right"
+    }
 }

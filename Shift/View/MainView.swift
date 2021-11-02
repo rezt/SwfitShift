@@ -9,23 +9,19 @@ import SwiftUI
 
 struct MainView: View {
     
-    private var calendarViewModel = CalendarViewModel()
+    @State var currentDate: Date = Date()
     
     var body: some View {
-//        CalendarView(interval: .init()) { _ in
-//                    Text("1")
-//                        .padding(8)
-//                        .background(Color.blue)
-//                        .cornerRadius(8)
-//                }
-        NavigationView {
-            Button(action: {self.calendarViewModel.printShifts()}) {
-                Text("Button")
-            }
 
-        }.onAppear() {
-            self.calendarViewModel.loadShifts()
-            
+        ScrollView(.vertical, showsIndicators: false) {
+            VStack(spacing: 20) {
+                // Calendar View
+                CalendarView(currentDate: $currentDate)
+            }
+        }
+        
+        .toolbar {
+            /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Content@*/Text("Placeholder")/*@END_MENU_TOKEN@*/
         }
     }
 }

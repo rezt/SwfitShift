@@ -8,12 +8,16 @@
 import Foundation
 import Firebase
 
-extension MainView {
+extension CalendarView {
     class CalendarViewModel {
         
         let db = Firestore.firestore()
         
         var shifts: [Shift] = []
+        
+        func getShifts() -> [Shift] {
+            return shifts
+        }
         
         func loadShifts() {
             db.collection(K.FStore.collectionNameShifts).addSnapshotListener { (querySnapshot, error) in

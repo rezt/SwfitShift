@@ -10,8 +10,8 @@ import Firebase
 
 struct LoginView: View {
     @StateObject private var auth = LoginViewModel()
-    @State private var email: String = ""
-    @State private var password: String = ""
+    @State private var email: String = "admin@test.pl"
+    @State private var password: String = "adminadmin"
     
     var body: some View {
         NavigationView {
