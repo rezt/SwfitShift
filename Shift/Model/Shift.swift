@@ -21,4 +21,19 @@ struct Shift {
     func getStartDate() -> Date {
         return startDate.dateValue()
     }
+    
+    func getEndDateTime() -> [String] {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH mm"
+        let date = formatter.string(from: endDate.dateValue())
+        return date.components(separatedBy: " ")
+    }
+    
+    func getStartDateTime() -> [String] {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH mm"
+        let date = formatter.string(from: startDate.dateValue())
+        return date.components(separatedBy: " ")
+    }
+    
 }

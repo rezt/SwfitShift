@@ -35,4 +35,5 @@ struct K {
         static let buttonPrevious = "chevron.left"
         static let buttonNext = "chevron.right"
     }
+
 }

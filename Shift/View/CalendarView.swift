@@ -79,11 +79,22 @@ struct CalendarView: View {
             })
             
             VStack(spacing: 15) {
-                Text("Grafik:")
+                Text("Schedule:")
                     .font(.title2.bold())
                     .frame(maxWidth: .infinity, alignment: .leading)
+                
+                if let shift = calendarViewModel.shifts.first(where: {shift in
+                    return isSameDay(date1: shift.getStartDate(), date2: currentDate)
+                }) {
+                    Text("Work as: \(shift.role)\nFrom: \(shift.getStartDateTime()[0]):\(shift.getStartDateTime()[1])\nTo: \(shift.getEndDateTime()[0]):\(shift.getEndDateTime()[1])")
+                        .font(.title3.bold())
+                } else {
+                    Text("No work today!")
+                }
+                
             }
-
+            .padding()
+            
             
         }
     }
@@ -103,7 +114,6 @@ struct CalendarView: View {
                         Circle().foregroundColor(Color.pink)
                         Text("\(value.day)")
                             .font(.title3.bold())
-                        
                     }
                 }
                 else {
@@ -111,10 +121,8 @@ struct CalendarView: View {
                         Circle().foregroundColor(Color.gray)
                         Text("\(value.day)")
                             .font(.title3.bold())
-                        
                     }
                 }
-                
             }
         }
         .padding(.vertical, 8)

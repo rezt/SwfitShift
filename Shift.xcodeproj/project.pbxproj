@@ -90,8 +90,8 @@
 				68B01CBE2716CEFB009A3728 /* View */,
 				68122CA2271C2333000CCD38 /* ViewModel */,
 				689E224A27132CCA0018F720 /* Assets.xcassets */,
-				689E224C27132CCA0018F720 /* Preview Content */,
 				68A1BA0C272C3FCF007B19E9 /* Constants.swift */,
+				689E224C27132CCA0018F720 /* Preview Content */,
 			);
 			path = Shift;
 			sourceTree = "<group>";

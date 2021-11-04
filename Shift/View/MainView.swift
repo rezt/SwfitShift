@@ -20,8 +20,6 @@ struct MainView: View {
             }
         }
         
-        Spacer()
-        
     }
 }
 
