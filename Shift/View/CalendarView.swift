@@ -11,8 +11,9 @@ struct CalendarView: View {
     @Binding var currentDate: Date
     // Control current month by using arrows in the top right
     @State var currentMonth: Int = 0
+    let userID: String
     
-    var calendarViewModel = CalendarViewModel()
+    @StateObject private var calendarViewModel = CalendarViewModel()
     
     var body: some View {
         VStack(spacing: 35) {
@@ -22,9 +23,11 @@ struct CalendarView: View {
                     Text(getYearMonth()[0])
                         .font(.caption)
                         .fontWeight(.heavy)
+                        .foregroundColor(.white)
                     
                     Text(getYearMonth()[1])
                         .font(.largeTitle.bold())
+                        .foregroundColor(.white)
                 }
                 
                 Spacer()
@@ -36,6 +39,7 @@ struct CalendarView: View {
                 } label: {
                     Image(systemName: K.calendar.buttonPrevious)
                         .font(.title3)
+                        .foregroundColor(.white)
                 }
                 
                 Button {
@@ -45,6 +49,7 @@ struct CalendarView: View {
                 } label: {
                     Image(systemName: K.calendar.buttonNext)
                         .font(.title3)
+                        .foregroundColor(.white)
                 }
                 
             }
@@ -60,6 +65,7 @@ struct CalendarView: View {
                         .font(.subheadline)
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity)
+                        .foregroundColor(.white)
                 }
             }
             
@@ -70,6 +76,7 @@ struct CalendarView: View {
                     CardView(value: value)
                         .onTapGesture {
                             currentDate = value.date
+                            print(value.date)
                         }
                 }
             }
@@ -82,14 +89,22 @@ struct CalendarView: View {
                 Text("Schedule:")
                     .font(.title2.bold())
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .foregroundColor(.white)
                 
                 if let shift = calendarViewModel.shifts.first(where: {shift in
                     return isSameDay(date1: shift.getStartDate(), date2: currentDate)
                 }) {
                     Text("Work as: \(shift.role)\nFrom: \(shift.getStartDateTime()[0]):\(shift.getStartDateTime()[1])\nTo: \(shift.getEndDateTime()[0]):\(shift.getEndDateTime()[1])")
                         .font(.title3.bold())
+                        .foregroundColor(.white)
+                    Button(action: {calendarViewModel.changeStateOfShift(shift)}) {
+                        Text("Up for grabs")
+                    }
                 } else {
                     Text("No work today!")
+                        .font(.title3.bold())
+                        .foregroundColor(.white)
+
                 }
                 
             }
@@ -106,14 +121,19 @@ struct CalendarView: View {
         VStack {
             if value.day != -1 {
                 
-                if let shift = calendarViewModel.getShifts().first(where: { shift in
-                    print("\(value.day) and \(value.date)")
+                
+                if let shift = calendarViewModel.shifts.first(where: { shift in
                     return isSameDay(date1: shift.getStartDate(), date2: value.date)
                 }){
                     ZStack{
-                        Circle().foregroundColor(Color.pink)
+                        if shift.upForGrabs {
+                            Circle().foregroundColor(Color.blue)
+                        } else {
+                            Circle().foregroundColor(Color.pink)
+                        }
                         Text("\(value.day)")
                             .font(.title3.bold())
+                            .foregroundColor(.white)
                     }
                 }
                 else {
@@ -121,6 +141,7 @@ struct CalendarView: View {
                         Circle().foregroundColor(Color.gray)
                         Text("\(value.day)")
                             .font(.title3.bold())
+                            .foregroundColor(.white)
                     }
                 }
             }
@@ -131,12 +152,10 @@ struct CalendarView: View {
     
     func isSameDay(date1: Date, date2: Date) -> Bool {
         let calendar = Calendar.current
-        print("Testing values: \(date1) and \(date2)")
-        
         return calendar.isDate(date1, inSameDayAs: date2)
     }
     
-    func getYearMonth() ->[String] {
+    func getYearMonth() -> [String] {
         let formatter = DateFormatter()
         formatter.dateFormat = "YYYY MMMM"
         let date = formatter.string(from: currentDate)
@@ -145,14 +164,10 @@ struct CalendarView: View {
     
     func getCurrentMonth() -> Date {
         let calendar = Calendar.current
-        
-        print("\(Date())")
-        
+    
         guard let currentMonth = calendar.date(byAdding: .month, value: self.currentMonth, to: Date()) else {
             return Date()
         }
-        
-        print("\(currentMonth)")
         
         return currentMonth
     }
@@ -165,21 +180,23 @@ struct CalendarView: View {
         
         var days = currentMonth.getAllDates().compactMap { date -> DateValue in
             let day = calendar.component(.day, from: date)
-            return DateValue(day: day, date: date)
+            return DateValue(day: day , date: date)
         }
-        print("\(currentMonth.getAllDates())")
+        
         
         // Move sunday to be the last day of th week
-        var firstWeekday = calendar.component(.weekday, from: days.first?.date ?? Date())
+        var firstWeekday = calendar.component(.weekday, from: days.first!.date)
+        print(firstWeekday)
         firstWeekday -= 1
         if firstWeekday == 0 {
             firstWeekday = 7
         }
         
         // Add "empty" days to match weekday
-        for _ in -1..<firstWeekday - 2 {
+        for _ in 0..<firstWeekday - 1 {
             days.insert(DateValue(day: -1, date: Date()), at: 0)
         }
+        
         
         return days
     }
@@ -195,16 +212,15 @@ struct CalendarView: View {
 extension Date{
     func getAllDates() -> [Date] {
         let calendar = Calendar.current
-        
+
         // Get starting date
         let startDate = calendar.date(from: Calendar.current.dateComponents([.year,.month], from: self))!
-        print("start date \(startDate)")
-        
         let range = calendar.range(of: .day, in: .month, for: startDate)!
-        print("range \(range)")
-        
+
         return range.compactMap{day -> Date in
             return calendar.date(byAdding: .day, value: day - 1, to: startDate)!
         }
     }
+    
 }
+

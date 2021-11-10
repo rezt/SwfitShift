@@ -13,6 +13,8 @@ struct Shift {
     let endDate: Timestamp
     let role: String
     let startDate: Timestamp
+    let upForGrabs: Bool
+    let FSID: String
     
     func getEndDate() -> Date {
         return endDate.dateValue()

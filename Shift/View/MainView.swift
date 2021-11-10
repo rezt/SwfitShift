@@ -10,21 +10,25 @@ import SwiftUI
 struct MainView: View {
     
     @State var currentDate: Date = Date()
+    @Binding var userID: String
     
     var body: some View {
-
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack(spacing: 20) {
-                // Calendar View
-                CalendarView(currentDate: $currentDate)
+        
+        ZStack{
+            Color(.black).ignoresSafeArea()
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(spacing: 20) {
+                    // Calendar View
+                    CalendarView(currentDate: $currentDate, userID: userID)
+                }
             }
-        }
+        }.navigationBarHidden(true)
         
     }
 }
 
-struct MainView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainView()
-    }
-}
+//struct MainView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MainView(userID: "2zJYeIs23RG9ErizhlFY")
+//    }
+//}

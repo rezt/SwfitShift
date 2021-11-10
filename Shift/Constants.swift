@@ -28,6 +28,7 @@ struct K {
         static let startField = "startDate"
         static let endField = "endDate"
         static let roleField = "role"
+        static let stateField = "upForGrabs"
     }
     
     struct calendar {

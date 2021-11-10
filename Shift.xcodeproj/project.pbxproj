@@ -11,6 +11,7 @@
 		6831B75D2727159700EFF1FF /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6831B75C2727159700EFF1FF /* CalendarViewModel.swift */; };
 		6866B26C2716D76D0045C250 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6866B26B2716D76D0045C250 /* GoogleService-Info.plist */; };
 		68745C852731326500C3C27A /* DateValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68745C842731326500C3C27A /* DateValue.swift */; };
+		6899DC0D2734163D00B98FC0 /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6899DC0C2734163D00B98FC0 /* TaskView.swift */; };
 		689E224727132CC80018F720 /* ShiftApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689E224627132CC80018F720 /* ShiftApp.swift */; };
 		689E224927132CC80018F720 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689E224827132CC80018F720 /* LoginView.swift */; };
 		689E224B27132CCA0018F720 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 689E224A27132CCA0018F720 /* Assets.xcassets */; };
@@ -30,6 +31,7 @@
 		6866B26A2716D72C0045C250 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		6866B26B2716D76D0045C250 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		68745C842731326500C3C27A /* DateValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateValue.swift; sourceTree = "<group>"; };
+		6899DC0C2734163D00B98FC0 /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
 		689E224327132CC80018F720 /* Shift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		689E224627132CC80018F720 /* ShiftApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftApp.swift; sourceTree = "<group>"; };
 		689E224827132CC80018F720 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				68B01CBC2716CDFC009A3728 /* MainView.swift */,
 				689E224827132CC80018F720 /* LoginView.swift */,
 				68AEC998271DE2820063B5EE /* CalendarView.swift */,
+				6899DC0C2734163D00B98FC0 /* TaskView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -259,6 +262,7 @@
 				6831B75D2727159700EFF1FF /* CalendarViewModel.swift in Sources */,
 				68AEC999271DE2820063B5EE /* CalendarView.swift in Sources */,
 				68122CA4271C2359000CCD38 /* LoginViewModel.swift in Sources */,
+				6899DC0D2734163D00B98FC0 /* TaskView.swift in Sources */,
 				68A1BA0B272C3D6C007B19E9 /* Shift.swift in Sources */,
 				689E224927132CC80018F720 /* LoginView.swift in Sources */,
 				68B01CBD2716CDFC009A3728 /* MainView.swift in Sources */,

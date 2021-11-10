@@ -19,7 +19,7 @@ struct LoginView: View {
                 Color.black
                     .ignoresSafeArea()
                 VStack {
-                    NavigationLink(destination: MainView(), isActive: $auth.isLoggedIn) {EmptyView()}
+                    NavigationLink(destination: MainView(userID: $auth.userID), isActive: $auth.isLoggedIn) {EmptyView()}
                     Spacer()
                     Text("Swift Shift")
                         .bold()
