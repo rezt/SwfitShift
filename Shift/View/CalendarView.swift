@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CalendarView: View {
-    // Control current month by using arrows in the top right
+    
     let userID: String
     @StateObject var calendarViewModel: CalendarViewModel
     
@@ -62,9 +62,6 @@ struct CalendarView: View {
                 }
                 
             }
-            .onAppear{
-                calendarViewModel.loadShifts()
-            }
             .padding(.horizontal)
             //Day view
             
@@ -113,17 +110,12 @@ struct CalendarView: View {
                     Text("No work today!")
                         .font(.title3.bold())
                         .foregroundColor(.white)
-                    
                 }
-                
             }
             .padding()
-            
-            
         }
         .gesture(drag)
     }
-    
     
     @ViewBuilder
     func CardView(value: DateValue) -> some View {
@@ -168,14 +160,12 @@ struct CalendarView: View {
         .padding(.vertical, 8)
         .frame(height: 60, alignment: .top)
     }
-    
-    
-    
 }
 
 struct CalendarView_Previews: PreviewProvider {
     @State var userID = "2zJYeIs23RG9ErizhlFY"
     @StateObject var calendarViewModel = CalendarViewModel()
+    
     static var previews: some View {
         let test = CalendarView_Previews()
         ZStack{
@@ -184,7 +174,6 @@ struct CalendarView_Previews: PreviewProvider {
                 VStack(spacing: 20) {
                     // Calendar View
                     CalendarView(userID: test.userID, calendarViewModel: test.calendarViewModel)
-                    TaskView()
                 }
             }
         }

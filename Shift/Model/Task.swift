@@ -8,11 +8,12 @@
 import Foundation
 import FirebaseFirestore
 
-struct Task {
+struct Task: Hashable {
     let deadline: Timestamp
     let description: String
     let status: String
     let team: String
+    let FSID: String
     
     func getDeadline() -> Date {
         return deadline.dateValue()

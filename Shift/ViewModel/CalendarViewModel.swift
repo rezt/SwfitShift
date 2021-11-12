@@ -14,10 +14,13 @@ final class CalendarViewModel: ObservableObject {
     let db = Firestore.firestore()
     
     @Published var shifts: [Shift] = []
-    @Published var tasks: [Task] = []
     @Published var currentDate: Date = Date()
     @Published var currentMonth: Int = 0
     var assignedShifts: [Shift] = []
+    
+    init() {
+        loadShifts()
+    }
     
     func getShifts() -> [Shift] {
         return shifts
@@ -65,7 +68,11 @@ final class CalendarViewModel: ObservableObject {
                 if let snapshotDocuments = querySnapshot?.documents {
                     for doc in snapshotDocuments {
                         let data = doc.data()
-                        if let employee = data[K.FStore.Shifts.employee] as? String, let endDate = data[K.FStore.Shifts.end] as? Timestamp, let role = data[K.FStore.Shifts.role] as? String, let startDate = data[K.FStore.Shifts.start] as? Timestamp, let state = data[K.FStore.Shifts.state] as? Bool {
+                        if let employee = data[K.FStore.Shifts.employee] as? String,
+                           let endDate = data[K.FStore.Shifts.end] as? Timestamp,
+                           let role = data[K.FStore.Shifts.role] as? String,
+                           let startDate = data[K.FStore.Shifts.start] as? Timestamp,
+                           let state = data[K.FStore.Shifts.state] as? Bool {
                             let newShift = Shift(employee: employee, endDate: endDate, role: role, startDate: startDate, upForGrabs: state, FSID: doc.documentID)
                             self.shifts.append(newShift)
                             DispatchQueue.main.async {
@@ -81,7 +88,6 @@ final class CalendarViewModel: ObservableObject {
     func changeStateOfShift(_ shift: Shift) {
         let shiftRef = db.collection(K.FStore.Shifts.collection).document(shift.FSID)
         
-        // Set the "capital" field of the city 'DC'
         shiftRef.updateData([
             "upForGrabs": !shift.upForGrabs
         ]) { err in
@@ -95,10 +101,6 @@ final class CalendarViewModel: ObservableObject {
     
     func printShifts() {
         print(shifts.count)
-        print(shifts[0].employee)
-        print(shifts[0].getStartDate())
-        print(shifts[0].getEndDate())
-        print(shifts[0].role)
         print(shifts)
     }
     

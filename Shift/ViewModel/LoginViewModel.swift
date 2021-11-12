@@ -20,7 +20,6 @@ extension LoginView {
                 } else {
                     self.isLoggedIn = true
                     self.userID = Auth.auth().currentUser!.uid
-                    print("test")
                 }
             }
         }
