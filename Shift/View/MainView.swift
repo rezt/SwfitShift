@@ -14,19 +14,20 @@ struct MainView: View {
     @StateObject var taskViewModel = TaskViewModel()
     
     var body: some View {
-        
-        ZStack{
-            Color(.black).ignoresSafeArea()
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 20) {
-                    // Calendar View
-                    CalendarView(userID: userID, calendarViewModel: calendarViewModel)
-                    Spacer()
-                    TaskListView(taskViewModel: taskViewModel)
+        NavigationView{
+            ZStack{
+                Color(.black).ignoresSafeArea()
+                NavigationLink(destination: TaskView(), isActive: $taskViewModel.editTask) {EmptyView()}
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack(spacing: 20) {
+                        // Calendar View
+                        CalendarView(userID: userID, calendarViewModel: calendarViewModel)
+                        Spacer()
+                        TaskListView(taskViewModel: taskViewModel)
+                    }
                 }
-            }
-        }.navigationBarHidden(true)
-        
+            }.navigationBarHidden(true)
+        }
     }
 }
 

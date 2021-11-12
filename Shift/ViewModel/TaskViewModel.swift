@@ -12,6 +12,7 @@ final class TaskViewModel: ObservableObject {
     
     let db = Firestore.firestore()
     @Published var tasks: [Task] = []
+    @Published var editTask: Bool = false
     
     init() {
         loadTasks()
@@ -43,8 +44,8 @@ final class TaskViewModel: ObservableObject {
         }
     }
     
-    func changeTaskStatus() {
-        
+    func enterTask() {
+        editTask = true
     }
     
     func printTasks() {

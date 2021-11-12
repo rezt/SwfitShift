@@ -12,25 +12,20 @@ struct TaskListView: View {
     @StateObject var taskViewModel: TaskViewModel
     
     var body: some View {
-        VStack{
-            ForEach(taskViewModel.tasks, id: \.self) { task in
-                Text(task.description)
-                    .foregroundColor(.white)
-                    .contextMenu {
-                        Text("Deadline: \(task.getDeadline())")
-                        Text("Status: \(task.status)")
-                        Button {
-                            self.taskViewModel.changeTaskStatus()
-                        } label: {
-                            Text("Change status")
+            VStack{
+                ForEach(taskViewModel.tasks, id: \.self) { task in
+                    Text(task.description)
+                        .foregroundColor(.white)
+                        .contextMenu {
+                            Text("Deadline: \(task.getDeadline())")
+                            Text("Status: \(task.status)")
                         }
-                    }
+                }
             }
-        }
-        Button(action: {taskViewModel.printTasks()}) {
-            Text("print Tasks")
-            
-        }
+            Button(action: {taskViewModel.printTasks()}) {
+                Text("print Tasks")
+                
+            }
     }
 }
 
