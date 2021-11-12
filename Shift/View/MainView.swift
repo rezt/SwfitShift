@@ -9,8 +9,8 @@ import SwiftUI
 
 struct MainView: View {
     
-    @State var currentDate: Date = Date()
     @Binding var userID: String
+    @StateObject var calendarViewModel = CalendarViewModel()
     
     var body: some View {
         
@@ -19,7 +19,8 @@ struct MainView: View {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 20) {
                     // Calendar View
-                    CalendarView(currentDate: $currentDate, userID: userID)
+                    CalendarView(userID: userID, calendarViewModel: calendarViewModel)
+                    TaskView()
                 }
             }
         }.navigationBarHidden(true)
@@ -27,8 +28,10 @@ struct MainView: View {
     }
 }
 
-//struct MainView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MainView(userID: "2zJYeIs23RG9ErizhlFY")
-//    }
-//}
+struct MainView_Previews: PreviewProvider {
+    @State var userID = "2zJYeIs23RG9ErizhlFY"
+    static var previews: some View {
+        let test = MainView_Previews()
+        MainView(userID: test.$userID)
+    }
+}

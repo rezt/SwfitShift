@@ -8,20 +8,17 @@
 import SwiftUI
 
 struct CalendarView: View {
-    @Binding var currentDate: Date
     // Control current month by using arrows in the top right
-    @State var currentMonth: Int = 0
     let userID: String
-    
-    @StateObject private var calendarViewModel = CalendarViewModel()
+    @StateObject var calendarViewModel: CalendarViewModel
     
     var drag: some Gesture {
         DragGesture(minimumDistance: 30, coordinateSpace: .local)
             .onEnded({gesture in
                 if gesture.startLocation.x < CGFloat(200.0) {
-                        currentMonth -= 1
+                    calendarViewModel.currentMonth -= 1
                 } else if (UIScreen.main.bounds.maxX - gesture.startLocation.x) < (UIScreen.main.bounds.maxX - CGFloat(200.0)) {
-                        currentMonth += 1
+                    calendarViewModel.currentMonth += 1
                 }
              }
         )
@@ -32,12 +29,12 @@ struct CalendarView: View {
             
             HStack(spacing: 20) {
                 VStack(alignment: .leading, spacing: 10) {
-                    Text(getYearMonth()[0])
+                    Text(calendarViewModel.getYearMonth()[0])
                         .font(.caption)
                         .fontWeight(.heavy)
                         .foregroundColor(.white)
                     
-                    Text(getYearMonth()[1])
+                    Text(calendarViewModel.getYearMonth()[1])
                         .font(.largeTitle.bold())
                         .foregroundColor(.white)
                 }
@@ -46,7 +43,7 @@ struct CalendarView: View {
                 
                 Button {
                     withAnimation{
-                        currentMonth -= 1
+                        calendarViewModel.currentMonth -= 1
                     }
                 } label: {
                     Image(systemName: K.calendar.buttonPrevious)
@@ -56,7 +53,7 @@ struct CalendarView: View {
                 
                 Button {
                     withAnimation{
-                        currentMonth += 1
+                        calendarViewModel.currentMonth += 1
                     }
                 } label: {
                     Image(systemName: K.calendar.buttonNext)
@@ -84,27 +81,27 @@ struct CalendarView: View {
             let columns = Array(repeating: GridItem(.flexible()), count: 7)
             
             LazyVGrid(columns: columns, spacing: 20) {
-                ForEach(getDate()) { value in
+                ForEach(calendarViewModel.getDate()) { value in
                     CardView(value: value)
                         .onTapGesture {
-                            currentDate = value.date
+                            calendarViewModel.currentDate = value.date
                             print(value.date)
                         }
                 }
             }
-            .onChange(of: currentMonth, perform: { newValue in
+            .onChange(of: calendarViewModel.currentMonth, perform: { newValue in
                 // Update month
-                currentDate = getCurrentMonth()
+                calendarViewModel.currentDate = calendarViewModel.getCurrentMonth()
             })
             
             VStack(spacing: 15) {
-                Text("Schedule for \(getDay()[0]), \(getDay()[1]) \(getDay()[2]), \(getDay()[3]):")
+                Text("Schedule for \(calendarViewModel.getDay()[0]), \(calendarViewModel.getDay()[1]) \(calendarViewModel.getDay()[2]), \(calendarViewModel.getDay()[3]):")
                     .font(.title3.bold())
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .foregroundColor(.white)
                 
                 if let shift = calendarViewModel.shifts.first(where: {shift in
-                    return isSameDay(date1: shift.getStartDate(), date2: currentDate)
+                    return calendarViewModel.isSameDay(date1: shift.getStartDate(), date2: calendarViewModel.currentDate)
                 }) {
                     Text("Work as: \(shift.role)\nFrom: \(shift.getStartDateTime()[0]):\(shift.getStartDateTime()[1])\nTo: \(shift.getEndDateTime()[0]):\(shift.getEndDateTime()[1])")
                         .font(.title3.bold())
@@ -134,7 +131,7 @@ struct CalendarView: View {
         VStack {
             if value.day != -1 {
                 
-                if isSameDay(date1: currentDate, date2: value.date) {
+                if calendarViewModel.isSameDay(date1: calendarViewModel.currentDate, date2: value.date) {
                     ZStack {
                         Circle().foregroundColor(Color.yellow)
                         Text("\(value.day)")
@@ -143,7 +140,7 @@ struct CalendarView: View {
                     }
                 } else {
                     if let shift = calendarViewModel.shifts.first(where: { shift in
-                        return isSameDay(date1: shift.getStartDate(), date2: value.date)
+                        return calendarViewModel.isSameDay(date1: shift.getStartDate(), date2: value.date)
                     }){
                         ZStack{
                             if shift.upForGrabs {
@@ -170,89 +167,29 @@ struct CalendarView: View {
         }
         .padding(.vertical, 8)
         .frame(height: 60, alignment: .top)
-        .transition(.slide)
     }
     
-    func isSameDay(date1: Date, date2: Date) -> Bool {
-        let calendar = Calendar.current
-        return calendar.isDate(date1, inSameDayAs: date2)
-    }
     
-    // TODO: Collapse these two into one function:
-    
-    func getYearMonth() -> [String] {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "YYYY MMMM"
-        let date = formatter.string(from: currentDate)
-        return date.components(separatedBy: " ")
-    }
-    
-    func getDay() -> [String] {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEEE MMM d yyyy"
-        let date = formatter.string(from: currentDate)
-        return date.components(separatedBy: " ")
-    }
-    
-    func getCurrentMonth() -> Date {
-        let calendar = Calendar.current
-        
-        guard let currentMonth = calendar.date(byAdding: .month, value: self.currentMonth, to: Date()) else {
-            return Date()
-        }
-        
-        return currentMonth
-    }
-    
-    func getDate()->[DateValue]{
-        
-        let calendar = Calendar.current
-        
-        let currentMonth = getCurrentMonth()
-        
-        var days = currentMonth.getAllDates().compactMap { date -> DateValue in
-            let day = calendar.component(.day, from: date)
-            return DateValue(day: day , date: date)
-        }
-        
-        
-        // Move sunday to be the last day of th week
-        var firstWeekday = calendar.component(.weekday, from: days.first!.date)
-        print(firstWeekday)
-        firstWeekday -= 1
-        if firstWeekday == 0 {
-            firstWeekday = 7
-        }
-        
-        // Add "empty" days to match weekday
-        for _ in 0..<firstWeekday - 1 {
-            days.insert(DateValue(day: -1, date: Date()), at: 0)
-        }
-        
-        
-        return days
-    }
     
 }
 
-//struct CalendarView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        CalendarView()
-//    }
-//}
-
-extension Date{
-    func getAllDates() -> [Date] {
-        let calendar = Calendar.current
-        
-        // Get starting date
-        let startDate = calendar.date(from: Calendar.current.dateComponents([.year,.month], from: self))!
-        let range = calendar.range(of: .day, in: .month, for: startDate)!
-        
-        return range.compactMap{day -> Date in
-            return calendar.date(byAdding: .day, value: day - 1, to: startDate)!
+struct CalendarView_Previews: PreviewProvider {
+    @State var userID = "2zJYeIs23RG9ErizhlFY"
+    @StateObject var calendarViewModel = CalendarViewModel()
+    static var previews: some View {
+        let test = CalendarView_Previews()
+        ZStack{
+            Color(.black).ignoresSafeArea()
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(spacing: 20) {
+                    // Calendar View
+                    CalendarView(userID: test.userID, calendarViewModel: test.calendarViewModel)
+                    TaskView()
+                }
+            }
         }
     }
-    
 }
+
+
 
