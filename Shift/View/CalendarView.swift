@@ -86,8 +86,8 @@ struct CalendarView: View {
             })
             
             VStack(spacing: 15) {
-                Text("Schedule:")
-                    .font(.title2.bold())
+                Text("Schedule for \(getDay()[0]), \(getDay()[1]) \(getDay()[2]), \(getDay()[3]):")
+                    .font(.title3.bold())
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .foregroundColor(.white)
                 
@@ -104,7 +104,7 @@ struct CalendarView: View {
                     Text("No work today!")
                         .font(.title3.bold())
                         .foregroundColor(.white)
-
+                    
                 }
                 
             }
@@ -121,29 +121,38 @@ struct CalendarView: View {
         VStack {
             if value.day != -1 {
                 
-                
-                if let shift = calendarViewModel.shifts.first(where: { shift in
-                    return isSameDay(date1: shift.getStartDate(), date2: value.date)
-                }){
-                    ZStack{
-                        if shift.upForGrabs {
-                            Circle().foregroundColor(Color.blue)
-                        } else {
-                            Circle().foregroundColor(Color.pink)
+                if isSameDay(date1: currentDate, date2: value.date) {
+                    ZStack {
+                        Circle().foregroundColor(Color.yellow)
+                        Text("\(value.day)")
+                            .font(.title3.bold())
+                            .foregroundColor(.white)
+                    }
+                } else {
+                    if let shift = calendarViewModel.shifts.first(where: { shift in
+                        return isSameDay(date1: shift.getStartDate(), date2: value.date)
+                    }){
+                        ZStack{
+                            if shift.upForGrabs {
+                                Circle().foregroundColor(Color.blue)
+                            } else {
+                                Circle().foregroundColor(Color.pink)
+                            }
+                            Text("\(value.day)")
+                                .font(.title3.bold())
+                                .foregroundColor(.white)
                         }
-                        Text("\(value.day)")
-                            .font(.title3.bold())
-                            .foregroundColor(.white)
+                    }
+                    else {
+                        ZStack{
+                            Circle().foregroundColor(Color.gray)
+                            Text("\(value.day)")
+                                .font(.title3.bold())
+                                .foregroundColor(.white)
+                        }
                     }
                 }
-                else {
-                    ZStack{
-                        Circle().foregroundColor(Color.gray)
-                        Text("\(value.day)")
-                            .font(.title3.bold())
-                            .foregroundColor(.white)
-                    }
-                }
+                
             }
         }
         .padding(.vertical, 8)
@@ -162,9 +171,16 @@ struct CalendarView: View {
         return date.components(separatedBy: " ")
     }
     
+    func getDay() -> [String] {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEEE MMM d yyyy"
+        let date = formatter.string(from: currentDate)
+        return date.components(separatedBy: " ")
+    }
+    
     func getCurrentMonth() -> Date {
         let calendar = Calendar.current
-    
+        
         guard let currentMonth = calendar.date(byAdding: .month, value: self.currentMonth, to: Date()) else {
             return Date()
         }
@@ -212,11 +228,11 @@ struct CalendarView: View {
 extension Date{
     func getAllDates() -> [Date] {
         let calendar = Calendar.current
-
+        
         // Get starting date
         let startDate = calendar.date(from: Calendar.current.dateComponents([.year,.month], from: self))!
         let range = calendar.range(of: .day, in: .month, for: startDate)!
-
+        
         return range.compactMap{day -> Date in
             return calendar.date(byAdding: .day, value: day - 1, to: startDate)!
         }
