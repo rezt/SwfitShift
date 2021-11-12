@@ -15,6 +15,18 @@ struct CalendarView: View {
     
     @StateObject private var calendarViewModel = CalendarViewModel()
     
+    var drag: some Gesture {
+        DragGesture(minimumDistance: 30, coordinateSpace: .local)
+            .onEnded({gesture in
+                if gesture.startLocation.x < CGFloat(200.0) {
+                        currentMonth -= 1
+                } else if (UIScreen.main.bounds.maxX - gesture.startLocation.x) < (UIScreen.main.bounds.maxX - CGFloat(200.0)) {
+                        currentMonth += 1
+                }
+             }
+        )
+    }
+    
     var body: some View {
         VStack(spacing: 35) {
             
@@ -112,6 +124,7 @@ struct CalendarView: View {
             
             
         }
+        .gesture(drag)
     }
     
     
@@ -157,12 +170,15 @@ struct CalendarView: View {
         }
         .padding(.vertical, 8)
         .frame(height: 60, alignment: .top)
+        .transition(.slide)
     }
     
     func isSameDay(date1: Date, date2: Date) -> Bool {
         let calendar = Calendar.current
         return calendar.isDate(date1, inSameDayAs: date2)
     }
+    
+    // TODO: Collapse these two into one function:
     
     func getYearMonth() -> [String] {
         let formatter = DateFormatter()

@@ -22,13 +22,28 @@ struct K {
 //    }
     
     struct FStore {
-        static let collectionNameShifts = "shifts"
-        static let collectionNameEmployees = "employees"
-        static let employeeField = "employee"
-        static let startField = "startDate"
-        static let endField = "endDate"
-        static let roleField = "role"
-        static let stateField = "upForGrabs"
+        struct Shifts {
+            static let collection = "shifts"
+            static let employee = "employee"
+            static let start = "startDate"
+            static let end = "endDate"
+            static let role = "role"
+            static let state = "upForGrabs"
+        }
+        struct Employees {
+            static let collection = "employees"
+            static let login = "login"
+            static let name = "name"
+            static let role = "role"
+            static let uid = "uid"
+        }
+        struct Tasks {
+            static let collection = "tasks"
+            static let deadline = "deadline"
+            static let description = "description"
+            static let status = "status"
+            static let team = "team"
+        }
     }
     
     struct calendar {
