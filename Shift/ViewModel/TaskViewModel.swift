@@ -13,6 +13,7 @@ final class TaskViewModel: ObservableObject {
     let db = Firestore.firestore()
     @Published var tasks: [Task] = []
     @Published var editTask: Bool = false
+    @Published var id: String = ""
     
     init() {
         loadTasks()
@@ -44,7 +45,8 @@ final class TaskViewModel: ObservableObject {
         }
     }
     
-    func enterTask() {
+    func enter(task: Task) {
+        id = task.FSID
         editTask = true
     }
     

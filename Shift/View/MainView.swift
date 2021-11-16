@@ -9,33 +9,29 @@ import SwiftUI
 
 struct MainView: View {
     
-    @Binding var userID: String
+    @EnvironmentObject var auth: LoginViewModel
     @StateObject var calendarViewModel = CalendarViewModel()
     @StateObject var taskViewModel = TaskViewModel()
     
     var body: some View {
-        NavigationView{
             ZStack{
                 Color(.black).ignoresSafeArea()
-                NavigationLink(destination: TaskView(), isActive: $taskViewModel.editTask) {EmptyView()}
+                NavigationLink(destination: TaskView(taskViewModel: taskViewModel), isActive: $taskViewModel.editTask) {}
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 20) {
                         // Calendar View
-                        CalendarView(userID: userID, calendarViewModel: calendarViewModel)
+                        CalendarView(/*userID: userID, */calendarViewModel: calendarViewModel).environmentObject(auth)
                         Spacer()
                         TaskListView(taskViewModel: taskViewModel)
                     }
                 }
             }.navigationBarHidden(true)
-        }
     }
 }
 
 struct MainView_Previews: PreviewProvider {
-    @State var userID = "2zJYeIs23RG9ErizhlFY"
     @StateObject var taskViewModel = TaskViewModel()
     static var previews: some View {
-        let test = MainView_Previews()
-        MainView(userID: test.$userID)
+        MainView()
     }
 }

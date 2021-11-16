@@ -9,26 +9,30 @@ import SwiftUI
 
 struct CalendarView: View {
     
-    let userID: String
-    @StateObject var calendarViewModel: CalendarViewModel
+    @EnvironmentObject var auth: LoginViewModel
+    @ObservedObject var calendarViewModel: CalendarViewModel
     
     var drag: some Gesture {
         DragGesture(minimumDistance: 30, coordinateSpace: .local)
             .onEnded({gesture in
                 if gesture.startLocation.x < CGFloat(200.0) {
-                    calendarViewModel.currentMonth -= 1
+                    withAnimation {
+                        calendarViewModel.currentMonth -= 1
+                    }
                 } else if (UIScreen.main.bounds.maxX - gesture.startLocation.x) < (UIScreen.main.bounds.maxX - CGFloat(200.0)) {
-                    calendarViewModel.currentMonth += 1
+                    withAnimation {
+                        calendarViewModel.currentMonth += 1
+                    }
                 }
-             }
-        )
+            }
+            )
     }
     
     var body: some View {
         VStack(spacing: 35) {
             
             HStack(spacing: 20) {
-                VStack(alignment: .leading, spacing: 10) {
+                VStack(alignment: .center, spacing: 10) {
                     Text(calendarViewModel.getYearMonth()[0])
                         .font(.caption)
                         .fontWeight(.heavy)
@@ -39,27 +43,6 @@ struct CalendarView: View {
                         .foregroundColor(.white)
                 }
                 
-                Spacer()
-                
-                Button {
-                    withAnimation{
-                        calendarViewModel.currentMonth -= 1
-                    }
-                } label: {
-                    Image(systemName: K.calendar.buttonPrevious)
-                        .font(.title3)
-                        .foregroundColor(.white)
-                }
-                
-                Button {
-                    withAnimation{
-                        calendarViewModel.currentMonth += 1
-                    }
-                } label: {
-                    Image(systemName: K.calendar.buttonNext)
-                        .font(.title3)
-                        .foregroundColor(.white)
-                }
                 
             }
             .padding(.horizontal)
@@ -91,6 +74,30 @@ struct CalendarView: View {
                 calendarViewModel.currentDate = calendarViewModel.getCurrentMonth()
             })
             
+            HStack(spacing: 40) {
+                Button {
+                    withAnimation{
+                        calendarViewModel.currentMonth -= 1
+                    }
+                } label: {
+                    Image(systemName: K.calendar.buttonPrevious)
+                        .padding()
+                        .font(.title3)
+                        .foregroundColor(.white)
+                }
+                
+                Button {
+                    withAnimation{
+                        calendarViewModel.currentMonth += 1
+                    }
+                } label: {
+                    Image(systemName: K.calendar.buttonNext)
+                        .padding()
+                        .font(.title3)
+                        .foregroundColor(.white)
+                }
+            }
+            
             VStack(spacing: 15) {
                 Text("Schedule for \(calendarViewModel.getDay()[0]), \(calendarViewModel.getDay()[1]) \(calendarViewModel.getDay()[2]), \(calendarViewModel.getDay()[3]):")
                     .font(.title3.bold())
@@ -119,51 +126,53 @@ struct CalendarView: View {
     
     @ViewBuilder
     func CardView(value: DateValue) -> some View {
-        
-        VStack {
-            if value.day != -1 {
-                
-                if calendarViewModel.isSameDay(date1: calendarViewModel.currentDate, date2: value.date) {
-                    ZStack {
-                        Circle().foregroundColor(Color.yellow)
-                        Text("\(value.day)")
-                            .font(.title3.bold())
-                            .foregroundColor(.white)
-                    }
-                } else {
-                    if let shift = calendarViewModel.shifts.first(where: { shift in
-                        return calendarViewModel.isSameDay(date1: shift.getStartDate(), date2: value.date)
-                    }){
-                        ZStack{
-                            if shift.upForGrabs {
-                                Circle().foregroundColor(Color.blue)
-                            } else {
-                                Circle().foregroundColor(Color.pink)
+        withAnimation {
+            VStack {
+                if value.day != -1 {
+                    
+                    if calendarViewModel.isSameDay(date1: calendarViewModel.currentDate, date2: value.date) {
+                        ZStack {
+                            Circle().foregroundColor(Color.yellow)
+                            Text("\(value.day)")
+                                .font(.title3.bold())
+                                .foregroundColor(.white)
+                        }
+                    } else {
+                        if let shift = calendarViewModel.shifts.first(where: { shift in
+                            return calendarViewModel.isSameDay(date1: shift.getStartDate(), date2: value.date)
+                        }){
+                            ZStack{
+                                if shift.upForGrabs {
+                                    Circle().foregroundColor(Color.blue)
+                                } else {
+                                    Circle().foregroundColor(Color.pink)
+                                }
+                                Text("\(value.day)")
+                                    .font(.title3.bold())
+                                    .foregroundColor(.white)
                             }
-                            Text("\(value.day)")
-                                .font(.title3.bold())
-                                .foregroundColor(.white)
+                        }
+                        else {
+                            ZStack{
+                                Circle().foregroundColor(Color.gray)
+                                Text("\(value.day)")
+                                    .font(.title3.bold())
+                                    .foregroundColor(.white)
+                            }
                         }
                     }
-                    else {
-                        ZStack{
-                            Circle().foregroundColor(Color.gray)
-                            Text("\(value.day)")
-                                .font(.title3.bold())
-                                .foregroundColor(.white)
-                        }
-                    }
+                    
                 }
-                
             }
+            .padding(.vertical, 8)
+            .frame(height: 60, alignment: .top)
         }
-        .padding(.vertical, 8)
-        .frame(height: 60, alignment: .top)
+        
+//        .transition(AnyTransition.opacity.combined(with: .move(edge: .leading)))
     }
 }
 
 struct CalendarView_Previews: PreviewProvider {
-    @State var userID = "2zJYeIs23RG9ErizhlFY"
     @StateObject var calendarViewModel = CalendarViewModel()
     
     static var previews: some View {
@@ -173,7 +182,7 @@ struct CalendarView_Previews: PreviewProvider {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 20) {
                     // Calendar View
-                    CalendarView(userID: test.userID, calendarViewModel: test.calendarViewModel)
+                    CalendarView(calendarViewModel: test.calendarViewModel)
                 }
             }
         }

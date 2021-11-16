@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TaskListView: View {
     
-    @StateObject var taskViewModel: TaskViewModel
+    @ObservedObject var taskViewModel: TaskViewModel
     
     var body: some View {
             VStack{
@@ -20,12 +20,14 @@ struct TaskListView: View {
                             Text("Deadline: \(task.getDeadline())")
                             Text("Status: \(task.status)")
                         }
+                        .onTapGesture {
+                            taskViewModel.enter(task: task)
+                        }
                 }
             }
-            Button(action: {taskViewModel.printTasks()}) {
-                Text("print Tasks")
-                
-            }
+//            Button(action: {taskViewModel.printTasks()}) {
+//                Text("print Tasks")
+//            }
     }
 }
 

@@ -19,7 +19,7 @@ struct LoginView: View {
                 Color.black
                     .ignoresSafeArea()
                 VStack {
-                    NavigationLink(destination: MainView(userID: $auth.userID), isActive: $auth.isLoggedIn) {EmptyView()}
+                    NavigationLink(destination: MainView().environmentObject(auth), isActive: $auth.isLoggedIn) {}
                     Spacer()
                     Text("Swift Shift")
                         .bold()
@@ -45,8 +45,8 @@ struct LoginView: View {
                     }
                     Spacer()
                 }
-            }.navigationTitle("Login")
-        }
+            }
+        }.navigationBarHidden(true)
         
     }
 }
