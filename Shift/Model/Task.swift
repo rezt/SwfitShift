@@ -13,6 +13,7 @@ struct Task: Hashable {
     let description: String
     let status: String
     let team: String
+    let title: String
     let FSID: String
     
     func getDeadline() -> Date {

@@ -43,6 +43,7 @@ struct K {
             static let description = "description"
             static let status = "status"
             static let team = "team"
+            static let title = "title"
         }
     }
     

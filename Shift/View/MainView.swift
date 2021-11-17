@@ -21,8 +21,9 @@ struct MainView: View {
                     VStack(spacing: 20) {
                         // Calendar View
                         CalendarView(/*userID: userID, */calendarViewModel: calendarViewModel).environmentObject(auth)
-                        Spacer()
+                        Color.gray.frame(height:CGFloat(1) / UIScreen.main.scale)
                         TaskListView(taskViewModel: taskViewModel)
+                        Color.gray.frame(height:CGFloat(1) / UIScreen.main.scale)
                     }
                 }
             }.navigationBarHidden(true)
@@ -30,8 +31,9 @@ struct MainView: View {
 }
 
 struct MainView_Previews: PreviewProvider {
-    @StateObject var taskViewModel = TaskViewModel()
+    @StateObject var auth = LoginViewModel()
     static var previews: some View {
-        MainView()
+        let test = MainView_Previews()
+        MainView().environmentObject(test.auth)
     }
 }

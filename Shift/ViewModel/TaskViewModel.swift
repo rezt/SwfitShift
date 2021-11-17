@@ -13,7 +13,7 @@ final class TaskViewModel: ObservableObject {
     let db = Firestore.firestore()
     @Published var tasks: [Task] = []
     @Published var editTask: Bool = false
-    @Published var id: String = ""
+    @Published var task: Task? = nil
     
     init() {
         loadTasks()
@@ -32,8 +32,9 @@ final class TaskViewModel: ObservableObject {
                         if let deadline = data[K.FStore.Tasks.deadline] as? Timestamp,
                            let description = data[K.FStore.Tasks.description] as? String,
                            let status = data[K.FStore.Tasks.status] as? String,
-                           let team = data[K.FStore.Tasks.team] as? String {
-                            let newTask = Task(deadline: deadline, description: description, status: status, team: team, FSID: doc.documentID)
+                           let team = data[K.FStore.Tasks.team] as? String,
+                           let title = data[K.FStore.Tasks.title] as? String {
+                            let newTask = Task(deadline: deadline, description: description, status: status, team: team, title: title, FSID: doc.documentID)
                             self.tasks.append(newTask)
                             DispatchQueue.main.async {
                                 self.printTasks()
@@ -46,7 +47,7 @@ final class TaskViewModel: ObservableObject {
     }
     
     func enter(task: Task) {
-        id = task.FSID
+        self.task = task
         editTask = true
     }
     

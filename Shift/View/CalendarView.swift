@@ -74,28 +74,31 @@ struct CalendarView: View {
                 calendarViewModel.currentDate = calendarViewModel.getCurrentMonth()
             })
             
-            HStack(spacing: 40) {
+            
+            HStack(spacing: 20) {
                 Button {
                     withAnimation{
                         calendarViewModel.currentMonth -= 1
                     }
                 } label: {
                     Image(systemName: K.calendar.buttonPrevious)
-                        .padding()
                         .font(.title3)
                         .foregroundColor(.white)
                 }
-                
+                Color.gray.frame(width:CGFloat(2) / UIScreen.main.scale)
                 Button {
                     withAnimation{
                         calendarViewModel.currentMonth += 1
                     }
                 } label: {
                     Image(systemName: K.calendar.buttonNext)
-                        .padding()
                         .font(.title3)
                         .foregroundColor(.white)
                 }
+            }
+            
+            VStack{
+                Color.gray.frame(height:CGFloat(1) / UIScreen.main.scale)
             }
             
             VStack(spacing: 15) {

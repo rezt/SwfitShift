@@ -35,29 +35,6 @@ final class CalendarViewModel: ObservableObject {
         return assignedShifts
     }
     
-    //        func loadTasks() {
-    //            db.collection(K.FStore.Shifts.collection).addSnapshotListener { (querySnapshot, error) in
-    //                self.tasks = []
-    //
-    //                if let e = error {
-    //                    print("There was an issue retriving task data from Firestore. \(e)")
-    //                } else {
-    //                    if let snapshotDocuments = querySnapshot?.documents {
-    //                        for doc in snapshotDocuments {
-    //                            let data = doc.data()
-    //                            if let employee = data[K.FStore.Shifts.employee as? String, let endDate = data[K.FStore.Shifts.end] as? Timestamp, let role = data[K.FStore.Shifts.role] as? String, let startDate = data[K.FStore.Shifts.start] as? Timestamp, let state = data[K.FStore.Shifts.state] as? Bool {
-    //                                let newShift = Shift(employee: employee, endDate: endDate, role: role, startDate: startDate, upForGrabs: state, FSID: doc.documentID)
-    //                                self.shifts.append(newShift)
-    //                                DispatchQueue.main.async {
-    //                                    self.printShifts()
-    //                                }
-    //                            }
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //        }
-    
     func loadShifts() {
         db.collection(K.FStore.Shifts.collection).addSnapshotListener { (querySnapshot, error) in
             self.shifts = []

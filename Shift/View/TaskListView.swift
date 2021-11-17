@@ -12,14 +12,16 @@ struct TaskListView: View {
     @ObservedObject var taskViewModel: TaskViewModel
     
     var body: some View {
-            VStack{
+        VStack(alignment: .leading){
                 ForEach(taskViewModel.tasks, id: \.self) { task in
-                    Text(task.description)
+                    Text(task.title)
                         .foregroundColor(.white)
                         .contextMenu {
                             Text("Deadline: \(task.getDeadline())")
                             Text("Status: \(task.status)")
                         }
+                        .padding()
+                        .font(.title3.bold())
                         .onTapGesture {
                             taskViewModel.enter(task: task)
                         }
