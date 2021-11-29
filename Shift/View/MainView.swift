@@ -8,32 +8,41 @@
 import SwiftUI
 
 struct MainView: View {
-    
-    @EnvironmentObject var auth: LoginViewModel
+     
+    @ObservedObject var auth: LoginViewModel
     @StateObject var calendarViewModel = CalendarViewModel()
-    @StateObject var taskViewModel = TaskViewModel()
+    @StateObject var taskViewModel = TaskListViewModel()
+    @StateObject var mainViewModel = MainViewModel()
     
     var body: some View {
             ZStack{
                 Color(.black).ignoresSafeArea()
-                NavigationLink(destination: TaskView(taskViewModel: taskViewModel), isActive: $taskViewModel.editTask) {}
+                NavigationLink(destination: TaskView(taskListViewModel: taskViewModel, loginViewModel: auth), isActive: $taskViewModel.showTask) {}
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 20) {
                         // Calendar View
-                        CalendarView(/*userID: userID, */calendarViewModel: calendarViewModel).environmentObject(auth)
+                        CalendarView(calendarViewModel: calendarViewModel)
                         Color.gray.frame(height:CGFloat(1) / UIScreen.main.scale)
-                        TaskListView(taskViewModel: taskViewModel)
+                        TaskListView(taskListViewModel: taskViewModel)
                         Color.gray.frame(height:CGFloat(1) / UIScreen.main.scale)
                     }
                 }
             }.navigationBarHidden(true)
+            .onAppear() {
+                calendarViewModel.setAuth(with: auth)
+                calendarViewModel.loadShifts()
+                taskViewModel.setAuth(with: auth)
+                taskViewModel.loadTasks()
+            }
     }
 }
 
 struct MainView_Previews: PreviewProvider {
     @StateObject var auth = LoginViewModel()
+    @StateObject var calendarViewModel = CalendarViewModel()
+    @StateObject var taskViewModel = TaskListViewModel()
     static var previews: some View {
         let test = MainView_Previews()
-        MainView().environmentObject(test.auth)
+        MainView(auth: test.auth, calendarViewModel: test.calendarViewModel, taskViewModel: test.taskViewModel)
     }
 }

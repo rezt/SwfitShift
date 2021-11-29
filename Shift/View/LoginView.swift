@@ -9,7 +9,8 @@ import SwiftUI
 import Firebase
 
 struct LoginView: View {
-    @StateObject private var auth = LoginViewModel()
+    
+    @StateObject var auth = LoginViewModel()
     @State private var email: String = "admin@test.pl"
     @State private var password: String = "adminadmin"
     
@@ -19,7 +20,7 @@ struct LoginView: View {
                 Color.black
                     .ignoresSafeArea()
                 VStack {
-                    NavigationLink(destination: MainView().environmentObject(auth), isActive: $auth.isLoggedIn) {}
+                    NavigationLink(destination: MainView(auth: auth), isActive: $auth.isLoggedIn) {}
                     Spacer()
                     Text("Swift Shift")
                         .bold()
@@ -47,6 +48,7 @@ struct LoginView: View {
                 }
             }
         }.navigationBarHidden(true)
+            
         
     }
 }

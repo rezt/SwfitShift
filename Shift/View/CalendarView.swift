@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CalendarView: View {
     
-    @EnvironmentObject var auth: LoginViewModel
     @ObservedObject var calendarViewModel: CalendarViewModel
     
     var drag: some Gesture {
@@ -121,6 +120,7 @@ struct CalendarView: View {
                         .font(.title3.bold())
                         .foregroundColor(.white)
                 }
+                
             }
             .padding()
         }
@@ -175,7 +175,9 @@ struct CalendarView: View {
     }
 }
 
+
 struct CalendarView_Previews: PreviewProvider {
+
     @StateObject var calendarViewModel = CalendarViewModel()
     
     static var previews: some View {

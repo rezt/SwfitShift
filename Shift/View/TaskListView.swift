@@ -9,37 +9,46 @@ import SwiftUI
 
 struct TaskListView: View {
     
-    @ObservedObject var taskViewModel: TaskViewModel
+    @ObservedObject var taskListViewModel: TaskListViewModel
     
     var body: some View {
         VStack(alignment: .leading){
-                ForEach(taskViewModel.tasks, id: \.self) { task in
-                    Text(task.title)
-                        .foregroundColor(.white)
-                        .contextMenu {
-                            Text("Deadline: \(task.getDeadline())")
-                            Text("Status: \(task.status)")
-                        }
-                        .padding()
-                        .font(.title3.bold())
-                        .onTapGesture {
-                            taskViewModel.enter(task: task)
-                        }
-                }
+            ForEach(taskListViewModel.tasks, id: \.self) { task in
+                Text(task.title)
+                    .foregroundColor(.white)
+                    .contextMenu {
+                        Text("Deadline: \(task.getDeadline())")
+                        Text("Status: \(task.status)")
+                    }
+                    .padding()
+                    .font(.title3.bold())
+                    .onTapGesture {
+                        taskListViewModel.enter(task: task)
+                    }
             }
-//            Button(action: {taskViewModel.printTasks()}) {
-//                Text("print Tasks")
-//            }
+        }
+        if !self.$taskListViewModel.showFinished.wrappedValue {
+            Button(action: {taskListViewModel.loadFinishedTasks()}) {
+                Text("Show finished tasks")
+            }
+        } else {
+            Button(action: {taskListViewModel.loadTasks()}) {
+                Text("Show current tasks")
+            }
+        }
+        Button(action: {taskListViewModel.loadFinishedTasks()}) {
+            Text("Add new task")
+        }
     }
 }
 
 struct TaskListView_Previews: PreviewProvider {
-    @StateObject var taskViewModel = TaskViewModel()
+    @StateObject var taskListViewModel = TaskListViewModel()
     static var previews: some View {
         let test = TaskListView_Previews()
         ZStack{
             Color(.black).ignoresSafeArea()
-            TaskListView(taskViewModel: test.taskViewModel)
+            TaskListView(taskListViewModel: test.taskListViewModel)
         }
     }
 }

@@ -13,30 +13,26 @@ final class CalendarViewModel: ObservableObject {
     
     let db = Firestore.firestore()
     
+    @ObservedObject var auth: LoginViewModel
     @Published var shifts: [Shift] = []
     @Published var currentDate: Date = Date()
     @Published var currentMonth: Int = 0
-    var assignedShifts: [Shift] = []
+    @Published var canEdit: Bool = false
     
     init() {
-        loadShifts()
+        auth = LoginViewModel()
+    }
+    
+    func setAuth(with auth: LoginViewModel) {
+        self.auth = auth
     }
     
     func getShifts() -> [Shift] {
         return shifts
     }
     
-    func getShiftsFor(employeeID: String) -> [Shift] {
-        shifts.forEach { shift in
-            if employeeID == shift.employee {
-                assignedShifts.append(shift)
-            }
-        }
-        return assignedShifts
-    }
-    
     func loadShifts() {
-        db.collection(K.FStore.Shifts.collection).addSnapshotListener { (querySnapshot, error) in
+        db.collection(K.FStore.Shifts.collection).whereField(K.FStore.Shifts.employee, isEqualTo: self.auth.user.uid).addSnapshotListener { (querySnapshot, error) in
             self.shifts = []
             
             if let e = error {
@@ -52,9 +48,6 @@ final class CalendarViewModel: ObservableObject {
                            let state = data[K.FStore.Shifts.state] as? Bool {
                             let newShift = Shift(employee: employee, endDate: endDate, role: role, startDate: startDate, upForGrabs: state, FSID: doc.documentID)
                             self.shifts.append(newShift)
-                            DispatchQueue.main.async {
-                                self.printShifts()
-                            }
                         }
                     }
                 }
@@ -126,7 +119,6 @@ final class CalendarViewModel: ObservableObject {
         
         // Move sunday to be the last day of th week
         var firstWeekday = calendar.component(.weekday, from: days.first!.date)
-        print(firstWeekday)
         firstWeekday -= 1
         if firstWeekday == 0 {
             firstWeekday = 7
