@@ -36,7 +36,7 @@ struct K {
             static let name = "name"
             static let role = "role"
             static let uid = "uid"
-            static let roles = ["admin", "manager", "cashier"]
+            static let roles = ["Admin", "Manager", "Cashier"]
         }
         struct Tasks {
             static let collection = "tasks"

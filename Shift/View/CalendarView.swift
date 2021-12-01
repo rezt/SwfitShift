@@ -120,7 +120,14 @@ struct CalendarView: View {
                         .font(.title3.bold())
                         .foregroundColor(.white)
                 }
-                
+                if !self.$calendarViewModel.canEdit.wrappedValue {
+                    Button(action: {calendarViewModel}) {
+                        Text("Edit shift")
+                    }
+                    Button(action: {calendarViewModel}) {
+                        Text("Add shift")
+                    }
+                }
             }
             .padding()
         }

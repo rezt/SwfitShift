@@ -10,33 +10,38 @@ import SwiftUI
 struct TaskListView: View {
     
     @ObservedObject var taskListViewModel: TaskListViewModel
+    @State var showFinished: Bool = false
     
     var body: some View {
         VStack(alignment: .leading){
-            ForEach(taskListViewModel.tasks, id: \.self) { task in
-                Text(task.title)
-                    .foregroundColor(.white)
-                    .contextMenu {
-                        Text("Deadline: \(task.getDeadline())")
-                        Text("Status: \(task.status)")
-                    }
-                    .padding()
-                    .font(.title3.bold())
-                    .onTapGesture {
-                        taskListViewModel.enter(task: task)
-                    }
-            }
-        }
+                ForEach(taskListViewModel.displayedTasks, id: \.self) { task in
+                    Text(task.title)
+                        .foregroundColor(.white)
+                        .contextMenu {
+                            Text("Deadline: \(task.getDeadline())")
+                            Text("Status: \(task.status)")
+                        }
+                        .padding()
+                        .font(.title3.bold())
+                        .onTapGesture {
+                            taskListViewModel.enter(task: task)
+                        }
+                }
+        }.padding()
         if !self.$taskListViewModel.showFinished.wrappedValue {
-            Button(action: {taskListViewModel.loadFinishedTasks()}) {
+            Button(action: {showFinished = true
+                taskListViewModel.getFinishedTasks()
+            }) {
                 Text("Show finished tasks")
             }
         } else {
-            Button(action: {taskListViewModel.loadTasks()}) {
+            Button(action: {showFinished = false
+                taskListViewModel.getCurrentTasks()
+            }) {
                 Text("Show current tasks")
             }
         }
-        Button(action: {taskListViewModel.loadFinishedTasks()}) {
+        Button(action: {taskListViewModel.enterNew()}) {
             Text("Add new task")
         }
     }
