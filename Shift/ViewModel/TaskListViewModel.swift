@@ -17,7 +17,7 @@ final class TaskListViewModel: ObservableObject {
     @Published var tasks: [Task] = []
     @Published var displayedTasks: [Task] = []
     @Published var showTask: Bool = false
-    var taskViewModel = TaskViewModel(withTask: Task(deadline: Timestamp(date: Date()), description: "", status: "", team: "", title: "", FSID: ""), isEditable: false)
+    var taskViewModel = TaskViewModel(withTask: Task(deadline: Timestamp(date: Date()), description: "", status: "", team: "", title: "", FSID: ""), canEdit: false)
     @Published var showFinished: Bool = true
     
     init() {
@@ -91,9 +91,6 @@ final class TaskListViewModel: ObservableObject {
                                let title = data[K.FStore.Tasks.title] as? String {
                                 let newTask = Task(deadline: deadline, description: description, status: status, team: team, title: title, FSID: doc.documentID)
                                 self.tasks.append(newTask)
-                                DispatchQueue.main.async {
-                                    self.printTasks()
-                                }
                             }
                         }
                     }
@@ -127,12 +124,12 @@ final class TaskListViewModel: ObservableObject {
             canEdit = true
             print("canedit")
         }
-        self.taskViewModel = TaskViewModel(withTask: task, isEditable: canEdit)
+        self.taskViewModel = TaskViewModel(withTask: task, canEdit: canEdit)
         showTask = true
     }
     
     func enterNew() {
-        self.taskViewModel = TaskViewModel(withTask: Task(deadline: Timestamp(date: Date()), description: "", status: "", team: "", title: "", FSID: ""), isEditable: true)
+        self.taskViewModel = TaskViewModel(withTask: Task(deadline: Timestamp(date: Date()), description: "", status: "", team: "", title: "", FSID: ""), canEdit: true)
         showTask = true
     }
     

@@ -15,6 +15,8 @@ final class CalendarViewModel: ObservableObject {
     
     @ObservedObject var auth: LoginViewModel
     @Published var shifts: [Shift] = []
+    var shiftViewModel = ShiftViewModel(withShift: Shift(employee: "", endDate: Timestamp(date: Date()), role: "", startDate: Timestamp(date: Date()), upForGrabs: false, FSID: ""), canEdit: false)
+    @Published var showShift: Bool = false
     @Published var currentDate: Date = Date()
     @Published var currentMonth: Int = 0
     @Published var canEdit: Bool = false
@@ -29,6 +31,50 @@ final class CalendarViewModel: ObservableObject {
     
     func getShifts() -> [Shift] {
         return shifts
+    }
+    
+    func saveShift(_ newShift: Shift) {
+        if newShift.FSID == "" {
+            var ref: DocumentReference? = nil
+            ref = db.collection(K.FStore.Shifts.collection).addDocument(data: [
+                K.FStore.Shifts.employee: newShift.employee,
+                K.FStore.Shifts.role: newShift.role,
+                K.FStore.Shifts.state: newShift.upForGrabs,
+                K.FStore.Shifts.start: newShift.startDate,
+                K.FStore.Shifts.end: newShift.endDate
+            ]) { err in
+                if let err = err {
+                    print("Error adding document: \(err)")
+                } else {
+                    print("Document added with ID: \(ref!.documentID)")
+                }
+            }
+        } else {
+            db.collection(K.FStore.Shifts.collection).document(newShift.FSID).setData([
+                K.FStore.Shifts.employee: newShift.employee,
+                K.FStore.Shifts.role: newShift.role,
+                K.FStore.Shifts.state: newShift.upForGrabs,
+                K.FStore.Shifts.start: newShift.startDate,
+                K.FStore.Shifts.end: newShift.endDate
+            ]) { err in
+                if let err = err {
+                    print("Error updating document: \(err)")
+                } else {
+                    print("Document successfully updated!")
+                }
+            }
+            
+        }
+    }
+    
+    func deleteShift(_ shift: Shift) {
+        db.collection(K.FStore.Shifts.collection).document(shift.FSID).delete() { err in
+            if let err = err {
+                print("Error removing document: \(err)")
+            } else {
+                print("Document successfully removed!")
+            }
+        }
     }
     
     func loadShifts() {
@@ -67,6 +113,21 @@ final class CalendarViewModel: ObservableObject {
                 print("Document successfully updated")
             }
         }
+    }
+    
+    func enter(shift: Shift) {
+        var canEdit = false
+        if auth.user.role == K.FStore.Employees.roles[0] || auth.user.role == K.FStore.Employees.roles[1] {
+            canEdit = true
+            print("canedit")
+        }
+        self.shiftViewModel = ShiftViewModel(withShift: shift, canEdit: canEdit)
+        showShift = true
+    }
+    
+    func enterNew() {
+        self.shiftViewModel = ShiftViewModel(withShift: Shift(employee: "", endDate: Timestamp(date: Date()), role: "Admin", startDate: Timestamp(date: Date()), upForGrabs: false, FSID: ""), canEdit: true)
+        self.showShift = true
     }
     
     func printShifts() {

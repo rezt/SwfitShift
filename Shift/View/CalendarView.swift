@@ -115,18 +115,19 @@ struct CalendarView: View {
                     Button(action: {calendarViewModel.changeStateOfShift(shift)}) {
                         Text("Up for grabs")
                     }
+                    if !self.$calendarViewModel.canEdit.wrappedValue {
+                        Button(action: {calendarViewModel.enter(shift: shift)}) {
+                            Text("Edit shift")
+                        }
+                    }
                 } else {
                     Text("No work today!")
                         .font(.title3.bold())
                         .foregroundColor(.white)
                 }
-                if !self.$calendarViewModel.canEdit.wrappedValue {
-                    Button(action: {calendarViewModel}) {
-                        Text("Edit shift")
-                    }
-                    Button(action: {calendarViewModel}) {
-                        Text("Add shift")
-                    }
+                
+                Button(action: {calendarViewModel.enterNew()}) {
+                    Text("Add shift")
                 }
             }
             .padding()

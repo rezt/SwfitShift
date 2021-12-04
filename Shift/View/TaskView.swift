@@ -120,7 +120,7 @@ struct TaskView: View {
 }
 
 struct TaskView_Previews: PreviewProvider {
-    @StateObject var taskViewModel = TaskViewModel(withTask: Task(deadline: Timestamp(date: Date()), description: "", status: "", team: "", title: "", FSID: ""), isEditable: false)
+    @StateObject var taskViewModel = TaskViewModel(withTask: Task(deadline: Timestamp(date: Date()), description: "", status: "", team: "", title: "", FSID: ""), canEdit: false)
     @StateObject var loginViewModel = LoginViewModel()
     @StateObject var taskListViewModel = TaskListViewModel()
     static var previews: some View {

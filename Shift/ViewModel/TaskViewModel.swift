@@ -14,12 +14,10 @@ final class TaskViewModel: ObservableObject {
     @Published var canEdit: Bool
     @Published var edit: Bool = false
     
-    
-    init(withTask newTask: Task, isEditable flag: Bool) {
+    init(withTask newTask: Task, canEdit flag: Bool) {
         self.task = newTask
         self.canEdit = flag
     }
-    
     
     func editTask() {
         print(task)

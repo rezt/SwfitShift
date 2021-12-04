@@ -19,6 +19,7 @@ struct MainView: View {
             ZStack{
                 Color(.black).ignoresSafeArea()
                 NavigationLink(destination: TaskView(taskViewModel: taskListViewModel.taskViewModel, taskListViewModel: taskListViewModel, loginViewModel: auth), isActive: $taskListViewModel.showTask) {}
+                NavigationLink(destination: ShiftView(shiftViewModel: calendarViewModel.shiftViewModel, calendarViewModel: calendarViewModel, loginViewModel: auth), isActive: $calendarViewModel.showShift) {}
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 20) {
                         // Calendar View
@@ -34,6 +35,7 @@ struct MainView: View {
                 calendarViewModel.loadShifts()
                 taskListViewModel.setAuth(with: auth)
                 taskListViewModel.loadTasks()
+                auth.loadEmployees(withRole: auth.user.role)
             }
     }
 }
