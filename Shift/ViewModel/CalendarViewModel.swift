@@ -20,6 +20,7 @@ final class CalendarViewModel: ObservableObject {
     @Published var currentDate: Date = Date()
     @Published var currentMonth: Int = 0
     @Published var canEdit: Bool = false
+    typealias LoadShiftsRoleClosure = (Array<Shift>?) -> Void
     
     init() {
         auth = LoginViewModel()
@@ -77,7 +78,38 @@ final class CalendarViewModel: ObservableObject {
         }
     }
     
-    func loadShifts() {
+    func loadShifts(){
+        if auth.user.role == K.FStore.Employees.roles[0] {
+            loadShiftsAdmin()
+        } else {
+            loadShiftsNormal()
+        }
+    }
+    
+    func loadShiftsAdmin() { // Load all shifts
+        db.collection(K.FStore.Shifts.collection).addSnapshotListener { (querySnapshot, error) in
+            self.shifts = []
+            
+            if let e = error {
+                print("There was an issue retriving shift data from Firestore. \(e)")
+            } else {
+                if let snapshotDocuments = querySnapshot?.documents {
+                    for doc in snapshotDocuments {
+                        let data = doc.data()
+                        if let employee = data[K.FStore.Shifts.employee] as? String,
+                           let endDate = data[K.FStore.Shifts.end] as? Timestamp,
+                           let role = data[K.FStore.Shifts.role] as? String,
+                           let startDate = data[K.FStore.Shifts.start] as? Timestamp,
+                           let state = data[K.FStore.Shifts.state] as? Bool {
+                            let newShift = Shift(employee: employee, endDate: endDate, role: role, startDate: startDate, upForGrabs: state, FSID: doc.documentID)
+                            self.shifts.append(newShift)                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func loadShiftsNormal() { // Load only shifts specified to user or user's role
         db.collection(K.FStore.Shifts.collection).whereField(K.FStore.Shifts.employee, isEqualTo: self.auth.user.uid).addSnapshotListener { (querySnapshot, error) in
             self.shifts = []
             
@@ -94,6 +126,13 @@ final class CalendarViewModel: ObservableObject {
                            let state = data[K.FStore.Shifts.state] as? Bool {
                             let newShift = Shift(employee: employee, endDate: endDate, role: role, startDate: startDate, upForGrabs: state, FSID: doc.documentID)
                             self.shifts.append(newShift)
+                            DispatchQueue.main.async {
+                                self.loadShiftsRole { result in
+                                    if result != nil {
+                                        self.shifts = Array(Set(self.shifts).union(result!))
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -101,10 +140,57 @@ final class CalendarViewModel: ObservableObject {
         }
     }
     
+    func loadShiftsRole(completionHandler: @escaping LoadShiftsRoleClosure) {
+        db.collection(K.FStore.Shifts.collection).whereField(K.FStore.Shifts.state, isEqualTo: true).whereField(K.FStore.Shifts.role, isEqualTo: auth.user.role).addSnapshotListener { (querySnapshot, error) in
+            var result = [Shift]()
+            
+            if let e = error {
+                print("There was an issue retriving shift data from Firestore. \(e)")
+            } else {
+                if let snapshotDocuments = querySnapshot?.documents {
+                    for doc in snapshotDocuments {
+                        let data = doc.data()
+                        if let employee = data[K.FStore.Shifts.employee] as? String,
+                           let endDate = data[K.FStore.Shifts.end] as? Timestamp,
+                           let role = data[K.FStore.Shifts.role] as? String,
+                           let startDate = data[K.FStore.Shifts.start] as? Timestamp,
+                           let state = data[K.FStore.Shifts.state] as? Bool {
+                            let newShift = Shift(employee: employee, endDate: endDate, role: role, startDate: startDate, upForGrabs: state, FSID: doc.documentID)
+                            result.append(newShift)
+                            DispatchQueue.main.async {
+                                if result.isEmpty {
+                                    completionHandler(nil)
+                                } else {
+                                    completionHandler(result)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
     func changeStateOfShift(_ shift: Shift) {
         let shiftRef = db.collection(K.FStore.Shifts.collection).document(shift.FSID)
         
         shiftRef.updateData([
+            "upForGrabs": !shift.upForGrabs
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+    }
+    
+    func takeShift(_ shift: Shift) {
+        let shiftRef = db.collection(K.FStore.Shifts.collection).document(shift.FSID)
+        
+        shiftRef.updateData([
+            "employee": auth.user.uid,
             "upForGrabs": !shift.upForGrabs
         ]) { err in
             if let err = err {
@@ -125,8 +211,8 @@ final class CalendarViewModel: ObservableObject {
         showShift = true
     }
     
-    func enterNew() {
-        self.shiftViewModel = ShiftViewModel(withShift: Shift(employee: "", endDate: Timestamp(date: Date()), role: "Admin", startDate: Timestamp(date: Date()), upForGrabs: false, FSID: ""), canEdit: true)
+    func enterNew(userRole role: String) {
+        self.shiftViewModel = ShiftViewModel(withShift: Shift(employee: "", endDate: Timestamp(date: Date()), role: role, startDate: Timestamp(date: Date()), upForGrabs: false, FSID: ""), canEdit: true)
         self.showShift = true
     }
     

@@ -14,10 +14,10 @@ struct ShiftView: View {
     @ObservedObject var auth: LoginViewModel
     @ObservedObject var shiftViewModel: ShiftViewModel
     @ObservedObject var calendarViewModel: CalendarViewModel
-//    @State var employeeField: String = "employee"
     @State var selectedEmployee: String = "test"
     @State var selectedEmployeeName: String = ""
-    @State var roleField: String = "role"
+    @State var selectedTeam: String = "test"
+    @State var selectedTeamName: String = ""
     @State var upForGrabsField: Bool = false
     @State var endDate: Date = Date()
     @State var startDate: Date = Date()
@@ -40,27 +40,23 @@ struct ShiftView: View {
                                     Text(employee.name).foregroundColor(.black).tag(employee.uid)
                                 }
                             }
-                        Picker(selection: $selectedEmployee, label: Text("🏆 Team:").foregroundColor(.black)) {
-                                ForEach(auth.employees, id: \.self) { employee in
-                                    Text(employee.name).foregroundColor(.black).tag(employee.uid)
+                        Picker(selection: $selectedTeam, label: Text("🏆 Team:").foregroundColor(.black)) {
+                            ForEach(K.FStore.Employees.roles, id: \.self) { role in
+                                Text(role).foregroundColor(.black).tag(role)
                                 }
                             }
-                        Text("🏆 Team:")
-                            .foregroundColor(.black)
-                        TextField("Team...", text: $roleField)
-                            .foregroundColor(.black)
                         Toggle(isOn: $upForGrabsField) {
                             Text("⚫️ Up for grabs:")
                         }
                         .foregroundColor(.black)
                         DatePicker(selection: $startDate, label: { Text("🗓 Start date:") })
                             .foregroundColor(.black)
-                        DatePicker(selection: $endDate, label: { Text("🗓 End date:") })
+                        DatePicker(selection: $endDate, in: startDate... ,label: { Text("🗓 End date:") })
                             .foregroundColor(.black)
                     } else { // Normal view
                         Text("📌 Assigned employee: \(selectedEmployeeName)")
                             .foregroundColor(.black)
-                        Text("🏆 Team: \(shiftViewModel.shift?.role ?? "team")")
+                        Text("🏆 Team: \(selectedTeamName)")
                             .foregroundColor(.black)
                         Text("⚫️ Up for grabs: \(shiftViewModel.shift?.upForGrabs.description ?? "false")")
                             .foregroundColor(.black)
@@ -76,7 +72,7 @@ struct ShiftView: View {
                     if self.$shiftViewModel.canEdit.wrappedValue { // Admin view
                         if self.$shiftViewModel.edit.wrappedValue {
                             Button {
-                                shiftViewModel.shift = Shift(employee: selectedEmployee, endDate: Timestamp(date: endDate) , role: roleField, startDate: Timestamp(date: startDate), upForGrabs: upForGrabsField, FSID: shiftViewModel.shift!.FSID)
+                                shiftViewModel.shift = Shift(employee: selectedEmployee, endDate: Timestamp(date: endDate) , role: selectedTeam, startDate: Timestamp(date: startDate), upForGrabs: upForGrabsField, FSID: shiftViewModel.shift!.FSID)
                                 calendarViewModel.saveShift(shiftViewModel.shift!)
                                 shiftViewModel.editShift()
                             } label: {
@@ -84,11 +80,13 @@ struct ShiftView: View {
                                     .foregroundColor(.black)
                             }
                         } else {
-                            Button {
-                                shiftViewModel.editShift()
-                            } label: {
-                                Text("✏️ Edit shift")
-                                    .foregroundColor(.black)
+                            if self.auth.user.role == K.FStore.Employees.roles[0] || self.auth.user.role == K.FStore.Employees.roles[0] {
+                                Button {
+                                    shiftViewModel.editShift()
+                                } label: {
+                                    Text("✏️ Edit shift")
+                                        .foregroundColor(.black)
+                                }
                             }
                         }
                         Button {
@@ -115,12 +113,12 @@ struct ShiftView: View {
             }.foregroundColor(.white)
                 .background(.black)
                 .onAppear {
-                    roleField = shiftViewModel.shift!.role
                     upForGrabsField = shiftViewModel.shift!.upForGrabs
                     endDate = shiftViewModel.shift!.endDate.dateValue()
                     startDate = shiftViewModel.shift!.startDate.dateValue()
                     auth.getDetails(forUserID: shiftViewModel.shift!.employee) { result in
                         selectedEmployeeName = result![0].name
+                        selectedTeamName = result![0].role
                     }
                 }
         }

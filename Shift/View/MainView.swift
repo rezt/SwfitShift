@@ -23,7 +23,7 @@ struct MainView: View {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 20) {
                         // Calendar View
-                        CalendarView(calendarViewModel: calendarViewModel)
+                        CalendarView(calendarViewModel: calendarViewModel, auth: auth)
                         Color.gray.frame(height:CGFloat(1) / UIScreen.main.scale)
                         TaskListView(taskListViewModel: taskListViewModel)
                         Color.gray.frame(height:CGFloat(1) / UIScreen.main.scale)

@@ -17,7 +17,9 @@ struct TaskView: View {
     @State var titleField: String = "title"
     @State var statusField: String = "status"
     @State var descriptionField: String = "description"
-    @State var teamField: String = "role"
+//    @State var teamField: String = "role"
+    @State var selectedTeam: String = "test"
+    @State var selectedTeamName: String = ""
     @State var deadline: Date = Date()
     @Environment(\.presentationMode) var presentationMode
     
@@ -37,10 +39,15 @@ struct TaskView: View {
                             .foregroundColor(.black)
                         TextField("Title...", text: $titleField)
                             .foregroundColor(.black)
-                        Text("🏆 Team:")
-                            .foregroundColor(.black)
-                        TextField("Team...", text: $teamField)
-                            .foregroundColor(.black)
+                        Picker(selection: $selectedTeam, label: Text("🏆 Team:").foregroundColor(.black)) {
+                            ForEach(K.FStore.Employees.roles, id: \.self) { role in
+                                Text(role).foregroundColor(.black).tag(role)
+                                }
+                            }
+//                        Text("🏆 Team:")
+//                            .foregroundColor(.black)
+//                        TextField("Team...", text: $teamField)
+//                            .foregroundColor(.black)
                         Text("⚫️ Status:")
                             .foregroundColor(.black)
                         TextField("Status...", text: $statusField)
@@ -54,7 +61,7 @@ struct TaskView: View {
                     } else { // User view
                     Text("📌 Title: \(taskViewModel.task?.title ?? "title")")
                         .foregroundColor(.black)
-                    Text("🏆 Team: \(taskViewModel.task?.team ?? "team")")
+                    Text("🏆 Team: \(selectedTeamName)")
                         .foregroundColor(.black)
                     Text("⚫️ Status: \(taskViewModel.task?.status ?? "status")")
                         .foregroundColor(.black)
@@ -70,7 +77,7 @@ struct TaskView: View {
                     if self.$taskViewModel.canEdit.wrappedValue { // Admin view
                         if self.$taskViewModel.edit.wrappedValue {
                             Button {
-                                taskViewModel.task = Task(deadline: Timestamp(date:deadline), description: descriptionField, status: statusField, team: teamField, title: titleField, FSID: taskViewModel.task!.FSID)
+                                taskViewModel.task = Task(deadline: Timestamp(date:deadline), description: descriptionField, status: statusField, team: selectedTeam, title: titleField, FSID: taskViewModel.task!.FSID)
                                 taskListViewModel.saveTask(taskViewModel.task!)
                                 taskViewModel.editTask()
                             } label: {
@@ -112,8 +119,8 @@ struct TaskView: View {
                     titleField = taskViewModel.task!.title
                     statusField = taskViewModel.task!.status
                     descriptionField = taskViewModel.task!.description
-                    teamField = taskViewModel.task!.team
                     deadline = taskViewModel.task!.deadline.dateValue()
+                    selectedTeamName = taskViewModel.task!.team
                 }
         }
     }

@@ -128,8 +128,8 @@ final class TaskListViewModel: ObservableObject {
         showTask = true
     }
     
-    func enterNew() {
-        self.taskViewModel = TaskViewModel(withTask: Task(deadline: Timestamp(date: Date()), description: "", status: "", team: "", title: "", FSID: ""), canEdit: true)
+    func enterNew(userRole role: String) {
+        self.taskViewModel = TaskViewModel(withTask: Task(deadline: Timestamp(date: Date()), description: "", status: "", team: role, title: "", FSID: ""), canEdit: true)
         showTask = true
     }
     

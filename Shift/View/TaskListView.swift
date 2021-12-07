@@ -41,7 +41,7 @@ struct TaskListView: View {
                 Text("Show current tasks")
             }
         }
-        Button(action: {taskListViewModel.enterNew()}) {
+        Button(action: {taskListViewModel.enterNew(userRole: taskListViewModel.auth.user.role)}) {
             Text("Add new task")
         }
     }

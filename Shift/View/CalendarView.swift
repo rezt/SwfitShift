@@ -10,6 +10,8 @@ import SwiftUI
 struct CalendarView: View {
     
     @ObservedObject var calendarViewModel: CalendarViewModel
+    @ObservedObject var auth: LoginViewModel
+    @State var haveShift: Bool = true
     
     var drag: some Gesture {
         DragGesture(minimumDistance: 30, coordinateSpace: .local)
@@ -100,20 +102,42 @@ struct CalendarView: View {
                 Color.gray.frame(height:CGFloat(1) / UIScreen.main.scale)
             }
             
+            ForEach(calendarViewModel.shifts, id: \.self) {shift in
+                if calendarViewModel.isSameDay(date1: shift.getStartDate(), date2: calendarViewModel.currentDate) {
+                    ShiftView(value: shift)
+                }
+            }
+            
+            if auth.user.role == K.FStore.Employees.roles[0] || auth.user.role == K.FStore.Employees.roles[1] {
+                Button(action: {calendarViewModel.enterNew(userRole: auth.user.role)}) {
+                    Text("Add shift")
+                }
+            }
+        }
+        .gesture(drag)
+    }
+    
+    @ViewBuilder
+    func ShiftView(value: Shift?) -> some View {
+        withAnimation {
             VStack(spacing: 15) {
-                Text("Schedule for \(calendarViewModel.getDay()[0]), \(calendarViewModel.getDay()[1]) \(calendarViewModel.getDay()[2]), \(calendarViewModel.getDay()[3]):")
+                Text("Scheduled for \(calendarViewModel.getDay()[0]), \(calendarViewModel.getDay()[1]) \(calendarViewModel.getDay()[2]), \(calendarViewModel.getDay()[3]):")
                     .font(.title3.bold())
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .foregroundColor(.white)
                 
-                if let shift = calendarViewModel.shifts.first(where: {shift in
-                    return calendarViewModel.isSameDay(date1: shift.getStartDate(), date2: calendarViewModel.currentDate)
-                }) {
-                    Text("Work as: \(shift.role)\nFrom: \(shift.getStartDateTime()[0]):\(shift.getStartDateTime()[1])\nTo: \(shift.getEndDateTime()[0]):\(shift.getEndDateTime()[1])")
+                if let shift = value {
+                    Text("\nWork as: \(shift.role)\nFrom: \(shift.getStartDateTime()[0]):\(shift.getStartDateTime()[1])\nTo: \(shift.getEndDateTime()[0]):\(shift.getEndDateTime()[1])")
                         .font(.title3.bold())
                         .foregroundColor(.white)
-                    Button(action: {calendarViewModel.changeStateOfShift(shift)}) {
-                        Text("Up for grabs")
+                    if shift.employee != auth.user.uid {
+                        Button(action: {calendarViewModel.takeShift(shift)}) {
+                            Text("Take the shift")
+                        }
+                    } else {
+                        Button(action: {calendarViewModel.changeStateOfShift(shift)}) {
+                            Text("Up for grabs")
+                        }
                     }
                     if !self.$calendarViewModel.canEdit.wrappedValue {
                         Button(action: {calendarViewModel.enter(shift: shift)}) {
@@ -125,14 +149,8 @@ struct CalendarView: View {
                         .font(.title3.bold())
                         .foregroundColor(.white)
                 }
-                
-                Button(action: {calendarViewModel.enterNew()}) {
-                    Text("Add shift")
-                }
-            }
-            .padding()
         }
-        .gesture(drag)
+    }
     }
     
     @ViewBuilder
@@ -187,6 +205,7 @@ struct CalendarView: View {
 struct CalendarView_Previews: PreviewProvider {
 
     @StateObject var calendarViewModel = CalendarViewModel()
+    @StateObject var auth = LoginViewModel()
     
     static var previews: some View {
         let test = CalendarView_Previews()
@@ -195,7 +214,7 @@ struct CalendarView_Previews: PreviewProvider {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 20) {
                     // Calendar View
-                    CalendarView(calendarViewModel: test.calendarViewModel)
+                    CalendarView(calendarViewModel: test.calendarViewModel, auth: test.auth)
                 }
             }
         }

@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-struct Shift {
+struct Shift: Hashable {
     let employee: String
     let endDate: Timestamp
     let role: String
