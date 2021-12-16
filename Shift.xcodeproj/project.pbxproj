@@ -26,6 +26,9 @@
 		68AEC999271DE2820063B5EE /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AEC998271DE2820063B5EE /* CalendarView.swift */; };
 		68B01CBD2716CDFC009A3728 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B01CBC2716CDFC009A3728 /* MainView.swift */; };
 		68BD8980273F1A0900A48790 /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BD897F273F1A0900A48790 /* TaskView.swift */; };
+		68C9736A276B772C00A5BCAE /* DispositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C97369276B772C00A5BCAE /* DispositionView.swift */; };
+		68C9736C276B780A00A5BCAE /* DispositionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C9736B276B780A00A5BCAE /* DispositionViewModel.swift */; };
+		68C9736E276B787E00A5BCAE /* Disposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C9736D276B787E00A5BCAE /* Disposition.swift */; };
 		68E9A1002754DFDD007F71DD /* TaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E9A0FF2754DFDD007F71DD /* TaskViewModel.swift */; };
 		68E9A1022754E461007F71DD /* ShiftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E9A1012754E461007F71DD /* ShiftView.swift */; };
 		D736DA9AA42D46861EA7A877 /* Pods_Shift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E8B99B755D3635B7349E8FA /* Pods_Shift.framework */; };
@@ -55,6 +58,9 @@
 		68AEC998271DE2820063B5EE /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		68B01CBC2716CDFC009A3728 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		68BD897F273F1A0900A48790 /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
+		68C97369276B772C00A5BCAE /* DispositionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispositionView.swift; sourceTree = "<group>"; };
+		68C9736B276B780A00A5BCAE /* DispositionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispositionViewModel.swift; sourceTree = "<group>"; };
+		68C9736D276B787E00A5BCAE /* Disposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Disposition.swift; sourceTree = "<group>"; };
 		68E9A0FF2754DFDD007F71DD /* TaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewModel.swift; sourceTree = "<group>"; };
 		68E9A1012754E461007F71DD /* ShiftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftView.swift; sourceTree = "<group>"; };
 		8C0B88B656DCB2242646B7DD /* Pods-Shift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shift.release.xcconfig"; path = "Target Support Files/Pods-Shift/Pods-Shift.release.xcconfig"; sourceTree = "<group>"; };
@@ -81,6 +87,7 @@
 				6803A3C9274B9C3D00DC770C /* MainViewModel.swift */,
 				68E9A0FF2754DFDD007F71DD /* TaskViewModel.swift */,
 				68ABDAE6275B789400A23482 /* ShiftViewModel.swift */,
+				68C9736B276B780A00A5BCAE /* DispositionViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -136,6 +143,7 @@
 				68AEC998271DE2820063B5EE /* CalendarView.swift */,
 				6899DC0C2734163D00B98FC0 /* TaskListView.swift */,
 				68BD897F273F1A0900A48790 /* TaskView.swift */,
+				68C97369276B772C00A5BCAE /* DispositionView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -147,6 +155,7 @@
 				68745C842731326500C3C27A /* DateValue.swift */,
 				68667B34273EDC28003184E7 /* Task.swift */,
 				6803A3CB274B9D8800DC770C /* User.swift */,
+				68C9736D276B787E00A5BCAE /* Disposition.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -285,6 +294,7 @@
 			files = (
 				6831B75D2727159700EFF1FF /* CalendarViewModel.swift in Sources */,
 				68ABDAE7275B789400A23482 /* ShiftViewModel.swift in Sources */,
+				68C9736C276B780A00A5BCAE /* DispositionViewModel.swift in Sources */,
 				68667B39273F0464003184E7 /* TaskListViewModel.swift in Sources */,
 				68AEC999271DE2820063B5EE /* CalendarView.swift in Sources */,
 				68122CA4271C2359000CCD38 /* LoginViewModel.swift in Sources */,
@@ -299,7 +309,9 @@
 				68B01CBD2716CDFC009A3728 /* MainView.swift in Sources */,
 				68745C852731326500C3C27A /* DateValue.swift in Sources */,
 				689E224727132CC80018F720 /* ShiftApp.swift in Sources */,
+				68C9736A276B772C00A5BCAE /* DispositionView.swift in Sources */,
 				68E9A1002754DFDD007F71DD /* TaskViewModel.swift in Sources */,
+				68C9736E276B787E00A5BCAE /* Disposition.swift in Sources */,
 				68A1BA0D272C3FCF007B19E9 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
