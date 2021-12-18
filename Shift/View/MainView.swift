@@ -12,6 +12,7 @@ struct MainView: View {
     @ObservedObject var auth: LoginViewModel
     @StateObject var calendarViewModel = CalendarViewModel()
     @StateObject var taskListViewModel = TaskListViewModel()
+    @StateObject var dispositionViewModel = DispositionViewModel()
     @StateObject var mainViewModel = MainViewModel()
     
     var body: some View {
@@ -19,6 +20,7 @@ struct MainView: View {
                 Color(.black).ignoresSafeArea()
                 NavigationLink(destination: TaskView(taskViewModel: taskListViewModel.taskViewModel, taskListViewModel: taskListViewModel, loginViewModel: auth), isActive: $taskListViewModel.showTask) {}
                 NavigationLink(destination: ShiftView(shiftViewModel: calendarViewModel.shiftViewModel, calendarViewModel: calendarViewModel, loginViewModel: auth), isActive: $calendarViewModel.showShift) {}
+                NavigationLink(destination: DispositionView(dispositionViewModel: dispositionViewModel, loginViewModel: auth), isActive: $mainViewModel.goToDisposition) {}
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 20) {
                         // Calendar View

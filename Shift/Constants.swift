@@ -47,6 +47,14 @@ struct K {
             static let title = "title"
             static let states = ["To do", "In progress", "Done"]
         }
+        struct Disposition {
+            static let collection = "disposition"
+            static let date = "date"
+            static let available = "available"
+            static let notPreferred = "notPreferred"
+            static let unavailable = "unavailable"
+            static let unknown = "unknown"
+        }
     }
     
     struct calendar {

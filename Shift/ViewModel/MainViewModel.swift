@@ -10,16 +10,11 @@ import Firebase
 import SwiftUI
 
 class MainViewModel: ObservableObject {
-    @Published var userDetails = User(login: "", name: "", role: "", uid: "")
-    @Published var showFinished = false
+    @Published var goToDisposition: Bool = true
     
     
-    // Get states and roles/teams
-    func getConstants() {
-        
+    func showDisposition() {
+        goToDisposition = !goToDisposition
     }
     
-    func getDetails(forUserID userID: String) {
-        
-    }
 }
