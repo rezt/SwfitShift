@@ -31,6 +31,7 @@
 		68C9736E276B787E00A5BCAE /* Disposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C9736D276B787E00A5BCAE /* Disposition.swift */; };
 		68E9A1002754DFDD007F71DD /* TaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E9A0FF2754DFDD007F71DD /* TaskViewModel.swift */; };
 		68E9A1022754E461007F71DD /* ShiftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E9A1012754E461007F71DD /* ShiftView.swift */; };
+		68EAC5BE276E5D160096486D /* PersonalDisposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EAC5BD276E5D160096486D /* PersonalDisposition.swift */; };
 		D736DA9AA42D46861EA7A877 /* Pods_Shift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E8B99B755D3635B7349E8FA /* Pods_Shift.framework */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +64,7 @@
 		68C9736D276B787E00A5BCAE /* Disposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Disposition.swift; sourceTree = "<group>"; };
 		68E9A0FF2754DFDD007F71DD /* TaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewModel.swift; sourceTree = "<group>"; };
 		68E9A1012754E461007F71DD /* ShiftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftView.swift; sourceTree = "<group>"; };
+		68EAC5BD276E5D160096486D /* PersonalDisposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalDisposition.swift; sourceTree = "<group>"; };
 		8C0B88B656DCB2242646B7DD /* Pods-Shift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shift.release.xcconfig"; path = "Target Support Files/Pods-Shift/Pods-Shift.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -156,6 +158,7 @@
 				68667B34273EDC28003184E7 /* Task.swift */,
 				6803A3CB274B9D8800DC770C /* User.swift */,
 				68C9736D276B787E00A5BCAE /* Disposition.swift */,
+				68EAC5BD276E5D160096486D /* PersonalDisposition.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -303,6 +306,7 @@
 				68A1BA0B272C3D6C007B19E9 /* Shift.swift in Sources */,
 				68E9A1022754E461007F71DD /* ShiftView.swift in Sources */,
 				6803A3CA274B9C3D00DC770C /* MainViewModel.swift in Sources */,
+				68EAC5BE276E5D160096486D /* PersonalDisposition.swift in Sources */,
 				6803A3CC274B9D8800DC770C /* User.swift in Sources */,
 				68BD8980273F1A0900A48790 /* TaskView.swift in Sources */,
 				689E224927132CC80018F720 /* LoginView.swift in Sources */,

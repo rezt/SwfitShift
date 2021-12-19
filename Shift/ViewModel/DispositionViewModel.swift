@@ -15,6 +15,7 @@ final class DispositionViewModel: ObservableObject {
     
     @ObservedObject var auth: LoginViewModel
     @Published var thisMonth: [Disposition] = []
+    @Published var userDisposition: [PersonalDisposition] = []
     
     init() {
         auth = LoginViewModel()
@@ -24,6 +25,26 @@ final class DispositionViewModel: ObservableObject {
         self.auth = auth
     }
     
+    func getDate(from date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy"
+        let date = formatter.string(from: date)
+        return date.description
+    }
+    
+    func getPersonalDisposition() {
+        for dispo in thisMonth {
+            if dispo.available.contains(auth.user.uid) {
+                userDisposition.append(PersonalDisposition(date: dispo.getDate(), value: [true,false,false,false]))
+            } else if dispo.notPreferred.contains(auth.user.uid) {
+                userDisposition.append(PersonalDisposition(date: dispo.getDate(), value: [false,true,false,false]))
+            } else if dispo.unavailable.contains(auth.user.uid) {
+                userDisposition.append(PersonalDisposition(date: dispo.getDate(), value: [false,false,true,false]))
+            } else {
+                userDisposition.append(PersonalDisposition(date: dispo.getDate(), value: [false,false,false,true]))
+            }
+        }
+    }
     
     func loadDisposition() { // Load only shifts specified to user or user's role
         
@@ -47,6 +68,8 @@ final class DispositionViewModel: ObservableObject {
                             self.thisMonth.append(newDisposition)
                             DispatchQueue.main.async {
                                 self.printDispo()
+                                self.userDisposition = []
+                                self.getPersonalDisposition()
                             }
                             
                             

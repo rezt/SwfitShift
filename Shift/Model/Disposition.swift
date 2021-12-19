@@ -8,7 +8,8 @@
 import Foundation
 import FirebaseFirestore
 
-struct Disposition: Hashable {
+struct Disposition: Identifiable {
+    var id = UUID().uuidString
     let date: Timestamp
     let available: [String]
     let notPreferred: [String]

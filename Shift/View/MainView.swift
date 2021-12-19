@@ -23,7 +23,12 @@ struct MainView: View {
                 NavigationLink(destination: DispositionView(dispositionViewModel: dispositionViewModel, loginViewModel: auth), isActive: $mainViewModel.goToDisposition) {}
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 20) {
-                        // Calendar View
+                        Button {
+                            mainViewModel.showDisposition()
+                        } label: {
+                            Text("Go to disposition")
+                        }
+
                         CalendarView(calendarViewModel: calendarViewModel, auth: auth)
                         Color.gray.frame(height:CGFloat(1) / UIScreen.main.scale)
                         TaskListView(taskListViewModel: taskListViewModel)
@@ -36,6 +41,8 @@ struct MainView: View {
                 calendarViewModel.loadShifts()
                 taskListViewModel.setAuth(with: auth)
                 taskListViewModel.loadTasks()
+                dispositionViewModel.setAuth(with: auth)
+                dispositionViewModel.loadDisposition()
                 auth.loadEmployees(withRole: auth.user.role)
             }
     }

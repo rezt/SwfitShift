@@ -252,7 +252,7 @@ final class CalendarViewModel: ObservableObject {
         return currentMonth
     }
     
-    func getDate()->[DateValue]{
+    func getDate()->[DateValue] {
         
         let calendar = Calendar.current
         

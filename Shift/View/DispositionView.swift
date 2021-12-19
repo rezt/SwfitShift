@@ -21,17 +21,61 @@ struct DispositionView: View {
     var body: some View {
         
         VStack {
-            Text("test")
+            ForEach(0 ..< dispositionViewModel.userDisposition.count) { value in
+                dayView(index: value)
+            }
         }.onAppear {
-            dispositionViewModel.setAuth(with: auth)
-            dispositionViewModel.loadDisposition()
+        }.onDisappear {
+            dispositionViewModel.saveDisposition()
         }
         
         
     }
     
     @ViewBuilder
-    func dayView(value: Disposition?) -> some View {
+    func dayView(index: Int) -> some View {
+        VStack {
+            HStack {
+                Text("")
+                    .frame(minWidth: 85)
+                Text("✅")
+                    .frame(maxWidth: .infinity)
+                Text("⭕️")
+                    .frame(maxWidth: .infinity)
+                Text("❌")
+                    .frame(maxWidth: .infinity)
+                Text("❔")
+                    .frame(maxWidth: .infinity)
+            }.padding()
+            HStack {
+                Text(dispositionViewModel.getDate(from: dispositionViewModel.userDisposition[index].date))
+                    .frame(minWidth: 85)
+                Toggle(isOn: Binding(get: {
+                    return dispositionViewModel.userDisposition[index].value[0]
+                }, set: { newValue in
+                    dispositionViewModel.userDisposition[index].value = [true,false,false,false]
+                })) {
+                }
+                Toggle(isOn: Binding(get: {
+                    return dispositionViewModel.userDisposition[index].value[1]
+                }, set: { newValue in
+                    dispositionViewModel.userDisposition[index].value = [false,true,false,false]
+                })) {
+                }
+                Toggle(isOn: Binding(get: {
+                    return dispositionViewModel.userDisposition[index].value[2]
+                }, set: { newValue in
+                    dispositionViewModel.userDisposition[index].value = [false,false,true,false]
+                })) {
+                }
+                Toggle(isOn: Binding(get: {
+                    return dispositionViewModel.userDisposition[index].value[3]
+                }, set: { newValue in
+                    dispositionViewModel.userDisposition[index].value = [false,false,false,true]
+                })) {
+                }
+            }.padding()
+        }
         
     }
     

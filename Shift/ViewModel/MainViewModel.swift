@@ -10,7 +10,7 @@ import Firebase
 import SwiftUI
 
 class MainViewModel: ObservableObject {
-    @Published var goToDisposition: Bool = true
+    @Published var goToDisposition: Bool = false
     
     
     func showDisposition() {
