@@ -13,6 +13,17 @@ struct TaskListView: View {
     @State var showFinished: Bool = false
     
     var body: some View {
+            Button {
+                if !taskListViewModel.showTasks {
+                    taskListViewModel.getCurrentTasks()
+                    taskListViewModel.showTasks = !taskListViewModel.showTasks
+                } else {
+                    taskListViewModel.hideTasks()
+                }
+                
+            } label: {
+                Text("Show/Hide tasks")
+            }
         VStack(alignment: .leading){
                 ForEach(taskListViewModel.displayedTasks, id: \.self) { task in
                     Text(task.title)
@@ -28,17 +39,19 @@ struct TaskListView: View {
                         }
                 }
         }.padding()
-        if !self.$taskListViewModel.showFinished.wrappedValue {
-            Button(action: {showFinished = true
-                taskListViewModel.getFinishedTasks()
-            }) {
-                Text("Show finished tasks")
-            }
-        } else {
-            Button(action: {showFinished = false
-                taskListViewModel.getCurrentTasks()
-            }) {
-                Text("Show current tasks")
+        if self.$taskListViewModel.showTasks.wrappedValue {
+            if !self.$taskListViewModel.showFinished.wrappedValue {
+                Button(action: {showFinished = true
+                    taskListViewModel.getFinishedTasks()
+                }) {
+                    Text("Show finished tasks")
+                }
+            } else {
+                Button(action: {showFinished = false
+                    taskListViewModel.getCurrentTasks()
+                }) {
+                    Text("Show current tasks")
+                }
             }
         }
         Button(action: {taskListViewModel.enterNew(userRole: taskListViewModel.auth.user.role)}) {

@@ -14,6 +14,7 @@ struct MainView: View {
     @StateObject var taskListViewModel = TaskListViewModel()
     @StateObject var dispositionViewModel = DispositionViewModel()
     @StateObject var mainViewModel = MainViewModel()
+    @StateObject var userListViewModel = UserListViewModel()
     
     var body: some View {
             ZStack{
@@ -21,14 +22,23 @@ struct MainView: View {
                 NavigationLink(destination: TaskView(taskViewModel: taskListViewModel.taskViewModel, taskListViewModel: taskListViewModel, loginViewModel: auth), isActive: $taskListViewModel.showTask) {}
                 NavigationLink(destination: ShiftView(shiftViewModel: calendarViewModel.shiftViewModel, calendarViewModel: calendarViewModel, loginViewModel: auth), isActive: $calendarViewModel.showShift) {}
                 NavigationLink(destination: DispositionView(dispositionViewModel: dispositionViewModel, loginViewModel: auth), isActive: $mainViewModel.goToDisposition) {}
+                NavigationLink(destination: UserListView(userListViewModel: userListViewModel, loginViewModel: auth), isActive: $mainViewModel.goToUsers) {}
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 20) {
-                        Button {
-                            mainViewModel.showDisposition()
-                        } label: {
-                            Text("Go to disposition")
+                        HStack {
+                            Button {
+                                mainViewModel.showDisposition()
+                            } label: {
+                                Text("Go to disposition")
+                            }
+                            if auth.user.role == K.FStore.Employees.roles[0] || auth.user.role == K.FStore.Employees.roles[1] {
+                                Button {
+                                    mainViewModel.showUserManagement()
+                                } label: {
+                                    Text("Users management")
+                                }
+                            }
                         }
-
                         CalendarView(calendarViewModel: calendarViewModel, auth: auth)
                         Color.gray.frame(height:CGFloat(1) / UIScreen.main.scale)
                         TaskListView(taskListViewModel: taskListViewModel)
@@ -43,7 +53,8 @@ struct MainView: View {
                 taskListViewModel.loadTasks()
                 dispositionViewModel.setAuth(with: auth)
                 dispositionViewModel.loadDisposition()
-                auth.loadEmployees(withRole: auth.user.role)
+                
+                auth.loadEmployees()
             }
     }
 }

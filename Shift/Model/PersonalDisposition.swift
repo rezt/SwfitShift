@@ -11,4 +11,5 @@ struct PersonalDisposition: Identifiable {
     var id = UUID().uuidString
     var date: Date
     var value: [Bool]
+    var FSID: String
 }

@@ -19,6 +19,7 @@ final class TaskListViewModel: ObservableObject {
     @Published var showTask: Bool = false
     var taskViewModel = TaskViewModel(withTask: Task(deadline: Timestamp(date: Date()), description: "", status: "", team: "", title: "", FSID: ""), canEdit: false)
     @Published var showFinished: Bool = true
+    @Published var showTasks: Bool = false
     
     init() {
         auth = LoginViewModel()
@@ -106,6 +107,10 @@ final class TaskListViewModel: ObservableObject {
             }
         }
         showFinished = false
+    }
+    func hideTasks() {
+        displayedTasks.removeAll()
+        showTasks = false
     }
     
     func getFinishedTasks() {

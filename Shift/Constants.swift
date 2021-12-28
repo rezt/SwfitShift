@@ -55,6 +55,12 @@ struct K {
             static let unavailable = "unavailable"
             static let unknown = "unknown"
         }
+        struct Presets {
+            static let collection = "presets"
+            static let start = "startDate"
+            static let end = "endDate"
+            static let name = "name"
+        }
     }
     
     struct calendar {

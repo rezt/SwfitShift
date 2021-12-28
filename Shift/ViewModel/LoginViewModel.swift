@@ -70,6 +70,47 @@ class LoginViewModel: ObservableObject {
         
     }
     
+    func loadEmployees() {
+        db.collection(K.FStore.Employees.collection).addSnapshotListener { (querySnapshot, error) in
+            self.employees = []
+            
+            if let e = error {
+                print("There was an issue retriving shift data from Firestore. \(e)")
+            } else {
+                if let snapshotDocuments = querySnapshot?.documents {
+                    for doc in snapshotDocuments {
+                        print("getting employee")
+                        let data = doc.data()
+                        if let login = data[K.FStore.Employees.login] as? String,
+                           let name = data[K.FStore.Employees.name] as? String,
+                           let role = data[K.FStore.Employees.role] as? String,
+                           let uid = data[K.FStore.Employees.uid] as? String {
+                            let nextEmployee = User(login: login, name: name, role: role, uid: uid)
+                            self.employees.append(nextEmployee)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func saveUser(_ newUser: User) {
+        
+//        db.collection(K.FStore.Employees.collection).document(newUser.).setData([
+//            K.FStore.Tasks.title: newTask.title,
+//            K.FStore.Tasks.status: newTask.status,
+//            K.FStore.Tasks.team: newTask.team,
+//            K.FStore.Tasks.description: newTask.description,
+//            K.FStore.Tasks.deadline: newTask.deadline
+//        ]) { err in
+//            if let err = err {
+//                print("Error updating document: \(err)")
+//            } else {
+//                print("Document successfully updated!")
+//            }
+//        }
+    }
+    
     func loadEmployees(withRole role: String) {
         db.collection(K.FStore.Employees.collection).whereField(K.FStore.Employees.role, isEqualTo: role).addSnapshotListener { (querySnapshot, error) in
             self.employees = []
@@ -91,6 +132,12 @@ class LoginViewModel: ObservableObject {
                     }
                 }
             }
+        }
+    }
+    
+    func loadAllUsers() {
+        db.collection(K.FStore.Employees.collection).addSnapshotListener { (querySnapshot, error) in
+            self.employees = []
         }
     }
     

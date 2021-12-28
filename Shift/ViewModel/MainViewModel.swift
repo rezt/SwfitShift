@@ -11,10 +11,13 @@ import SwiftUI
 
 class MainViewModel: ObservableObject {
     @Published var goToDisposition: Bool = false
-    
+    @Published var goToUsers: Bool = false
     
     func showDisposition() {
         goToDisposition = !goToDisposition
     }
     
+    func showUserManagement() {
+        goToUsers = !goToUsers
+    }
 }

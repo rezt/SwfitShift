@@ -139,7 +139,7 @@ struct CalendarView: View {
                             Text("Up for grabs")
                         }
                     }
-                    if !self.$calendarViewModel.canEdit.wrappedValue {
+                    if auth.user.role == K.FStore.Employees.roles[0] || auth.user.role == K.FStore.Employees.roles[1] {
                         Button(action: {calendarViewModel.enter(shift: shift)}) {
                             Text("Edit shift")
                         }

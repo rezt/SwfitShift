@@ -15,6 +15,7 @@ struct Disposition: Identifiable {
     let notPreferred: [String]
     let unavailable: [String]
     let unknown: [String]
+    let FSID: String
     
     func getDate() -> Date {
         return date.dateValue()
