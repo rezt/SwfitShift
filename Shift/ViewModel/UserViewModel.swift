@@ -16,7 +16,6 @@ final class UserViewModel: ObservableObject {
     }
     
     func editUser() {
-        print(user)
         edit = !edit
     }
     

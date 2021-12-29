@@ -12,4 +12,5 @@ struct User: Hashable {
     let name: String
     let role: String
     let uid: String
+    let FSID: String
 }

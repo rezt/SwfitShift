@@ -12,7 +12,8 @@ final class UserListViewModel: ObservableObject {
     
     @Published var userRoles: [UserRole] = []
     @Published var showUser: Bool = false
-    var userViewModel = UserViewModel(withUser: User(login: "", name: "", role: "", uid: ""))
+    @Published var showRegister: Bool = false
+    var userViewModel = UserViewModel(withUser: User(login: "", name: "", role: "", uid: "", FSID: ""))
     
     func getRoleOf(user: User) {
         userRoles.append(UserRole(uid: user.uid, role: user.role))
@@ -25,7 +26,13 @@ final class UserListViewModel: ObservableObject {
     }
     
     func enter(user: User) {
+        print(user)
         self.userViewModel = UserViewModel(withUser: user)
         showUser = true
+    }
+    
+    func registerNew() {
+        print("register")
+        showRegister = true
     }
 }

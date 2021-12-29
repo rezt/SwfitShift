@@ -12,7 +12,6 @@ struct UserListView: View {
     
     @ObservedObject var auth: LoginViewModel
     @ObservedObject var userListViewModel: UserListViewModel
-    @StateObject var userViewModel = UserViewModel(withUser: User(login: "", name: "", role: "", uid: ""))
     
     
     init(userListViewModel: UserListViewModel, loginViewModel: LoginViewModel) {
@@ -21,11 +20,18 @@ struct UserListView: View {
     }
     
     var body: some View {
-        NavigationLink(destination: UserView(userViewModel: userViewModel, userListViewModel: userListViewModel, loginViewModel: auth), isActive: $userListViewModel.showUser) {}
+        NavigationLink(destination: UserView(userListViewModel: userListViewModel, loginViewModel: auth), isActive: $userListViewModel.showUser) {}
+        NavigationLink(destination: RegisterView(loginViewModel: auth), isActive: $userListViewModel.showRegister) {}
         ZStack {
             Color(.black).ignoresSafeArea()
             ScrollView {
                 VStack {
+                    Button {
+                        userListViewModel.registerNew()
+                    } label: {
+                        Text("📄 New user")
+                    }
+
                     ForEach(auth.employees, id: \.self) { value in
                         userView(value: value)
                     }

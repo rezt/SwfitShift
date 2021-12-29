@@ -11,7 +11,7 @@ import Firebase
 
 class LoginViewModel: ObservableObject {
     @Published var isLoggedIn: Bool = false
-    @Published var user = User(login: "", name: "", role: "", uid: "")
+    @Published var user = User(login: "", name: "", role: "", uid: "", FSID: "")
     @Published var employees = [User]()
     let db = Firestore.firestore()
     let task = DispatchGroup()
@@ -24,7 +24,7 @@ class LoginViewModel: ObservableObject {
             if let e = error {
                 print(e.localizedDescription)
             } else {
-                self.user = User(login: "", name: "", role: "", uid: Auth.auth().currentUser!.uid)
+                self.user = User(login: "", name: "", role: "", uid: Auth.auth().currentUser!.uid, FSID: "")
                 self.getDetails(forUserID: self.user.uid) { result in
                     if result != nil {
                         self.user = result![0]
@@ -52,7 +52,7 @@ class LoginViewModel: ObservableObject {
                        let name = data[K.FStore.Employees.name] as? String,
                        let role = data[K.FStore.Employees.role] as? String,
                        let uid = data[K.FStore.Employees.uid] as? String {
-                        result.append(User(login: login, name: name, role: role, uid: uid))
+                        result.append(User(login: login, name: name, role: role, uid: uid, FSID: document.documentID))
                         DispatchQueue.main.async {
                             if result.isEmpty {
                                 completionHandler(nil)
@@ -85,7 +85,7 @@ class LoginViewModel: ObservableObject {
                            let name = data[K.FStore.Employees.name] as? String,
                            let role = data[K.FStore.Employees.role] as? String,
                            let uid = data[K.FStore.Employees.uid] as? String {
-                            let nextEmployee = User(login: login, name: name, role: role, uid: uid)
+                            let nextEmployee = User(login: login, name: name, role: role, uid: uid, FSID: doc.documentID)
                             self.employees.append(nextEmployee)
                         }
                     }
@@ -94,21 +94,20 @@ class LoginViewModel: ObservableObject {
         }
     }
     
-    func saveUser(_ newUser: User) {
+    func saveUser(_ newUser: User, selectedRole: String) {
         
-//        db.collection(K.FStore.Employees.collection).document(newUser.).setData([
-//            K.FStore.Tasks.title: newTask.title,
-//            K.FStore.Tasks.status: newTask.status,
-//            K.FStore.Tasks.team: newTask.team,
-//            K.FStore.Tasks.description: newTask.description,
-//            K.FStore.Tasks.deadline: newTask.deadline
-//        ]) { err in
-//            if let err = err {
-//                print("Error updating document: \(err)")
-//            } else {
-//                print("Document successfully updated!")
-//            }
-//        }
+        db.collection(K.FStore.Employees.collection).document(newUser.FSID).setData([
+            K.FStore.Employees.login: newUser.login,
+            K.FStore.Employees.name: newUser.name,
+            K.FStore.Employees.role: selectedRole,
+            K.FStore.Employees.uid: newUser.uid
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated!")
+            }
+        }
     }
     
     func loadEmployees(withRole role: String) {
@@ -126,7 +125,7 @@ class LoginViewModel: ObservableObject {
                            let name = data[K.FStore.Employees.name] as? String,
                            let role = data[K.FStore.Employees.role] as? String,
                            let uid = data[K.FStore.Employees.uid] as? String {
-                            let nextEmployee = User(login: login, name: name, role: role, uid: uid)
+                            let nextEmployee = User(login: login, name: name, role: role, uid: uid, FSID: doc.documentID)
                             self.employees.append(nextEmployee)
                         }
                     }

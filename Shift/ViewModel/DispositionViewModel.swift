@@ -20,14 +20,14 @@ final class DispositionViewModel: ObservableObject {
     
     init() {
         auth = LoginViewModel()
-        if auth.user.role == K.FStore.Employees.roles[0] || auth.user.role == K.FStore.Employees.roles[1] {
-            isManager = true
-            print("isManager")
-        }
     }
     
     func setAuth(with auth: LoginViewModel) {
         self.auth = auth
+        if auth.user.role == K.FStore.Employees.roles[0] || auth.user.role == K.FStore.Employees.roles[1] {
+            isManager = true
+            print("isManager")
+        }
     }
     
     func getDate(from date: Date) -> String {

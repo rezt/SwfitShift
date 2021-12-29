@@ -29,7 +29,7 @@ struct DispositionView: View {
                             dispositionViewModel.generateDisposition()
                             presentationMode.wrappedValue.dismiss()
                         } label: {
-                            Text("Generate next 31 days...")
+                            Text("Generate next 31 days...").foregroundColor(.white)
                         }
                         
                     }
@@ -89,7 +89,7 @@ struct DispositionView: View {
             })) {
             }
             Text(dispositionViewModel.getDate(from: dispositionViewModel.userDisposition[index].date))
-                .frame(minWidth: 85)
+                .frame(minWidth: 88)
                 .foregroundColor(.white)
         }.padding()
         

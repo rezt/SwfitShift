@@ -16,23 +16,35 @@ struct UserView: View {
     @State var selectedRole: String = "test"
     @Environment(\.presentationMode) var presentationMode
     
-    init(userViewModel: UserViewModel, userListViewModel: UserListViewModel, loginViewModel: LoginViewModel) {
+    init(userListViewModel: UserListViewModel, loginViewModel: LoginViewModel) {
         self.auth = loginViewModel
-        self.userViewModel = userViewModel
+        self.userViewModel = userListViewModel.userViewModel
         self.userListViewModel = userListViewModel
     }
     
     
     var body: some View {
-        VStack {
-            Picker(selection: $selectedRole, label: Text("🏆 Role:").foregroundColor(.black)) {
-                ForEach(K.FStore.Employees.roles, id: \.self) { role in
-                    Text(role).foregroundColor(.black).tag(role)
-                    }
+        ZStack {
+            Color(.black).ignoresSafeArea()
+            VStack {
+                Text(userViewModel.user!.name).foregroundColor(.white)
+                ZStack {
+                    Color(.white)
+                    Picker(selection: $selectedRole, label: Text("🏆 Role:").foregroundColor(.white)) {
+                        ForEach(K.FStore.Employees.roles, id: \.self) { role in
+                            Text(role).foregroundColor(.black).tag(role)
+                            }
+                        }
+                    .pickerStyle(SegmentedPickerStyle())
+                }.frame(maxHeight: 100)
+                Button {
+                    print(userViewModel.user!)
+                    auth.saveUser(userViewModel.user!, selectedRole: selectedRole)
+                } label: {
+                    Text("💾 Save changes").foregroundColor(.white)
                 }
-        }.onDisappear {
-//            auth.save(user: userViewModel.user)
+
+            }
         }
-        
     }
 }
