@@ -113,6 +113,44 @@ final class DispositionViewModel: ObservableObject {
         }
     }
     
+    func cleanup() {
+        auth.loadAllUsers()
+        var validUID: [String] = []
+        
+        for user in auth.employees {
+            validUID.append(user.uid)
+        }
+        
+        for day in thisMonth {
+            let newAvailable = day.available.filter {
+                validUID.contains($0)
+            }
+            let newNotPreferred = day.notPreferred.filter {
+                validUID.contains($0)
+            }
+            let newUnavailable = day.unavailable.filter {
+                validUID.contains($0)
+            }
+            let newUnknown = day.unknown.filter {
+                validUID.contains($0)
+            }
+            
+            db.collection(K.FStore.Disposition.collection).document(day.FSID).setData([
+                K.FStore.Disposition.date: day.date,
+                K.FStore.Disposition.available: newAvailable,
+                K.FStore.Disposition.notPreferred: newNotPreferred,
+                K.FStore.Disposition.unavailable: newUnavailable,
+                K.FStore.Disposition.unknown: newUnknown
+            ]) { err in
+                if let err = err {
+                    print("Error updating document: \(err)")
+                } else {
+                    print("Document successfully updated!")
+                }
+            }
+        }
+    }
+    
     func getPersonalDisposition() {
         for dispo in thisMonth {
             if dispo.available.contains(auth.user.uid) {

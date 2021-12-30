@@ -31,6 +31,11 @@ struct DispositionView: View {
                         } label: {
                             Text("Generate next 31 days...").foregroundColor(.white)
                         }
+                        Button {
+                            dispositionViewModel.cleanup()
+                        } label: {
+                            Text("Clean-up disposition")
+                        }
                         
                     }
                     HStack {

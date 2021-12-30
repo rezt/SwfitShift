@@ -30,6 +30,9 @@ class LoginViewModel: ObservableObject {
                         self.user = result![0]
                         self.employees.append(self.user)
                         self.isLoggedIn = true
+                    } else {
+                        do { try Auth.auth().signOut() }
+                        catch { print("Already logged out") }
                     }
                 }
             }
@@ -65,9 +68,6 @@ class LoginViewModel: ObservableObject {
             }
             
         }
-        
-        
-        
     }
     
     func loadEmployees() {
@@ -94,6 +94,16 @@ class LoginViewModel: ObservableObject {
         }
     }
     
+    func disable(user: User) {
+        db.collection(K.FStore.Employees.collection).document(user.FSID).delete() { err in
+            if let err = err {
+                print("Error removing document: \(err)")
+            } else {
+                print("Document successfully removed!")
+            }
+        }
+    }
+    
     func saveUser(_ newUser: User, selectedRole: String) {
         
         db.collection(K.FStore.Employees.collection).document(newUser.FSID).setData([
@@ -108,6 +118,29 @@ class LoginViewModel: ObservableObject {
                 print("Document successfully updated!")
             }
         }
+    }
+    
+    func createUser(_ newUser: User, email: String, password: String) {
+        Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
+                    if let err = error {
+                        print("Error updating document: \(err)")
+                    }else{
+                        print("Document successfully updated!")
+                        var ref: DocumentReference? = nil
+                        ref = self.db.collection(K.FStore.Employees.collection).addDocument(data: [
+                            K.FStore.Employees.login: newUser.login,
+                            K.FStore.Employees.name: newUser.name,
+                            K.FStore.Employees.role: newUser.role,
+                            K.FStore.Employees.uid: result!.user.uid
+                        ]) { err in
+                            if let err = err {
+                                print("Error adding document: \(err)")
+                            } else {
+                                print("User added with ID: \(ref!.documentID)")
+                            }
+                        }
+                    }
+                 }
     }
     
     func loadEmployees(withRole role: String) {

@@ -17,7 +17,7 @@ struct ShiftApp: App {
     
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            LoginView().preferredColorScheme(.light)
         }
     }
 }

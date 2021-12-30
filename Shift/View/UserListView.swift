@@ -30,7 +30,7 @@ struct UserListView: View {
                         userListViewModel.registerNew()
                     } label: {
                         Text("📄 New user")
-                    }
+                    }.padding()
 
                     ForEach(auth.employees, id: \.self) { value in
                         userView(value: value)
@@ -48,7 +48,12 @@ struct UserListView: View {
             Button {
                 userListViewModel.enter(user: value)
             } label: {
-                Text("✏️")
+                Text("✏️ Edit")
+            }
+            Button {
+                auth.disable(user: value)
+            } label: {
+                Text("🗑 Delete")
             }
 
         }
