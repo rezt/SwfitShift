@@ -11,7 +11,7 @@ import Firebase
 
 struct ShiftView: View {
     
-    @ObservedObject var auth: LoginViewModel
+    var currentUser: User
     @ObservedObject var shiftViewModel: ShiftViewModel
     @ObservedObject var calendarViewModel: CalendarViewModel
     @State var selectedEmployee: String = "test"
@@ -23,9 +23,9 @@ struct ShiftView: View {
     @State var startDate: Date = Date()
     @Environment(\.presentationMode) var presentationMode
     
-    init(shiftViewModel: ShiftViewModel, calendarViewModel: CalendarViewModel, loginViewModel: LoginViewModel){
+    init(_ user: User, shiftViewModel: ShiftViewModel, calendarViewModel: CalendarViewModel) {
         UITableView.appearance().backgroundColor = .clear
-        self.auth = loginViewModel
+        self.currentUser = user
         self.shiftViewModel = shiftViewModel
         self.calendarViewModel = calendarViewModel
     }
@@ -36,7 +36,7 @@ struct ShiftView: View {
                 Section {
                     if self.$shiftViewModel.edit.wrappedValue { // Edit view
                         Picker(selection: $selectedEmployee, label: Text("📌 Employee:").foregroundColor(.black)) {
-                                ForEach(auth.employees, id: \.self) { employee in
+                            ForEach(shiftViewModel.employees, id: \.self) { employee in
                                     Text(employee.name).foregroundColor(.black).tag(employee.uid)
                                 }
                             }
@@ -80,7 +80,7 @@ struct ShiftView: View {
                                     .foregroundColor(.black)
                             }
                         } else {
-                            if self.auth.user.role == K.FStore.Employees.roles[0] || self.auth.user.role == K.FStore.Employees.roles[0] {
+                            if currentUser.role == K.FStore.Employees.roles[0] || currentUser.role == K.FStore.Employees.roles[0] {
                                 Button {
                                     shiftViewModel.editShift()
                                 } label: {
@@ -116,25 +116,11 @@ struct ShiftView: View {
                     upForGrabsField = shiftViewModel.shift!.upForGrabs
                     endDate = shiftViewModel.shift!.endDate.dateValue()
                     startDate = shiftViewModel.shift!.startDate.dateValue()
-                    auth.getDetails(forUserID: shiftViewModel.shift!.employee) { result in
-                        selectedEmployeeName = result![0].name
-                        selectedTeamName = result![0].role
+                    shiftViewModel.updateFields { result in
+                        selectedEmployeeName = result[0]!
+                        selectedTeamName = result[0]!
                     }
                 }
-        }
-    }
-}
-
-
-struct ShiftView_Previews: PreviewProvider {
-    @StateObject var shiftViewModel = ShiftViewModel(withShift: Shift(employee: "", endDate: Timestamp(date: Date()) , role: "", startDate: Timestamp(date: Date()), upForGrabs: false, FSID: ""), canEdit: false)
-    @StateObject var loginViewModel = LoginViewModel()
-    @StateObject var calendarViewModel = CalendarViewModel()
-    static var previews: some View {
-        let test = ShiftView_Previews()
-        ZStack{
-            Color(.black).ignoresSafeArea()
-            ShiftView(shiftViewModel: test.shiftViewModel, calendarViewModel: test.calendarViewModel, loginViewModel: test.loginViewModel)
         }
     }
 }

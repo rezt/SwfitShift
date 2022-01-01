@@ -11,22 +11,26 @@ import SwiftUI
 
 final class DispositionViewModel: ObservableObject {
     
-    let db = Firestore.firestore()
-    @ObservedObject var auth: LoginViewModel
+    @Published var employees: [User] = []
+    @Published var currentUser: User = User(login: "", name: "", role: "", uid: "", FSID: "")
     @Published var thisMonth: [Disposition] = []
     @Published var userDisposition: [PersonalDisposition] = []
     @Published var isManager: Bool = false
     var presets: [Preset] = []
+    var webService = WebService()
     
-    init() {
-        auth = LoginViewModel()
+    func loadEmployees() {
+        webService.loadEmployees() { result in
+            if result != nil {
+                self.employees = result!
+            }
+        }
     }
     
-    func setAuth(with auth: LoginViewModel) {
-        self.auth = auth
-        if auth.user.role == K.FStore.Employees.roles[0] || auth.user.role == K.FStore.Employees.roles[1] {
+    func update(_ user: User) {
+        self.currentUser = user
+        if currentUser.role == K.FStore.Employees.roles[0] || currentUser.role == K.FStore.Employees.roles[1] {
             isManager = true
-            print("isManager")
         }
     }
     
@@ -50,25 +54,14 @@ final class DispositionViewModel: ObservableObject {
         }
         
         var uids: [String] = []
-        for employee in auth.employees {
+        for employee in employees {
             uids.append(employee.uid)
         }
 
         for _ in 0..<i {
-            var ref: DocumentReference? = nil
-            ref = db.collection(K.FStore.Disposition.collection).addDocument(data: [
-                K.FStore.Disposition.date: Timestamp(date: lastDate),
-                K.FStore.Disposition.available: [""],
-                K.FStore.Disposition.notPreferred: [""],
-                K.FStore.Disposition.unavailable: [""],
-                K.FStore.Disposition.unknown: uids
-            ]) { err in
-                if let err = err {
-                    print("Error adding document: \(err)")
-                } else {
-                    print("Document added with ID: \(ref!.documentID)")
-                }
-            }
+            
+            webService.generateDisposition(lastDate: lastDate, uids: uids)
+            
             lastDate = Calendar.current.date(byAdding: .day, value: 1, to: lastDate)!
         }
     }
@@ -82,42 +75,29 @@ final class DispositionViewModel: ObservableObject {
             print("Error while finding dispositionObject")
             return
         }
-        var newAvailable = dispo!.available.filter { $0 != auth.user.uid }
-        var newNotPreferred = dispo!.notPreferred.filter { $0 != auth.user.uid }
-        var newUnavailable = dispo!.unavailable.filter { $0 != auth.user.uid }
-        var newUnknown = dispo!.unknown.filter { $0 != auth.user.uid }
+        var newAvailable = dispo!.available.filter { $0 != currentUser.uid }
+        var newNotPreferred = dispo!.notPreferred.filter { $0 != currentUser.uid }
+        var newUnavailable = dispo!.unavailable.filter { $0 != currentUser.uid }
+        var newUnknown = dispo!.unknown.filter { $0 != currentUser.uid }
         if newDisposition.value[0] {
-            newAvailable.append(auth.user.uid)
+            newAvailable.append(currentUser.uid)
         } else if newDisposition.value[1] {
-            newNotPreferred.append(auth.user.uid)
+            newNotPreferred.append(currentUser.uid)
         } else if newDisposition.value[2] {
-            newUnavailable.append(auth.user.uid)
+            newUnavailable.append(currentUser.uid)
         } else {
-            newUnknown.append(auth.user.uid)
+            newUnknown.append(currentUser.uid)
         }
         
         let newDispo = Disposition(date: dispo!.date, available: newAvailable, notPreferred: newNotPreferred, unavailable: newUnavailable, unknown: newUnknown, FSID: newDisposition.FSID)
         
-        db.collection(K.FStore.Disposition.collection).document(newDisposition.FSID).setData([
-            K.FStore.Disposition.date: newDispo.date,
-            K.FStore.Disposition.available: newDispo.available,
-            K.FStore.Disposition.notPreferred: newDispo.notPreferred,
-            K.FStore.Disposition.unavailable: newDispo.unavailable,
-            K.FStore.Disposition.unknown: newDispo.unknown
-        ]) { err in
-            if let err = err {
-                print("Error updating document: \(err)")
-            } else {
-                print("Document successfully updated!")
-            }
-        }
+        webService.modifyDisposition(newDispo: newDispo, FSID: newDisposition.FSID)
     }
     
     func cleanup() {
-        auth.loadAllUsers()
         var validUID: [String] = []
         
-        for user in auth.employees {
+        for user in employees {
             validUID.append(user.uid)
         }
         
@@ -135,29 +115,17 @@ final class DispositionViewModel: ObservableObject {
                 validUID.contains($0)
             }
             
-            db.collection(K.FStore.Disposition.collection).document(day.FSID).setData([
-                K.FStore.Disposition.date: day.date,
-                K.FStore.Disposition.available: newAvailable,
-                K.FStore.Disposition.notPreferred: newNotPreferred,
-                K.FStore.Disposition.unavailable: newUnavailable,
-                K.FStore.Disposition.unknown: newUnknown
-            ]) { err in
-                if let err = err {
-                    print("Error updating document: \(err)")
-                } else {
-                    print("Document successfully updated!")
-                }
-            }
+            webService.cleanup(day: day, newAvailable: newAvailable, newNotPreferred: newNotPreferred, newUnavailable: newUnavailable, newUnknown: newUnknown)
         }
     }
     
     func getPersonalDisposition() {
         for dispo in thisMonth {
-            if dispo.available.contains(auth.user.uid) {
+            if dispo.available.contains(currentUser.uid) {
                 userDisposition.append(PersonalDisposition(date: dispo.getDate(), value: [true,false,false,false], FSID: dispo.FSID))
-            } else if dispo.notPreferred.contains(auth.user.uid) {
+            } else if dispo.notPreferred.contains(currentUser.uid) {
                 userDisposition.append(PersonalDisposition(date: dispo.getDate(), value: [false,true,false,false], FSID: dispo.FSID))
-            } else if dispo.unavailable.contains(auth.user.uid) {
+            } else if dispo.unavailable.contains(currentUser.uid) {
                 userDisposition.append(PersonalDisposition(date: dispo.getDate(), value: [false,false,true,false], FSID: dispo.FSID))
             } else {
                 userDisposition.append(PersonalDisposition(date: dispo.getDate(), value: [false,false,false,true], FSID: dispo.FSID))
@@ -166,65 +134,18 @@ final class DispositionViewModel: ObservableObject {
     }
     
     func loadDisposition() { // Load only shifts specified to user or user's role
-        
-        let futureDate = Calendar.current.date(byAdding: .day, value: 31, to: Date())
-        
-        db.collection(K.FStore.Disposition.collection).whereField("date", isGreaterThanOrEqualTo: Date()).whereField("date", isLessThanOrEqualTo: futureDate!).addSnapshotListener { (querySnapshot, error) in
-            self.thisMonth = []
-            
-            if let e = error {
-                print("There was an issue retriving shift data from Firestore. \(e)")
-            } else {
-                if let snapshotDocuments = querySnapshot?.documents {
-                    for doc in snapshotDocuments {
-                        let data = doc.data()
-                        if let available = data[K.FStore.Disposition.available] as? [String],
-                           let notPreferred = data[K.FStore.Disposition.notPreferred] as? [String],
-                           let unavailable = data[K.FStore.Disposition.unavailable] as? [String],
-                           let unknown = data[K.FStore.Disposition.unknown] as? [String],
-                           let date = data[K.FStore.Disposition.date] as? Timestamp {
-                            let newDisposition = Disposition(date: date, available: available, notPreferred: notPreferred, unavailable: unavailable, unknown: unknown, FSID: doc.documentID)
-                            self.thisMonth.append(newDisposition)
-                            DispatchQueue.main.async {
-//                                self.printDispo()
-                                self.userDisposition = []
-                                self.getPersonalDisposition()
-                            }
-                            
-                            
-//                            DispatchQueue.main.async {
-//                                self.loadShiftsRole { result in
-//                                    if result != nil {
-//                                        self.thisMonth = Array(Set(self.shifts).union(result!))
-//                                    }
-//                                }
-//                            }
-                        }
-                    }
-                }
-            }
+        webService.loadDisposition() { result in
+            self.thisMonth = result!
+            self.userDisposition = []
+            self.getPersonalDisposition()
         }
     }
     
+    
+    
     func loadPresets() {
-        db.collection(K.FStore.Presets.collection).addSnapshotListener { (querySnapshot, error) in
-            self.presets = []
-            
-            if let e = error {
-                print("There was an issue retriving preset data from Firestore. \(e)")
-            } else {
-                if let snapshotDocuments = querySnapshot?.documents {
-                    for doc in snapshotDocuments {
-                        let data = doc.data()
-                        if let startDate = data[K.FStore.Presets.start] as? Timestamp,
-                           let endDate = data[K.FStore.Presets.end] as? Timestamp,
-                           let name = data[K.FStore.Presets.name] as? String {
-                            let newPreset = Preset(startDate: startDate, endDate: endDate, name: name)
-                            self.presets.append(newPreset)
-                        }
-                    }
-                }
-            }
+        webService.loadPresets { result in
+            self.presets = result!
         }
     }
     

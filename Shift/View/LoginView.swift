@@ -10,7 +10,7 @@ import Firebase
 
 struct LoginView: View {
     
-    @StateObject var auth = LoginViewModel()
+    @StateObject var loginViewModel = LoginViewModel()
     @State private var email: String = "admin@test.pl"
     @State private var password: String = "adminadmin"
     
@@ -20,7 +20,7 @@ struct LoginView: View {
                 Color.black
                     .ignoresSafeArea()
                 VStack {
-                    NavigationLink(destination: MainView(auth: auth), isActive: $auth.isLoggedIn) {}
+                    NavigationLink(destination: MainView(loginViewModel.user), isActive: $loginViewModel.isLoggedIn) {}
                     Spacer()
                     Text("Swift Shift")
                         .bold()
@@ -41,7 +41,7 @@ struct LoginView: View {
                             .padding()
                     
                     
-                    Button(action: {auth.login(withEmail: email, withPassword: password)}) {
+                    Button(action: {loginViewModel.login(withEmail: email, withPassword: password)}) {
                         Text("Log in").font(.title)
                     }
                     Spacer()
@@ -70,13 +70,5 @@ struct CustomViewModifier: ViewModifier {
                         .stroke(LinearGradient(gradient: Gradient(colors: [startColor, endColor]), startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 5))
         
             .shadow(radius: 10)
-    }
-}
-
-
-
-struct LoginView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginView()
     }
 }

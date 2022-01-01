@@ -10,6 +10,8 @@ import Foundation
 
 final class RegisterViewModel: ObservableObject {
     
+    var webService = WebService()
+    
     enum result: String {
         case email = "Error: Wrong email format"
         case different = "Error: Passwords are different"
@@ -45,5 +47,9 @@ final class RegisterViewModel: ObservableObject {
 //            return .letterCase
 //        }
         return .good
+    }
+    
+    func createUser(_ user: User, email: String, password: String) {
+        webService.createUser(user, email: email, password: password)
     }
 }

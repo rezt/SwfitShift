@@ -11,21 +11,18 @@ import Firebase
 
 struct TaskView: View {
     
-    @ObservedObject var auth: LoginViewModel
     @ObservedObject var taskViewModel: TaskViewModel
     @ObservedObject var taskListViewModel: TaskListViewModel
     @State var titleField: String = "title"
     @State var statusField: String = "status"
     @State var descriptionField: String = "description"
-//    @State var teamField: String = "role"
     @State var selectedTeam: String = "test"
     @State var selectedTeamName: String = ""
     @State var deadline: Date = Date()
     @Environment(\.presentationMode) var presentationMode
     
-    init(taskViewModel: TaskViewModel, taskListViewModel: TaskListViewModel, loginViewModel: LoginViewModel){
+    init(taskViewModel: TaskViewModel, taskListViewModel: TaskListViewModel){
         UITableView.appearance().backgroundColor = .clear
-        self.auth = loginViewModel
         self.taskViewModel = taskViewModel
         self.taskListViewModel = taskListViewModel
     }
@@ -44,10 +41,6 @@ struct TaskView: View {
                                 Text(role).foregroundColor(.black).tag(role)
                                 }
                             }
-//                        Text("🏆 Team:")
-//                            .foregroundColor(.black)
-//                        TextField("Team...", text: $teamField)
-//                            .foregroundColor(.black)
                         Text("⚫️ Status:")
                             .foregroundColor(.black)
                         TextField("Status...", text: $statusField)
@@ -122,19 +115,6 @@ struct TaskView: View {
                     deadline = taskViewModel.task!.deadline.dateValue()
                     selectedTeamName = taskViewModel.task!.team
                 }
-        }
-    }
-}
-
-struct TaskView_Previews: PreviewProvider {
-    @StateObject var taskViewModel = TaskViewModel(withTask: Task(deadline: Timestamp(date: Date()), description: "", status: "", team: "", title: "", FSID: ""), canEdit: false)
-    @StateObject var loginViewModel = LoginViewModel()
-    @StateObject var taskListViewModel = TaskListViewModel()
-    static var previews: some View {
-        let test = TaskView_Previews()
-        ZStack{
-            Color(.black).ignoresSafeArea()
-            TaskView(taskViewModel: test.taskViewModel, taskListViewModel: test.taskListViewModel, loginViewModel: test.loginViewModel)
         }
     }
 }

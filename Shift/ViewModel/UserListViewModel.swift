@@ -10,10 +10,23 @@ import SwiftUI
 
 final class UserListViewModel: ObservableObject {
     
+    @Published var employees: [User] = []
     @Published var userRoles: [UserRole] = []
     @Published var showUser: Bool = false
     @Published var showRegister: Bool = false
     var userViewModel = UserViewModel(withUser: User(login: "", name: "", role: "", uid: "", FSID: ""))
+    var webService = WebService()
+    
+    init() {
+    }
+    
+    func loadEmployees() {
+        webService.loadEmployees() { result in
+            if result != nil {
+                self.employees = result!
+            }
+        }
+    }
     
     func getRoleOf(user: User) {
         userRoles.append(UserRole(uid: user.uid, role: user.role))
@@ -34,5 +47,9 @@ final class UserListViewModel: ObservableObject {
     func registerNew() {
         print("register")
         showRegister = true
+    }
+    
+    func disable(user: User) {
+        webService.disable(user: user)
     }
 }

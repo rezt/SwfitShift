@@ -10,14 +10,12 @@ import SwiftUI
 
 struct UserView: View {
     
-    @ObservedObject var auth: LoginViewModel
     @ObservedObject var userViewModel: UserViewModel
     @ObservedObject var userListViewModel: UserListViewModel
     @State var selectedRole: String = "test"
     @Environment(\.presentationMode) var presentationMode
     
-    init(userListViewModel: UserListViewModel, loginViewModel: LoginViewModel) {
-        self.auth = loginViewModel
+    init(userListViewModel: UserListViewModel) {
         self.userViewModel = userListViewModel.userViewModel
         self.userListViewModel = userListViewModel
     }
@@ -36,10 +34,10 @@ struct UserView: View {
                             }
                         }
                     .pickerStyle(SegmentedPickerStyle())
-                }.frame(maxHeight: 100)
+                }.frame(maxHeight: 70)
                 Button {
                     print(userViewModel.user!)
-                    auth.saveUser(userViewModel.user!, selectedRole: selectedRole)
+                    userViewModel.saveUser(withRole: selectedRole)
                 } label: {
                     Text("💾 Save changes").foregroundColor(.white)
                 }

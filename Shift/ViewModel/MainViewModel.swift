@@ -10,8 +10,10 @@ import Firebase
 import SwiftUI
 
 class MainViewModel: ObservableObject {
+    
     @Published var goToDisposition: Bool = false
     @Published var goToUsers: Bool = false
+    var webService = WebService()
     
     func showDisposition() {
         goToDisposition = !goToDisposition

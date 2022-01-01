@@ -12,8 +12,7 @@ import FirebaseFirestore
 
 final class TaskListViewModel: ObservableObject {
     
-    let db = Firestore.firestore()
-    @ObservedObject var auth: LoginViewModel
+    var currentUser = User(login: "", name: "", role: "", uid: "", FSID: "")
     @Published var tasks: [Task] = []
     @Published var displayedTasks: [Task] = []
     @Published var showTask: Bool = false
@@ -21,82 +20,24 @@ final class TaskListViewModel: ObservableObject {
     @Published var showFinished: Bool = true
     @Published var showTasks: Bool = false
     
-    init() {
-        auth = LoginViewModel()
-    }
+    var webService = WebService()
     
-    func setAuth(with auth: LoginViewModel) {
-        print(auth.user.role)
-        self.auth = auth
+    func update(_ user: User) {
+        self.currentUser = user
     }
     
     func saveTask(_ newTask: Task) {
-        if newTask.FSID == "" {
-            var ref: DocumentReference? = nil
-            ref = db.collection(K.FStore.Tasks.collection).addDocument(data: [
-                K.FStore.Tasks.title: newTask.title,
-                K.FStore.Tasks.status: newTask.status,
-                K.FStore.Tasks.team: newTask.team,
-                K.FStore.Tasks.description: newTask.description,
-                K.FStore.Tasks.deadline: newTask.deadline
-            ]) { err in
-                if let err = err {
-                    print("Error adding document: \(err)")
-                } else {
-                    print("Document added with ID: \(ref!.documentID)")
-                }
-            }
-        } else {
-            db.collection(K.FStore.Tasks.collection).document(newTask.FSID).setData([
-                K.FStore.Tasks.title: newTask.title,
-                K.FStore.Tasks.status: newTask.status,
-                K.FStore.Tasks.team: newTask.team,
-                K.FStore.Tasks.description: newTask.description,
-                K.FStore.Tasks.deadline: newTask.deadline
-            ]) { err in
-                if let err = err {
-                    print("Error updating document: \(err)")
-                } else {
-                    print("Document successfully updated!")
-                }
-            }
-            
-        }
+        webService.saveTask(newTask)
     }
     
     func deleteTask(_ task: Task) {
-        db.collection(K.FStore.Tasks.collection).document(task.FSID).delete() { err in
-            if let err = err {
-                print("Error removing document: \(err)")
-            } else {
-                print("Document successfully removed!")
-            }
-        }
+        webService.deleteTask(task)
     }
     
     func loadTasks() {
-        db.collection(K.FStore.Tasks.collection).whereField(K.FStore.Tasks.team, isEqualTo: auth.user.role)
-            .addSnapshotListener { (querySnapshot, error) in
-                self.tasks = []
-                
-                if let e = error {
-                    print("There was an issue retriving tasks data from Firestore. \(e)")
-                } else {
-                    if let snapshotDocuments = querySnapshot?.documents {
-                        for doc in snapshotDocuments {
-                            let data = doc.data()
-                            if let deadline = data[K.FStore.Tasks.deadline] as? Timestamp,
-                               let description = data[K.FStore.Tasks.description] as? String,
-                               let status = data[K.FStore.Tasks.status] as? String,
-                               let team = data[K.FStore.Tasks.team] as? String,
-                               let title = data[K.FStore.Tasks.title] as? String {
-                                let newTask = Task(deadline: deadline, description: description, status: status, team: team, title: title, FSID: doc.documentID)
-                                self.tasks.append(newTask)
-                            }
-                        }
-                    }
-                }
-            }
+        webService.loadTasks(role: currentUser.role) { result in
+            self.tasks = result!
+        }
     }
     
     func getCurrentTasks() {
@@ -125,7 +66,7 @@ final class TaskListViewModel: ObservableObject {
     
     func enter(task: Task) {
         var canEdit = false
-        if auth.user.role == K.FStore.Employees.roles[0] || auth.user.role == K.FStore.Employees.roles[1] {
+        if currentUser.role == K.FStore.Employees.roles[0] || currentUser.role == K.FStore.Employees.roles[1] {
             canEdit = true
             print("canedit")
         }

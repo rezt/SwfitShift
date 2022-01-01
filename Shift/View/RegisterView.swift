@@ -9,9 +9,9 @@ import Foundation
 import SwiftUI
 
 struct RegisterView: View {
-    @ObservedObject var auth: LoginViewModel
     @Environment(\.presentationMode) var presentationMode
     
+    @ObservedObject var registerViewModel: RegisterViewModel
     @State var loginField: String = "login"
     @State var nameField: String = "name"
     @State var emailField: String = "email"
@@ -22,8 +22,8 @@ struct RegisterView: View {
     @State private var showingAlert = false
     @State var alertMessage = "test"
     
-    init(loginViewModel: LoginViewModel) {
-        self.auth = loginViewModel
+    init(registerViewModel: RegisterViewModel) {
+        self.registerViewModel = registerViewModel
     }
     
     var body: some View {
@@ -60,7 +60,7 @@ struct RegisterView: View {
                         let result = RegisterViewModel.check(password: password1, with: password2, email: emailField)
                         switch result {
                         case .good:
-                            auth.createUser(User(login: loginField, name: nameField, role: selectedRole, uid: "", FSID: ""), email: emailField, password: password1)
+                            registerViewModel.createUser(User(login: loginField, name: nameField, role: selectedRole, uid: "", FSID: ""), email: emailField, password: password1)
                             print("good")
                         default:
                             alertMessage = result.rawValue

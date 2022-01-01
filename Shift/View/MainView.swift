@@ -9,20 +9,25 @@ import SwiftUI
 
 struct MainView: View {
      
-    @ObservedObject var auth: LoginViewModel
+    @State var currentUser: User
+    @StateObject var mainViewModel = MainViewModel()
     @StateObject var calendarViewModel = CalendarViewModel()
     @StateObject var taskListViewModel = TaskListViewModel()
     @StateObject var dispositionViewModel = DispositionViewModel()
-    @StateObject var mainViewModel = MainViewModel()
     @StateObject var userListViewModel = UserListViewModel()
+    
+    init(_ user: User) {
+        print(user)
+        currentUser = user
+    }
     
     var body: some View {
             ZStack{
                 Color(.black).ignoresSafeArea()
-                NavigationLink(destination: TaskView(taskViewModel: taskListViewModel.taskViewModel, taskListViewModel: taskListViewModel, loginViewModel: auth), isActive: $taskListViewModel.showTask) {}
-                NavigationLink(destination: ShiftView(shiftViewModel: calendarViewModel.shiftViewModel, calendarViewModel: calendarViewModel, loginViewModel: auth), isActive: $calendarViewModel.showShift) {}
-                NavigationLink(destination: DispositionView(dispositionViewModel: dispositionViewModel, loginViewModel: auth), isActive: $mainViewModel.goToDisposition) {}
-                NavigationLink(destination: UserListView(userListViewModel: userListViewModel, loginViewModel: auth), isActive: $mainViewModel.goToUsers) {}
+                NavigationLink(destination: TaskView(taskViewModel: taskListViewModel.taskViewModel, taskListViewModel: taskListViewModel), isActive: $taskListViewModel.showTask) {}
+                NavigationLink(destination: ShiftView(currentUser, shiftViewModel: calendarViewModel.shiftViewModel, calendarViewModel: calendarViewModel), isActive: $calendarViewModel.showShift) {}
+                NavigationLink(destination: DispositionView(dispositionViewModel: dispositionViewModel), isActive: $mainViewModel.goToDisposition) {}
+                NavigationLink(destination: UserListView(userListViewModel: userListViewModel), isActive: $mainViewModel.goToUsers) {}
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 20) {
                         HStack {
@@ -31,7 +36,7 @@ struct MainView: View {
                             } label: {
                                 Text("Go to disposition")
                             }
-                            if auth.user.role == K.FStore.Employees.roles[0] || auth.user.role == K.FStore.Employees.roles[1] {
+                            if currentUser.role == K.FStore.Employees.roles[0] || currentUser.role == K.FStore.Employees.roles[1] {
                                 Button {
                                     mainViewModel.showUserManagement()
                                 } label: {
@@ -39,7 +44,7 @@ struct MainView: View {
                                 }
                             }
                         }
-                        CalendarView(calendarViewModel: calendarViewModel, auth: auth)
+                        CalendarView(calendarViewModel: calendarViewModel, currentUser)
                         Color.gray.frame(height:CGFloat(1) / UIScreen.main.scale)
                         TaskListView(taskListViewModel: taskListViewModel)
                         Color.gray.frame(height:CGFloat(1) / UIScreen.main.scale)
@@ -47,24 +52,15 @@ struct MainView: View {
                 }
             }.navigationBarHidden(true)
             .onAppear() {
-                calendarViewModel.setAuth(with: auth)
+                print("onappear: \(currentUser)")
+                calendarViewModel.update(currentUser)
                 calendarViewModel.loadShifts()
-                taskListViewModel.setAuth(with: auth)
+                taskListViewModel.update(currentUser)
                 taskListViewModel.loadTasks()
-                dispositionViewModel.setAuth(with: auth)
+                dispositionViewModel.update(currentUser)
                 dispositionViewModel.loadDisposition()
-                
-                auth.loadEmployees()
+                dispositionViewModel.loadEmployees()
+                userListViewModel.loadEmployees()
             }
-    }
-}
-
-struct MainView_Previews: PreviewProvider {
-    @StateObject var auth = LoginViewModel()
-    @StateObject var calendarViewModel = CalendarViewModel()
-    @StateObject var taskListViewModel = TaskListViewModel()
-    static var previews: some View {
-        let test = MainView_Previews()
-        MainView(auth: test.auth, calendarViewModel: test.calendarViewModel, taskListViewModel: test.taskListViewModel)
     }
 }

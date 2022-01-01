@@ -54,19 +54,8 @@ struct TaskListView: View {
                 }
             }
         }
-        Button(action: {taskListViewModel.enterNew(userRole: taskListViewModel.auth.user.role)}) {
+        Button(action: {taskListViewModel.enterNew(userRole: taskListViewModel.currentUser.role)}) {
             Text("Add new task")
-        }
-    }
-}
-
-struct TaskListView_Previews: PreviewProvider {
-    @StateObject var taskListViewModel = TaskListViewModel()
-    static var previews: some View {
-        let test = TaskListView_Previews()
-        ZStack{
-            Color(.black).ignoresSafeArea()
-            TaskListView(taskListViewModel: test.taskListViewModel)
         }
     }
 }

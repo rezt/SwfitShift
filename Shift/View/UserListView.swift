@@ -10,18 +10,16 @@ import SwiftUI
 
 struct UserListView: View {
     
-    @ObservedObject var auth: LoginViewModel
     @ObservedObject var userListViewModel: UserListViewModel
+    @StateObject var registerViewModel = RegisterViewModel()
     
-    
-    init(userListViewModel: UserListViewModel, loginViewModel: LoginViewModel) {
-        self.auth = loginViewModel
+    init(userListViewModel: UserListViewModel) {
         self.userListViewModel = userListViewModel
     }
     
     var body: some View {
-        NavigationLink(destination: UserView(userListViewModel: userListViewModel, loginViewModel: auth), isActive: $userListViewModel.showUser) {}
-        NavigationLink(destination: RegisterView(loginViewModel: auth), isActive: $userListViewModel.showRegister) {}
+        NavigationLink(destination: UserView(userListViewModel: userListViewModel), isActive: $userListViewModel.showUser) {}
+        NavigationLink(destination: RegisterView(registerViewModel: registerViewModel), isActive: $userListViewModel.showRegister) {}
         ZStack {
             Color(.black).ignoresSafeArea()
             ScrollView {
@@ -32,7 +30,7 @@ struct UserListView: View {
                         Text("📄 New user")
                     }.padding()
 
-                    ForEach(auth.employees, id: \.self) { value in
+                    ForEach(userListViewModel.employees, id: \.self) { value in
                         userView(value: value)
                     }
                 }
@@ -51,7 +49,7 @@ struct UserListView: View {
                 Text("✏️ Edit")
             }
             Button {
-                auth.disable(user: value)
+                userListViewModel.disable(user: value)
             } label: {
                 Text("🗑 Delete")
             }

@@ -9,9 +9,14 @@ import SwiftUI
 
 struct CalendarView: View {
     
+    var currentUser: User
     @ObservedObject var calendarViewModel: CalendarViewModel
-    @ObservedObject var auth: LoginViewModel
     @State var haveShift: Bool = true
+    
+    init(calendarViewModel: CalendarViewModel, _ user: User) {
+        self.calendarViewModel = calendarViewModel
+        self.currentUser = user
+    }
     
     var drag: some Gesture {
         DragGesture(minimumDistance: 30, coordinateSpace: .local)
@@ -108,8 +113,8 @@ struct CalendarView: View {
                 }
             }
             
-            if auth.user.role == K.FStore.Employees.roles[0] || auth.user.role == K.FStore.Employees.roles[1] {
-                Button(action: {calendarViewModel.enterNew(userRole: auth.user.role)}) {
+            if currentUser.role == K.FStore.Employees.roles[0] || currentUser.role == K.FStore.Employees.roles[1] {
+                Button(action: {calendarViewModel.enterNew(userRole: currentUser.role)}) {
                     Text("Add shift")
                 }
             }
@@ -130,7 +135,7 @@ struct CalendarView: View {
                     Text("\nWork as: \(shift.role)\nFrom: \(shift.getStartDateTime()[0]):\(shift.getStartDateTime()[1])\nTo: \(shift.getEndDateTime()[0]):\(shift.getEndDateTime()[1])")
                         .font(.title3.bold())
                         .foregroundColor(.white)
-                    if shift.employee != auth.user.uid {
+                    if shift.employee != currentUser.uid {
                         Button(action: {calendarViewModel.takeShift(shift)}) {
                             Text("Take the shift")
                         }
@@ -139,7 +144,7 @@ struct CalendarView: View {
                             Text("Up for grabs")
                         }
                     }
-                    if auth.user.role == K.FStore.Employees.roles[0] || auth.user.role == K.FStore.Employees.roles[1] {
+                    if currentUser.role == K.FStore.Employees.roles[0] || currentUser.role == K.FStore.Employees.roles[1] {
                         Button(action: {calendarViewModel.enter(shift: shift)}) {
                             Text("Edit shift")
                         }
@@ -200,26 +205,4 @@ struct CalendarView: View {
 //        .transition(AnyTransition.opacity.combined(with: .move(edge: .leading)))
     }
 }
-
-
-struct CalendarView_Previews: PreviewProvider {
-
-    @StateObject var calendarViewModel = CalendarViewModel()
-    @StateObject var auth = LoginViewModel()
-    
-    static var previews: some View {
-        let test = CalendarView_Previews()
-        ZStack{
-            Color(.black).ignoresSafeArea()
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 20) {
-                    // Calendar View
-                    CalendarView(calendarViewModel: test.calendarViewModel, auth: test.auth)
-                }
-            }
-        }
-    }
-}
-
-
 

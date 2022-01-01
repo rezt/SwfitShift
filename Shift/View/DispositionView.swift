@@ -11,12 +11,10 @@ import SwiftUI
 struct DispositionView: View {
     
     @ObservedObject var dispositionViewModel: DispositionViewModel
-    @ObservedObject var auth: LoginViewModel
     @Environment(\.presentationMode) var presentationMode
     
-    init(dispositionViewModel: DispositionViewModel, loginViewModel: LoginViewModel) {
+    init(dispositionViewModel: DispositionViewModel) {
         self.dispositionViewModel = dispositionViewModel
-        self.auth = loginViewModel
     }
     
     var body: some View {
