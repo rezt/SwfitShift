@@ -38,4 +38,18 @@ struct Shift: Hashable {
         return date.components(separatedBy: " ")
     }
     
+    func getStartDateFormatted() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy HH:mm"
+        let date = formatter.string(from: startDate.dateValue())
+        return date
+    }
+    
+    func getEndDateFormatted() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy HH:mm"
+        let date = formatter.string(from: endDate.dateValue())
+        return date
+    }
+    
 }

@@ -13,10 +13,10 @@ import FirebaseFirestore
 final class TaskListViewModel: ObservableObject {
     
     var currentUser = User(login: "", name: "", role: "", uid: "", FSID: "")
+    var taskViewModel = TaskViewModel(withTask: Task(deadline: Timestamp(date: Date()), description: "", status: "", team: "", title: "", FSID: ""), canEdit: false)
     @Published var tasks: [Task] = []
     @Published var displayedTasks: [Task] = []
     @Published var showTask: Bool = false
-    var taskViewModel = TaskViewModel(withTask: Task(deadline: Timestamp(date: Date()), description: "", status: "", team: "", title: "", FSID: ""), canEdit: false)
     @Published var showFinished: Bool = true
     @Published var showTasks: Bool = false
     
@@ -68,7 +68,6 @@ final class TaskListViewModel: ObservableObject {
         var canEdit = false
         if currentUser.role == K.FStore.Employees.roles[0] || currentUser.role == K.FStore.Employees.roles[1] {
             canEdit = true
-            print("canedit")
         }
         self.taskViewModel = TaskViewModel(withTask: task, canEdit: canEdit)
         showTask = true

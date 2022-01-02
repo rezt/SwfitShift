@@ -19,7 +19,7 @@ struct RegisterView: View {
     @State var selectedRole: String = K.FStore.Employees.roles[0]
     @State var password1: String = ""
     @State var password2: String = ""
-    @State private var showingAlert = false
+    @State var showingAlert = false
     @State var alertMessage = "test"
     
     init(registerViewModel: RegisterViewModel) {

@@ -11,7 +11,6 @@ struct CalendarView: View {
     
     var currentUser: User
     @ObservedObject var calendarViewModel: CalendarViewModel
-    @State var haveShift: Bool = true
     
     init(calendarViewModel: CalendarViewModel, _ user: User) {
         self.calendarViewModel = calendarViewModel

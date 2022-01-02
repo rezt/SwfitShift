@@ -16,22 +16,26 @@ final class DispositionViewModel: ObservableObject {
     @Published var thisMonth: [Disposition] = []
     @Published var userDisposition: [PersonalDisposition] = []
     @Published var isManager: Bool = false
-    var presets: [Preset] = []
+//    @Published var presets: [Preset] = []
     var webService = WebService()
     
-    func loadEmployees() {
-        webService.loadEmployees() { result in
-            if result != nil {
-                self.employees = result!
-            }
-        }
-    }
+//    func loadEmployees() {
+//        webService.loadEmployees() { result in
+//            if result != nil {
+//                self.employees = result!
+//            }
+//        }
+//    }
     
     func update(_ user: User) {
         self.currentUser = user
         if currentUser.role == K.FStore.Employees.roles[0] || currentUser.role == K.FStore.Employees.roles[1] {
             isManager = true
         }
+    }
+    
+    func setEmployees(_ users: [User]) {
+        employees = users
     }
     
     func getDate(from date: Date) -> String {
@@ -143,11 +147,11 @@ final class DispositionViewModel: ObservableObject {
     
     
     
-    func loadPresets() {
-        webService.loadPresets { result in
-            self.presets = result!
-        }
-    }
+//    func loadPresets() {
+//        webService.loadPresets { result in
+//            self.presets = result!
+//        }
+//    }
     
     func printDispo() {
         print(thisMonth)
@@ -159,7 +163,6 @@ extension Calendar {
         let fromDate = startOfDay(for: from)
         let toDate = startOfDay(for: to)
         let numberOfDays = dateComponents([.day], from: fromDate, to: toDate)
-        
         return numberOfDays.day!
     }
 }

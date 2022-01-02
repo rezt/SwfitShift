@@ -59,8 +59,11 @@ struct MainView: View {
                 taskListViewModel.loadTasks()
                 dispositionViewModel.update(currentUser)
                 dispositionViewModel.loadDisposition()
-                dispositionViewModel.loadEmployees()
-                userListViewModel.loadEmployees()
+                mainViewModel.loadEmployees() { result in
+                    dispositionViewModel.setEmployees(result!)
+                    userListViewModel.setEmployees(result!)
+                }
+                
             }
     }
 }

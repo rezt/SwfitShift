@@ -10,7 +10,6 @@ import SwiftUI
 struct TaskListView: View {
     
     @ObservedObject var taskListViewModel: TaskListViewModel
-    @State var showFinished: Bool = false
     
     var body: some View {
             Button {
@@ -41,14 +40,12 @@ struct TaskListView: View {
         }.padding()
         if self.$taskListViewModel.showTasks.wrappedValue {
             if !self.$taskListViewModel.showFinished.wrappedValue {
-                Button(action: {showFinished = true
-                    taskListViewModel.getFinishedTasks()
+                Button(action: {taskListViewModel.getFinishedTasks()
                 }) {
                     Text("Show finished tasks")
                 }
             } else {
-                Button(action: {showFinished = false
-                    taskListViewModel.getCurrentTasks()
+                Button(action: {taskListViewModel.getCurrentTasks()
                 }) {
                     Text("Show current tasks")
                 }

@@ -20,12 +20,16 @@ final class UserListViewModel: ObservableObject {
     init() {
     }
     
-    func loadEmployees() {
-        webService.loadEmployees() { result in
-            if result != nil {
-                self.employees = result!
-            }
-        }
+//    func loadEmployees() {
+//        webService.loadEmployees() { result in
+//            if result != nil {
+//                self.employees = result!
+//            }
+//        }
+//    }
+    
+    func setEmployees(_ users: [User]) {
+        employees = users
     }
     
     func getRoleOf(user: User) {

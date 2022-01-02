@@ -65,8 +65,37 @@ class WebService {
         }
     }
     
+//    func loadEmployees(completionHandler: @escaping LoadEmployeesClosure) {
+//        db.collection(K.FStore.Employees.collection).addSnapshotListener { (querySnapshot, error) in
+//            var result = [User]()
+//            
+//            if let e = error {
+//                print("There was an issue retriving shift data from Firestore. \(e)")
+//            } else {
+//                if let snapshotDocuments = querySnapshot?.documents {
+//                    for doc in snapshotDocuments {
+//                        print("getting employee")
+//                        let data = doc.data()
+//                        if let login = data[K.FStore.Employees.login] as? String,
+//                           let name = data[K.FStore.Employees.name] as? String,
+//                           let role = data[K.FStore.Employees.role] as? String,
+//                           let uid = data[K.FStore.Employees.uid] as? String {
+//                            let nextEmployee = User(login: login, name: name, role: role, uid: uid, FSID: doc.documentID)
+//                            result.append(nextEmployee)
+//                            if result.isEmpty {
+//                                completionHandler(nil)
+//                            } else {
+//                                completionHandler(result)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+    
     func loadEmployees(completionHandler: @escaping LoadEmployeesClosure) {
-        db.collection(K.FStore.Employees.collection).addSnapshotListener { (querySnapshot, error) in
+        db.collection(K.FStore.Employees.collection).getDocuments { (querySnapshot, error) in
             var result = [User]()
             
             if let e = error {
