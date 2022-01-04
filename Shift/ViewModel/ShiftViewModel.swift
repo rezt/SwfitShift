@@ -11,20 +11,39 @@ import SwiftUI
 
 final class ShiftViewModel: ObservableObject {
     
+    
+    @Published var firstEmployees: [User] = []
+    @Published var secondEmployees: [User] = []
+    @Published var thirdEmployees: [User] = []
+    @Published var fourthEmployees: [User] = []
     @Published var employees: [User] = []
     @Published var presets: [Preset] = []
     @Published var shift: Shift?
     @Published var canEdit: Bool
     @Published var edit: Bool = false
+    var todayDisposition: Disposition?
+    
     var webService = WebService()
     
     typealias UpdateFieldsClosure = (Array<String?>) -> Void
     typealias UsePresetClosure = (Array<Date>?) -> Void
     
-    func loadEmployees() {
-        webService.loadEmployees() { result in
+//    func loadEmployees(completionHandler: @escaping (Bool) -> Void) {
+//        webService.loadEmployees() { result in
+//            if result != nil {
+//                self.employees = result!
+//            }
+//        }
+//    }
+    
+    func loadDisposition(date: Date) {
+        let result1 = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: date)
+        let result2 = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: date)
+        webService.loadDay(forDay: [result1!, result2!]) { result in
             if result != nil {
-                self.employees = result!
+                print("day: \(result)")
+                self.todayDisposition = result![0]
+                self.sortEmployees()
             }
         }
     }
@@ -35,15 +54,64 @@ final class ShiftViewModel: ObservableObject {
         }
     }
     
-    init(withShift newShift: Shift, canEdit flag: Bool) {
-        self.shift = newShift
-        self.canEdit = flag
-        loadEmployees()
+    func sortEmployees() {
+        
+        firstEmployees = []
+        secondEmployees = []
+        thirdEmployees = []
+        fourthEmployees = []
+        
+        print("sorting employees")
+        for available in todayDisposition!.available {
+            let employee = employees.filter { $0.uid == available }
+            if !employee.isEmpty {
+                firstEmployees.append(employee[0])
+            }
+        }
+        for notPreferred in todayDisposition!.notPreferred {
+            let employee = employees.filter { $0.uid == notPreferred }
+            if !employee.isEmpty {
+                secondEmployees.append(employee[0])
+            }
+        }
+        for unavailable in todayDisposition!.unavailable {
+            let employee = employees.filter { $0.uid == unavailable }
+            if !employee.isEmpty {
+                thirdEmployees.append(employee[0])
+            }
+        }
+        for unknown in todayDisposition!.unknown {
+            let employee = employees.filter { $0.uid == unknown }
+            if !employee.isEmpty {
+                fourthEmployees.append(employee[0])
+            }
+        }
+        
+        print(firstEmployees)
+        print(secondEmployees)
+        print(thirdEmployees)
+        print(fourthEmployees)
+        
+//        var uids: [String] = []
+//        for employee in employees {
+//            uids.append(employee.uid)
+//        }
+//        let available = Set(uids).intersection(Set(todayDisposition!.available))
+//        let notPreferred = Set(uids).intersection(Set(todayDisposition!.notPreferred))
+//        let unavailable = Set(uids).intersection(Set(todayDisposition!.unavailable))
     }
     
-    func setEmployees(_ users: [User]) {
-        employees = users
+    init(withShift newShift: Shift, withEmployees newEmployees: [User], canEdit flag: Bool) {
+        self.shift = newShift
+        self.canEdit = flag
+        self.employees = newEmployees
+        loadDisposition(date: newShift.startDate.dateValue())
     }
+    
+//    func setEmployees(_ users: [User]) {
+//        employees = users
+//
+//    }
     
     func updateFields(completionHandler: @escaping UpdateFieldsClosure) {
         webService.getDetails(forUserID: shift!.employee) { result in

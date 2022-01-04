@@ -62,6 +62,7 @@ struct MainView: View {
                 mainViewModel.loadEmployees() { result in
                     dispositionViewModel.setEmployees(result!)
                     userListViewModel.setEmployees(result!)
+                    calendarViewModel.setEmployees(result!)
                 }
                 
             }

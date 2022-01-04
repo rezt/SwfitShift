@@ -20,4 +20,10 @@ struct Disposition: Identifiable {
     func getDate() -> Date {
         return date.dateValue()
     }
+    
+    func getDateStart() -> Date {
+        let date = date.dateValue()
+        let result = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: date)
+        return result!
+    }
 }

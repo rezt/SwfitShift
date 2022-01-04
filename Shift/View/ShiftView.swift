@@ -24,6 +24,7 @@ struct ShiftView: View {
     @State var startDate: Date = Date()
     @State var usingPreset: Bool = false
     @State var presetDate: Date = Date()
+    @State var alreadySeen: Bool = false
     @Environment(\.presentationMode) var presentationMode
     
     init(_ user: User, shiftViewModel: ShiftViewModel, calendarViewModel: CalendarViewModel) {
@@ -41,20 +42,42 @@ struct ShiftView: View {
                         Picker(selection: $selectedPreset, label: Text("🗂 Preset:").foregroundColor(.black)) {
                             ForEach(shiftViewModel.presets, id: \.self) { preset in
                                 Text(preset.name).foregroundColor(.black).tag(preset.name)
-                                }
+                            }
                         }.onChange(of: selectedPreset) { preset in
+                            
                             self.usingPreset = true
                         }
                         Picker(selection: $selectedEmployee, label: Text("📌 Employee:").foregroundColor(.black)) {
-                            ForEach(shiftViewModel.employees, id: \.self) { employee in
-                                    Text(employee.name).foregroundColor(.black).tag(employee.uid)
-                                }
+                            ForEach(shiftViewModel.firstEmployees, id: \.self) { employee in
+                                ZStack{
+                                    Color(.green)
+                                    Text(employee.name).foregroundColor(.black)
+                                }.tag(employee.uid)
                             }
+                            ForEach(shiftViewModel.secondEmployees, id: \.self) { employee in
+                                ZStack{
+                                    Color(.orange)
+                                    Text(employee.name).foregroundColor(.black)
+                                }.tag(employee.uid)
+                            }
+                            ForEach(shiftViewModel.thirdEmployees, id: \.self) { employee in
+                                ZStack{
+                                    Color(.red)
+                                    Text(employee.name).foregroundColor(.black)
+                                }.tag(employee.uid)
+                            }
+                            ForEach(shiftViewModel.fourthEmployees, id: \.self) { employee in
+                                ZStack{
+                                    Color(.gray)
+                                    Text(employee.name).foregroundColor(.black)
+                                }.tag(employee.uid)
+                            }
+                        }
                         Picker(selection: $selectedTeam, label: Text("🏆 Team:").foregroundColor(.black)) {
                             ForEach(K.FStore.Employees.roles, id: \.self) { role in
                                 Text(role).foregroundColor(.black).tag(role)
-                                }
                             }
+                        }
                         Toggle(isOn: $upForGrabsField) {
                             Text("⚫️ Up for grabs:")
                         }
@@ -62,11 +85,21 @@ struct ShiftView: View {
                         if !self.$usingPreset.wrappedValue {
                             DatePicker("🗓 Start date", selection: $startDate, displayedComponents: [.date, .hourAndMinute])
                                 .foregroundColor(.black)
+                                .onChange(of: startDate, perform: { value in
+                                    shiftViewModel.loadDisposition(date: value)
+                                    presetDate = startDate
+                                })
                             DatePicker("🗓 End date", selection: $endDate, in: startDate... , displayedComponents: [.date, .hourAndMinute])
                                 .foregroundColor(.black)
+                                .onChange(of: endDate, perform: { value in
+                                    shiftViewModel.loadDisposition(date: value)
+                                })
                         } else {
                             DatePicker("🗓 Select date", selection: $presetDate, displayedComponents: [.date])
                                 .foregroundColor(.black)
+                                .onChange(of: presetDate, perform: { value in
+                                    shiftViewModel.loadDisposition(date: value)
+                                })
                         }
                     } else { // Normal view
                         Text("📌 Assigned employee: \(selectedEmployeeName)")
@@ -109,12 +142,15 @@ struct ShiftView: View {
                                 }
                             }
                         }
-                        Button {
-                            calendarViewModel.deleteShift(shiftViewModel.shift!)
-                            presentationMode.wrappedValue.dismiss()
-                        } label: {
-                            Text("❌ Delete shift")
-                                .foregroundColor(.black)
+                        if shiftViewModel.shift?.FSID != "" {
+                            Button {
+                                calendarViewModel.deleteShift(shiftViewModel.shift!)
+                                alreadySeen = false
+                                presentationMode.wrappedValue.dismiss()
+                            } label: {
+                                Text("❌ Delete shift")
+                                    .foregroundColor(.black)
+                            }
                         }
                     } else { // User view
                         Button {
@@ -130,15 +166,23 @@ struct ShiftView: View {
             }.foregroundColor(.white)
                 .background(.black)
                 .onAppear {
-                    upForGrabsField = shiftViewModel.shift!.upForGrabs
-                    endDate = shiftViewModel.shift!.endDate.dateValue()
-                    startDate = shiftViewModel.shift!.startDate.dateValue()
-                    shiftViewModel.updateFields { result in
-                        selectedEmployeeName = result[0]!
-                        selectedTeamName = result[0]!
+                    if !alreadySeen {
+                        upForGrabsField = shiftViewModel.shift!.upForGrabs
+                        endDate = shiftViewModel.shift!.endDate.dateValue()
+                        startDate = shiftViewModel.shift!.startDate.dateValue()
+                        shiftViewModel.updateFields { result in
+                            selectedEmployeeName = result[0]!
+                            selectedEmployee = result[0]!
+                            selectedTeam = result[1]!
+                            selectedTeamName = result[1]!
+                        }
+                        shiftViewModel.loadPresets(currentDate: startDate)
+                        shiftViewModel.loadDisposition(date: startDate)
+                        selectedEmployee = shiftViewModel.employees.first!.name
                     }
-                    shiftViewModel.loadPresets(currentDate: startDate)
+                    alreadySeen = true
                 }
+                
         }
     }
 }

@@ -12,8 +12,9 @@ import SwiftUI
 final class CalendarViewModel: ObservableObject {
 
     @Published var shifts: [Shift] = []
+    @Published var employees: [User] = []
     var currentUser = User(login: "", name: "", role: "", uid: "", FSID: "")
-    var shiftViewModel = ShiftViewModel(withShift: Shift(employee: "", endDate: Timestamp(date: Date()), role: "", startDate: Timestamp(date: Date()), upForGrabs: false, FSID: ""), canEdit: false)
+    var shiftViewModel = ShiftViewModel(withShift: Shift(employee: "", endDate: Timestamp(date: Date()), role: "", startDate: Timestamp(date: Date()), upForGrabs: false, FSID: ""), withEmployees: [], canEdit: false)
     @Published var showShift: Bool = false
     @Published var currentDate: Date = Date()
     @Published var currentMonth: Int = 0
@@ -23,6 +24,10 @@ final class CalendarViewModel: ObservableObject {
     
     func update(_ user: User) {
         self.currentUser = user
+    }
+    
+    func setEmployees(_ users: [User]) {
+        employees = users
     }
     
     func getShifts() -> [Shift] {
@@ -58,12 +63,12 @@ final class CalendarViewModel: ObservableObject {
             canEdit = true
             print("canedit")
         }
-        self.shiftViewModel = ShiftViewModel(withShift: shift, canEdit: canEdit)
+        self.shiftViewModel = ShiftViewModel(withShift: shift, withEmployees: employees,canEdit: canEdit)
         showShift = true
     }
     
     func enterNew(userRole role: String) {
-        self.shiftViewModel = ShiftViewModel(withShift: Shift(employee: "", endDate: Timestamp(date: Date()), role: role, startDate: Timestamp(date: Date()), upForGrabs: false, FSID: ""), canEdit: true)
+        self.shiftViewModel = ShiftViewModel(withShift: Shift(employee: "", endDate: Timestamp(date: Date()), role: role, startDate: Timestamp(date: Date()), upForGrabs: false, FSID: ""), withEmployees: employees, canEdit: true)
         self.showShift = true
     }
     

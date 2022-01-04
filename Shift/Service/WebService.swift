@@ -68,7 +68,7 @@ class WebService {
 //    func loadEmployees(completionHandler: @escaping LoadEmployeesClosure) {
 //        db.collection(K.FStore.Employees.collection).addSnapshotListener { (querySnapshot, error) in
 //            var result = [User]()
-//            
+//
 //            if let e = error {
 //                print("There was an issue retriving shift data from Firestore. \(e)")
 //            } else {
@@ -97,7 +97,7 @@ class WebService {
     func loadEmployees(completionHandler: @escaping LoadEmployeesClosure) {
         db.collection(K.FStore.Employees.collection).getDocuments { (querySnapshot, error) in
             var result = [User]()
-            
+
             if let e = error {
                 print("There was an issue retriving shift data from Firestore. \(e)")
             } else {
@@ -213,6 +213,36 @@ class WebService {
             
             if let e = error {
                 print("There was an issue retriving shift data from Firestore. \(e)")
+            } else {
+                if let snapshotDocuments = querySnapshot?.documents {
+                    for doc in snapshotDocuments {
+                        let data = doc.data()
+                        if let available = data[K.FStore.Disposition.available] as? [String],
+                           let notPreferred = data[K.FStore.Disposition.notPreferred] as? [String],
+                           let unavailable = data[K.FStore.Disposition.unavailable] as? [String],
+                           let unknown = data[K.FStore.Disposition.unknown] as? [String],
+                           let date = data[K.FStore.Disposition.date] as? Timestamp {
+                            let newDisposition = Disposition(date: date, available: available, notPreferred: notPreferred, unavailable: unavailable, unknown: unknown, FSID: doc.documentID)
+                            result.append(newDisposition)
+                            if result.isEmpty {
+                                completionHandler(nil)
+                            } else {
+                                completionHandler(result)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func loadDay(forDay day: [Date], completionHandler: @escaping LoadDispositionClosure) {
+        
+        db.collection(K.FStore.Disposition.collection).whereField("date", isGreaterThanOrEqualTo: day[0]).whereField("date", isLessThanOrEqualTo: day[1]).addSnapshotListener  { (querySnapshot, error) in
+            var result = [Disposition]()
+            
+            if let e = error {
+                print("There was an issue retriving disposition data from Firestore. \(e)")
             } else {
                 if let snapshotDocuments = querySnapshot?.documents {
                     for doc in snapshotDocuments {

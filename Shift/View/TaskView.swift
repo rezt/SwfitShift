@@ -19,6 +19,7 @@ struct TaskView: View {
     @State var selectedTeam: String = "test"
     @State var selectedTeamName: String = ""
     @State var deadline: Date = Date()
+    @State var alreadySeen: Bool = false
     @Environment(\.presentationMode) var presentationMode
     
     init(taskViewModel: TaskViewModel, taskListViewModel: TaskListViewModel){
@@ -85,12 +86,14 @@ struct TaskView: View {
                                     .foregroundColor(.black)
                             }
                         }
-                        Button {
-                            taskListViewModel.deleteTask(taskViewModel.task!)
-                            presentationMode.wrappedValue.dismiss()
-                        } label: {
-                            Text("❌ Delete task")
-                                .foregroundColor(.black)
+                        if taskViewModel.task?.FSID != "" {
+                            Button {
+                                taskListViewModel.deleteTask(taskViewModel.task!)
+                                presentationMode.wrappedValue.dismiss()
+                            } label: {
+                                Text("❌ Delete task")
+                                    .foregroundColor(.black)
+                            }
                         }
                     } else { // User view
                         Button {
@@ -109,11 +112,14 @@ struct TaskView: View {
             }.foregroundColor(.white)
                 .background(.black)
                 .onAppear {
-                    titleField = taskViewModel.task!.title
-                    statusField = taskViewModel.task!.status
-                    descriptionField = taskViewModel.task!.description
-                    deadline = taskViewModel.task!.deadline.dateValue()
-                    selectedTeamName = taskViewModel.task!.team
+                    if !alreadySeen {
+                        titleField = taskViewModel.task!.title
+                        statusField = taskViewModel.task!.status
+                        descriptionField = taskViewModel.task!.description
+                        deadline = taskViewModel.task!.deadline.dateValue()
+                        selectedTeamName = taskViewModel.task!.team
+                    }
+                    alreadySeen = true
                 }
         }
     }
