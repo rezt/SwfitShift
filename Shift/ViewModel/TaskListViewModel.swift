@@ -12,7 +12,6 @@ import FirebaseFirestore
 
 final class TaskListViewModel: ObservableObject {
     
-    var currentUser = User(login: "", name: "", role: "", uid: "", FSID: "")
     var taskViewModel = TaskViewModel(withTask: Task(deadline: Timestamp(date: Date()), description: "", status: "", team: "", title: "", FSID: ""), canEdit: false)
     @Published var tasks: [Task] = []
     @Published var displayedTasks: [Task] = []
@@ -20,9 +19,6 @@ final class TaskListViewModel: ObservableObject {
     @Published var showFinished: Bool = true
     @Published var showTasks: Bool = false
     
-    func update(_ user: User) {
-        self.currentUser = user
-    }
     
     func saveTask(_ newTask: Task) {
         WebService.shared.saveTask(newTask)
@@ -33,9 +29,13 @@ final class TaskListViewModel: ObservableObject {
     }
     
     func loadTasks() {
-        WebService.shared.loadTasks(role: currentUser.role) { result in
+        WebService.shared.loadTasks(role: UserService.shared.currentUser.role) { result in
             self.tasks = result!
         }
+    }
+    
+    func detachTasks() {
+        WebService.shared.detachListner(WebService.shared.tasksListner)
     }
     
     func getCurrentTasks() {
@@ -64,7 +64,7 @@ final class TaskListViewModel: ObservableObject {
     
     func enter(task: Task) {
         var canEdit = false
-        if currentUser.role == K.FStore.Employees.roles[0] || currentUser.role == K.FStore.Employees.roles[1] {
+        if UserService.shared.currentUser.role == K.FStore.Employees.roles[0] || UserService.shared.currentUser.role == K.FStore.Employees.roles[1] {
             canEdit = true
         }
         self.taskViewModel = TaskViewModel(withTask: task, canEdit: canEdit)

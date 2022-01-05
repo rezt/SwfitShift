@@ -11,25 +11,23 @@ import Firebase
 
 struct ShiftView: View {
     
-    var currentUser: User
     @ObservedObject var shiftViewModel: ShiftViewModel
     @ObservedObject var calendarViewModel: CalendarViewModel
-    @State var selectedEmployee: String = "test"
-    @State var selectedEmployeeName: String = ""
-    @State var selectedTeam: String = "test"
-    @State var selectedTeamName: String = ""
-    @State var selectedPreset: String = ""
-    @State var upForGrabsField: Bool = false
-    @State var endDate: Date = Date()
-    @State var startDate: Date = Date()
-    @State var usingPreset: Bool = false
-    @State var presetDate: Date = Date()
-    @State var alreadySeen: Bool = false
+    @State private var selectedEmployee: String = "test"
+    @State private var selectedEmployeeName: String = ""
+    @State private var selectedTeam: String = "test"
+    @State private var selectedTeamName: String = ""
+    @State private var selectedPreset: String = ""
+    @State private var upForGrabsField: Bool = false
+    @State private var endDate: Date = Date()
+    @State private var startDate: Date = Date()
+    @State private var usingPreset: Bool = false
+    @State private var presetDate: Date = Date()
+    @State private var alreadySeen: Bool = false
     @Environment(\.presentationMode) var presentationMode
     
-    init(_ user: User, shiftViewModel: ShiftViewModel, calendarViewModel: CalendarViewModel) {
+    init(shiftViewModel: ShiftViewModel, calendarViewModel: CalendarViewModel) {
         UITableView.appearance().backgroundColor = .clear
-        self.currentUser = user
         self.shiftViewModel = shiftViewModel
         self.calendarViewModel = calendarViewModel
     }
@@ -133,19 +131,13 @@ struct ShiftView: View {
                                     .foregroundColor(.black)
                             }
                         } else {
-                            if currentUser.role == K.FStore.Employees.roles[0] || currentUser.role == K.FStore.Employees.roles[0] {
+                            if UserService.shared.currentUser.role == K.FStore.Employees.roles[0] || UserService.shared.currentUser.role == K.FStore.Employees.roles[0] {
                                 Button {
                                     shiftViewModel.editShift()
                                 } label: {
                                     Text("✏️ Edit shift")
                                         .foregroundColor(.black)
                                 }
-//                                Button {
-//                                    shiftViewModel.addPreset()
-//                                } label: {
-//                                    Text("🗂 Add preset")
-//                                        .foregroundColor(.black)
-//                                }
                             }
                         }
                         if shiftViewModel.shift?.FSID != "" {
@@ -187,6 +179,10 @@ struct ShiftView: View {
                         selectedEmployee = shiftViewModel.employees.first!.name
                     }
                     alreadySeen = true
+                }
+                .onDisappear {
+                    shiftViewModel.detachDisposition()
+                    shiftViewModel.detachPresets()
                 }
                 
         }

@@ -11,12 +11,11 @@ import Firebase
 
 class LoginViewModel: ObservableObject {
     @Published var isLoggedIn: Bool = false
-    @Published var user = User(login: "", name: "", role: "", uid: "", FSID: "")
     
     func login(withEmail email: String, withPassword password: String) {
         WebService.shared.login(withEmail: email, withPassword: password) { result in
             if result != nil {
-                self.user = result!
+                UserService.shared.currentUser = result!
                 self.isLoggedIn = true
             }
         }

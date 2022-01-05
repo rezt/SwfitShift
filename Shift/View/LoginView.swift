@@ -20,7 +20,7 @@ struct LoginView: View {
                 Color.black
                     .ignoresSafeArea()
                 VStack {
-                    NavigationLink(destination: MainView(loginViewModel.user), isActive: $loginViewModel.isLoggedIn) {}
+                    NavigationLink(destination: MainView(), isActive: $loginViewModel.isLoggedIn) {}
                     Spacer()
                     Text("Swift Shift")
                         .bold()
@@ -28,19 +28,17 @@ struct LoginView: View {
                         .foregroundColor(.white)
                     Spacer()
                     Text("Login:").bold().font(.largeTitle).foregroundColor(.white)
-                        TextField("", text: $email)
-                            .textContentType(.emailAddress)
-                            .keyboardType(.emailAddress)
-                            .autocapitalization(.none)
-                            .disableAutocorrection(true)
-                            .modifier(CustomViewModifier(roundedCornes: 5, startColor: .purple, endColor: .indigo, textColor: .white))
-                            .padding()
-                        Text("Password:").bold().font(.largeTitle).foregroundColor(.white)
-                        SecureField("PASSWORD", text: $password)
-                            .modifier(CustomViewModifier(roundedCornes: 5, startColor: .purple, endColor: .indigo, textColor: .white))
-                            .padding()
-                    
-                    
+                    TextField("", text: $email)
+                        .textContentType(.emailAddress)
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
+                        .modifier(CustomViewModifier(roundedCornes: 5, startColor: .purple, endColor: .indigo, textColor: .white))
+                        .padding()
+                    Text("Password:").bold().font(.largeTitle).foregroundColor(.white)
+                    SecureField("PASSWORD", text: $password)
+                        .modifier(CustomViewModifier(roundedCornes: 5, startColor: .purple, endColor: .indigo, textColor: .white))
+                        .padding()
                     Button(action: {loginViewModel.login(withEmail: email, withPassword: password)}) {
                         Text("Log in").font(.title)
                     }
@@ -48,7 +46,7 @@ struct LoginView: View {
                 }
             }
         }.navigationBarHidden(true)
-            
+        
         
     }
 }

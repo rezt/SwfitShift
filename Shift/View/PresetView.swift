@@ -11,20 +11,21 @@ import SwiftUI
 
 struct PresetView: View {
     
-    @ObservedObject var presetViewModel: PresetViewModel
-    
-    init(presetViewModel: PresetViewModel) {
-        self.presetViewModel = presetViewModel
-    }
+    @StateObject var presetViewModel = PresetViewModel()
     
     var body: some View {
         ZStack {
             Color(.black).ignoresSafeArea()
             ScrollView {
-                ForEach(DataViewModel.shared.presets, id: \.self) { value in
+                ForEach(presetViewModel.presets, id: \.self) { value in
                     PresetCard(value: value)
                 }
             }
+        }.onAppear {
+            presetViewModel.loadPresets()
+        }
+        .onDisappear {
+            presetViewModel.detachPresets()
         }
     }
     

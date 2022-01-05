@@ -11,7 +11,6 @@ import SwiftUI
 
 final class ShiftViewModel: ObservableObject {
     
-    
     @Published var firstEmployees: [User] = []
     @Published var secondEmployees: [User] = []
     @Published var thirdEmployees: [User] = []
@@ -21,31 +20,41 @@ final class ShiftViewModel: ObservableObject {
     @Published var shift: Shift?
     @Published var canEdit: Bool
     @Published var edit: Bool = false
-    var todayDisposition: Disposition?
+    private var todayDisposition: Disposition?
         
     typealias UpdateFieldsClosure = (Array<String?>) -> Void
     typealias UsePresetClosure = (Array<Date>?) -> Void
+    
+    init(withShift newShift: Shift, withEmployees newEmployees: [User], canEdit flag: Bool) {
+        self.shift = newShift
+        self.canEdit = flag
+        self.employees = newEmployees
+//        loadDisposition(date: newShift.startDate.dateValue())
+    }
     
     func loadDisposition(date: Date) {
         let result1 = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: date)
         let result2 = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: date)
         WebService.shared.loadDay(forDay: [result1!, result2!]) { result in
             if result != nil {
-                print("day: \(result)")
                 self.todayDisposition = result![0]
                 self.sortEmployees()
             }
         }
     }
     
-    func addPresets() {
-        
+    func detachDisposition() {
+        WebService.shared.detachListner(WebService.shared.dayListner)
     }
     
     func loadPresets(currentDate: Date) {
         WebService.shared.loadPresets { result in
             self.presets = result!
         }
+    }
+    
+    func detachPresets() {
+        WebService.shared.detachListner(WebService.shared.presetListner)
     }
     
     func sortEmployees() {
@@ -80,32 +89,7 @@ final class ShiftViewModel: ObservableObject {
                 fourthEmployees.append(employee[0])
             }
         }
-        
-        print(firstEmployees)
-        print(secondEmployees)
-        print(thirdEmployees)
-        print(fourthEmployees)
-        
-//        var uids: [String] = []
-//        for employee in employees {
-//            uids.append(employee.uid)
-//        }
-//        let available = Set(uids).intersection(Set(todayDisposition!.available))
-//        let notPreferred = Set(uids).intersection(Set(todayDisposition!.notPreferred))
-//        let unavailable = Set(uids).intersection(Set(todayDisposition!.unavailable))
     }
-    
-    init(withShift newShift: Shift, withEmployees newEmployees: [User], canEdit flag: Bool) {
-        self.shift = newShift
-        self.canEdit = flag
-        self.employees = newEmployees
-        loadDisposition(date: newShift.startDate.dateValue())
-    }
-    
-//    func setEmployees(_ users: [User]) {
-//        employees = users
-//
-//    }
     
     func updateFields(completionHandler: @escaping UpdateFieldsClosure) {
         WebService.shared.getDetails(forUserID: shift!.employee) { result in
@@ -114,7 +98,6 @@ final class ShiftViewModel: ObservableObject {
     }
     
     func editShift() {
-        print(shift)
         edit = !edit
     }
     

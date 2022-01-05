@@ -12,15 +12,15 @@ struct RegisterView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @ObservedObject var registerViewModel: RegisterViewModel
-    @State var loginField: String = "login"
-    @State var nameField: String = "name"
-    @State var emailField: String = "email"
-    @State var descriptionField: String = "description"
-    @State var selectedRole: String = K.FStore.Employees.roles[0]
-    @State var password1: String = ""
-    @State var password2: String = ""
-    @State var showingAlert = false
-    @State var alertMessage = "test"
+    @State private var loginField: String = "login"
+    @State private var nameField: String = "name"
+    @State private var emailField: String = "email"
+    @State private var descriptionField: String = "description"
+    @State private var selectedRole: String = K.FStore.Employees.roles[0]
+    @State private var password1: String = ""
+    @State private var password2: String = ""
+    @State private var showingAlert = false
+    @State private var alertMessage = "test"
     
     init(registerViewModel: RegisterViewModel) {
         self.registerViewModel = registerViewModel

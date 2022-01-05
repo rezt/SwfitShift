@@ -10,12 +10,8 @@ import SwiftUI
 
 struct DispositionView: View {
     
-    @ObservedObject var dispositionViewModel: DispositionViewModel
+    @StateObject var dispositionViewModel = DispositionViewModel()
     @Environment(\.presentationMode) var presentationMode
-    
-    init(dispositionViewModel: DispositionViewModel) {
-        self.dispositionViewModel = dispositionViewModel
-    }
     
     var body: some View {
         ZStack {
@@ -25,7 +21,6 @@ struct DispositionView: View {
                     if self.$dispositionViewModel.isManager.wrappedValue {
                         Button {
                             dispositionViewModel.generateDisposition()
-                            presentationMode.wrappedValue.dismiss()
                         } label: {
                             Text("Generate next 31 days...").foregroundColor(.white)
                         }
@@ -48,16 +43,20 @@ struct DispositionView: View {
                         Text("")
                             .frame(minWidth: 88)
                     }.padding()
-                    ForEach(0 ..< dispositionViewModel.userDisposition.count) { value in
-                        dayView(index: value)
+                    ForEach(dispositionViewModel.userDisposition, id: \.self) { value in
+                        dayView(index: dispositionViewModel.userDisposition.firstIndex(of: value)! )
                     }
                 }
             }
         }
-        
-        
-        
-        
+        .onAppear(perform: {
+            dispositionViewModel.loadEmployees()
+            dispositionViewModel.loadDisposition()
+        })
+        .onDisappear(perform: {
+            dispositionViewModel.detachEmployees()
+            dispositionViewModel.detachDispostion()
+        })
     }
     
     @ViewBuilder

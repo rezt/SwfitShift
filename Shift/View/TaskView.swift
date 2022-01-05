@@ -13,13 +13,13 @@ struct TaskView: View {
     
     @ObservedObject var taskViewModel: TaskViewModel
     @ObservedObject var taskListViewModel: TaskListViewModel
-    @State var titleField: String = "title"
-    @State var statusField: String = "status"
-    @State var descriptionField: String = "description"
-    @State var selectedTeam: String = "test"
-    @State var selectedTeamName: String = ""
-    @State var deadline: Date = Date()
-    @State var alreadySeen: Bool = false
+    @State private var titleField: String = "title"
+    @State private var statusField: String = "status"
+    @State private var descriptionField: String = "description"
+    @State private var selectedTeam: String = "test"
+    @State private var selectedTeamName: String = ""
+    @State private var deadline: Date = Date()
+    @State private var alreadySeen: Bool = false
     @Environment(\.presentationMode) var presentationMode
     
     init(taskViewModel: TaskViewModel, taskListViewModel: TaskListViewModel){

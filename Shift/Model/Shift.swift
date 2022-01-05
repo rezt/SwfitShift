@@ -51,12 +51,4 @@ struct Shift: Hashable {
         let date = formatter.string(from: endDate.dateValue())
         return date
     }
-    
-//    func getDayStartEnd() -> [Date] {
-//        let date = startDate.dateValue()
-//        let result1 = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: date)
-//        let result2 = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: date)
-//        return [result1!, result2!]
-//    }
-    
 }

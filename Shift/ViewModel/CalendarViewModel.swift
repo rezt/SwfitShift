@@ -13,23 +13,33 @@ final class CalendarViewModel: ObservableObject {
 
     @Published var shifts: [Shift] = []
     @Published var employees: [User] = []
-    var currentUser = User(login: "", name: "", role: "", uid: "", FSID: "")
-    var shiftViewModel = ShiftViewModel(withShift: Shift(employee: "", endDate: Timestamp(date: Date()), role: "", startDate: Timestamp(date: Date()), upForGrabs: false, FSID: ""), withEmployees: [], canEdit: false)
     @Published var showShift: Bool = false
     @Published var currentDate: Date = Date()
     @Published var currentMonth: Int = 0
     @Published var canEdit: Bool = false
+    var shiftViewModel = ShiftViewModel(withShift: Shift(employee: "", endDate: Timestamp(date: Date()), role: "", startDate: Timestamp(date: Date()), upForGrabs: false, FSID: ""), withEmployees: [], canEdit: false)
     
-    func update(_ user: User) {
-        self.currentUser = user
+    func loadEmployees() {
+        WebService.shared.loadEmployees() { result in
+            if result != nil {
+                self.employees = result!
+            }
+        }
     }
     
-    func setEmployees(_ users: [User]) {
-        employees = users
+    func detachEmployees() {
+        WebService.shared.detachListner(WebService.shared.employeeListner)
     }
     
-    func getShifts() -> [Shift] {
-        return shifts
+    func loadShifts(){
+        print(UserService.shared.currentUser.role)
+        WebService.shared.loadShifts(role: UserService.shared.currentUser.role, uid: UserService.shared.currentUser.uid) { result in
+            self.shifts = result!
+        }
+    }
+    
+    func detachShifts() {
+        WebService.shared.detachListner(WebService.shared.shiftsListner)
     }
     
     func saveShift(_ newShift: Shift) {
@@ -40,24 +50,17 @@ final class CalendarViewModel: ObservableObject {
         WebService.shared.deleteShift(shift)
     }
     
-    func loadShifts(){
-        print(currentUser.role)
-        WebService.shared.loadShifts(role: currentUser.role, uid: currentUser.uid) { result in
-            self.shifts = result!
-        }
-    }
-    
     func changeStateOfShift(_ shift: Shift) {
         WebService.shared.changeStateOfShift(shift)
     }
     
     func takeShift(_ shift: Shift) {
-        WebService.shared.takeShift(uid: currentUser.uid, shift: shift)
+        WebService.shared.takeShift(uid: UserService.shared.currentUser.uid, shift: shift)
     }
     
     func enter(shift: Shift) {
         var canEdit = false
-        if currentUser.role == K.FStore.Employees.roles[0] || currentUser.role == K.FStore.Employees.roles[1] {
+        if UserService.shared.currentUser.role == K.FStore.Employees.roles[0] || UserService.shared.currentUser.role == K.FStore.Employees.roles[1] {
             canEdit = true
             print("canedit")
         }

@@ -14,13 +14,19 @@ class WebService {
     
     let db = Firestore.firestore()
     
+    var presetListner: ListenerRegistration?
+    var employeeListner: ListenerRegistration?
+    var shiftsListner: ListenerRegistration?
+    var tasksListner: ListenerRegistration?
+    var dispositionListner: ListenerRegistration?
+    var dayListner: ListenerRegistration?
+    
     typealias LoginClosure = (User?) -> Void
-    typealias GetDetailsClosure = (Array<User>?) -> Void
-    typealias LoadEmployeesClosure = (Array<User>?) -> Void
-    typealias LoadShiftsRoleClosure = (Array<Shift>?) -> Void
-    typealias LoadTasksClosure = (Array<Task>?) -> Void
-    typealias LoadDispositionClosure = (Array<Disposition>?) -> Void
-    typealias LoadPresetsClosure = (Array<Preset>?) -> Void
+    typealias UsersClosure = (Array<User>?) -> Void
+    typealias ShiftsClosure = (Array<Shift>?) -> Void
+    typealias TasksClosure = (Array<Task>?) -> Void
+    typealias DispositionClosure = (Array<Disposition>?) -> Void
+    typealias PresetClosure = (Array<Preset>?) -> Void
     
     func login(withEmail email: String, withPassword password: String, completionHandler: @escaping LoginClosure) {
         Auth.auth().signIn(withEmail: email, password: password) {authResult, error in
@@ -40,7 +46,7 @@ class WebService {
         }
     }
     
-    func getDetails(forUserID userID: String, completionHandler: @escaping GetDetailsClosure) {
+    func getDetails(forUserID userID: String, completionHandler: @escaping UsersClosure) {
         let docRef = db.collection(K.FStore.Employees.collection).whereField(K.FStore.Employees.uid, isEqualTo: userID)
         
         var result = [User]()
@@ -68,37 +74,8 @@ class WebService {
         }
     }
     
-//    func loadEmployees(completionHandler: @escaping LoadEmployeesClosure) {
-//        db.collection(K.FStore.Employees.collection).addSnapshotListener { (querySnapshot, error) in
-//            var result = [User]()
-//
-//            if let e = error {
-//                print("There was an issue retriving shift data from Firestore. \(e)")
-//            } else {
-//                if let snapshotDocuments = querySnapshot?.documents {
-//                    for doc in snapshotDocuments {
-//                        print("getting employee")
-//                        let data = doc.data()
-//                        if let login = data[K.FStore.Employees.login] as? String,
-//                           let name = data[K.FStore.Employees.name] as? String,
-//                           let role = data[K.FStore.Employees.role] as? String,
-//                           let uid = data[K.FStore.Employees.uid] as? String {
-//                            let nextEmployee = User(login: login, name: name, role: role, uid: uid, FSID: doc.documentID)
-//                            result.append(nextEmployee)
-//                            if result.isEmpty {
-//                                completionHandler(nil)
-//                            } else {
-//                                completionHandler(result)
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-    
-    func loadEmployees(completionHandler: @escaping LoadEmployeesClosure) {
-        db.collection(K.FStore.Employees.collection).getDocuments { (querySnapshot, error) in
+    func loadEmployees(completionHandler: @escaping UsersClosure) {
+        employeeListner = db.collection(K.FStore.Employees.collection).addSnapshotListener { (querySnapshot, error) in
             var result = [User]()
 
             if let e = error {
@@ -207,11 +184,11 @@ class WebService {
         }
     }
     
-    func loadDisposition(completionHandler: @escaping LoadDispositionClosure) { // Load only shifts specified to user or user's role
+    func loadDisposition(completionHandler: @escaping DispositionClosure) { // Load only shifts specified to user or user's role
         
         let futureDate = Calendar.current.date(byAdding: .day, value: 31, to: Date())
         
-        db.collection(K.FStore.Disposition.collection).whereField("date", isGreaterThanOrEqualTo: Date()).whereField("date", isLessThanOrEqualTo: futureDate!).addSnapshotListener { (querySnapshot, error) in
+        dispositionListner = db.collection(K.FStore.Disposition.collection).whereField("date", isGreaterThanOrEqualTo: Date()).whereField("date", isLessThanOrEqualTo: futureDate!).addSnapshotListener { (querySnapshot, error) in
             var result = [Disposition]()
             
             if let e = error {
@@ -239,9 +216,9 @@ class WebService {
         }
     }
     
-    func loadDay(forDay day: [Date], completionHandler: @escaping LoadDispositionClosure) {
+    func loadDay(forDay day: [Date], completionHandler: @escaping DispositionClosure) {
         
-        db.collection(K.FStore.Disposition.collection).whereField("date", isGreaterThanOrEqualTo: day[0]).whereField("date", isLessThanOrEqualTo: day[1]).addSnapshotListener  { (querySnapshot, error) in
+        dayListner = db.collection(K.FStore.Disposition.collection).whereField("date", isGreaterThanOrEqualTo: day[0]).whereField("date", isLessThanOrEqualTo: day[1]).addSnapshotListener  { (querySnapshot, error) in
             var result = [Disposition]()
             
             if let e = error {
@@ -269,8 +246,8 @@ class WebService {
         }
     }
     
-    func loadPresets(completionHandler: @escaping LoadPresetsClosure) {
-        db.collection(K.FStore.Presets.collection).addSnapshotListener { (querySnapshot, error) in
+    func loadPresets(completionHandler: @escaping PresetClosure) {
+        presetListner = db.collection(K.FStore.Presets.collection).addSnapshotListener { (querySnapshot, error) in
             var result = [Preset]()
             
             if let e = error {
@@ -293,6 +270,12 @@ class WebService {
                     }
                 }
             }
+        }
+    }
+    
+    func detachListner(_ toDetach: ListenerRegistration?) {
+        if let listner = toDetach {
+            listner.remove()
         }
     }
     
@@ -369,8 +352,8 @@ class WebService {
         }
     }
     
-    func loadShiftsAdmin(completionHandler: @escaping ((Array<Shift>?) -> Void)) { // Load all shifts
-        db.collection(K.FStore.Shifts.collection).addSnapshotListener { (querySnapshot, error) in
+    func loadShiftsAdmin(completionHandler: @escaping ShiftsClosure) { // Load all shifts
+        shiftsListner = db.collection(K.FStore.Shifts.collection).addSnapshotListener { (querySnapshot, error) in
             var result = [Shift]()
             
             if let e = error {
@@ -398,8 +381,8 @@ class WebService {
         }
     }
     
-    func loadShiftsNormal(role: String, uid: String, completionHandler: @escaping ((Array<Shift>?) -> Void)) { // Load only shifts specified to user or user's role
-        db.collection(K.FStore.Shifts.collection).whereField(K.FStore.Shifts.employee, isEqualTo: uid).addSnapshotListener { (querySnapshot, error) in
+    func loadShiftsNormal(role: String, uid: String, completionHandler: @escaping ShiftsClosure) { // Load only shifts specified to user or user's role
+        shiftsListner = db.collection(K.FStore.Shifts.collection).whereField(K.FStore.Shifts.employee, isEqualTo: uid).addSnapshotListener { (querySnapshot, error) in
             var shifts = [Shift]()
             
             if let e = error {
@@ -429,8 +412,8 @@ class WebService {
         }
     }
     
-    func loadShiftsRole(role: String, completionHandler: @escaping LoadShiftsRoleClosure) {
-        db.collection(K.FStore.Shifts.collection).whereField(K.FStore.Shifts.state, isEqualTo: true).whereField(K.FStore.Shifts.role, isEqualTo: role).addSnapshotListener { (querySnapshot, error) in
+    func loadShiftsRole(role: String, completionHandler: @escaping ShiftsClosure) {
+        shiftsListner = db.collection(K.FStore.Shifts.collection).whereField(K.FStore.Shifts.state, isEqualTo: true).whereField(K.FStore.Shifts.role, isEqualTo: role).addSnapshotListener { (querySnapshot, error) in
             var result = [Shift]()
             
             if let e = error {
@@ -533,8 +516,8 @@ class WebService {
         }
     }
     
-    func loadTasks(role: String, completionHandler: @escaping LoadTasksClosure) {
-        db.collection(K.FStore.Tasks.collection).whereField(K.FStore.Tasks.team, isEqualTo: role)
+    func loadTasks(role: String, completionHandler: @escaping TasksClosure) {
+    tasksListner = db.collection(K.FStore.Tasks.collection).whereField(K.FStore.Tasks.team, isEqualTo: role)
             .addSnapshotListener { (querySnapshot, error) in
                 var result = [Task]()
                 

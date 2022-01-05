@@ -7,8 +7,7 @@
 
 import Foundation
 
-struct PersonalDisposition: Identifiable {
-    var id = UUID().uuidString
+struct PersonalDisposition: Hashable {
     var date: Date
     var value: [Bool]
     var FSID: String

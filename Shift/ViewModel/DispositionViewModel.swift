@@ -12,20 +12,34 @@ import SwiftUI
 final class DispositionViewModel: ObservableObject {
     
     @Published var employees: [User] = []
-    @Published var currentUser: User = User(login: "", name: "", role: "", uid: "", FSID: "")
     @Published var thisMonth: [Disposition] = []
     @Published var userDisposition: [PersonalDisposition] = []
     @Published var isManager: Bool = false
     
-    func update(_ user: User) {
-        self.currentUser = user
-        if currentUser.role == K.FStore.Employees.roles[0] || currentUser.role == K.FStore.Employees.roles[1] {
+    init() {
+        if UserService.shared.currentUser.role == K.FStore.Employees.roles[0] || UserService.shared.currentUser.role == K.FStore.Employees.roles[1] {
             isManager = true
         }
     }
     
     func setEmployees(_ users: [User]) {
         employees = users
+    }
+    
+    func loadEmployees() {
+        WebService.shared.loadEmployees() { result in
+            if result != nil {
+                self.employees = result!
+            }
+        }
+    }
+    
+    func detachEmployees() {
+        WebService.shared.detachListner(WebService.shared.employeeListner)
+    }
+    
+    func detachDispostion() {
+        WebService.shared.detachListner(WebService.shared.dispositionListner)
     }
     
     func getDate(from date: Date) -> String {
@@ -69,18 +83,18 @@ final class DispositionViewModel: ObservableObject {
             print("Error while finding dispositionObject")
             return
         }
-        var newAvailable = dispo!.available.filter { $0 != currentUser.uid }
-        var newNotPreferred = dispo!.notPreferred.filter { $0 != currentUser.uid }
-        var newUnavailable = dispo!.unavailable.filter { $0 != currentUser.uid }
-        var newUnknown = dispo!.unknown.filter { $0 != currentUser.uid }
+        var newAvailable = dispo!.available.filter { $0 != UserService.shared.currentUser.uid }
+        var newNotPreferred = dispo!.notPreferred.filter { $0 != UserService.shared.currentUser.uid }
+        var newUnavailable = dispo!.unavailable.filter { $0 != UserService.shared.currentUser.uid }
+        var newUnknown = dispo!.unknown.filter { $0 != UserService.shared.currentUser.uid }
         if newDisposition.value[0] {
-            newAvailable.append(currentUser.uid)
+            newAvailable.append(UserService.shared.currentUser.uid)
         } else if newDisposition.value[1] {
-            newNotPreferred.append(currentUser.uid)
+            newNotPreferred.append(UserService.shared.currentUser.uid)
         } else if newDisposition.value[2] {
-            newUnavailable.append(currentUser.uid)
+            newUnavailable.append(UserService.shared.currentUser.uid)
         } else {
-            newUnknown.append(currentUser.uid)
+            newUnknown.append(UserService.shared.currentUser.uid)
         }
         
         let newDispo = Disposition(date: dispo!.date, available: newAvailable, notPreferred: newNotPreferred, unavailable: newUnavailable, unknown: newUnknown, FSID: newDisposition.FSID)
@@ -115,11 +129,11 @@ final class DispositionViewModel: ObservableObject {
     
     func getPersonalDisposition() {
         for dispo in thisMonth {
-            if dispo.available.contains(currentUser.uid) {
+            if dispo.available.contains(UserService.shared.currentUser.uid) {
                 userDisposition.append(PersonalDisposition(date: dispo.getDate(), value: [true,false,false,false], FSID: dispo.FSID))
-            } else if dispo.notPreferred.contains(currentUser.uid) {
+            } else if dispo.notPreferred.contains(UserService.shared.currentUser.uid) {
                 userDisposition.append(PersonalDisposition(date: dispo.getDate(), value: [false,true,false,false], FSID: dispo.FSID))
-            } else if dispo.unavailable.contains(currentUser.uid) {
+            } else if dispo.unavailable.contains(UserService.shared.currentUser.uid) {
                 userDisposition.append(PersonalDisposition(date: dispo.getDate(), value: [false,false,true,false], FSID: dispo.FSID))
             } else {
                 userDisposition.append(PersonalDisposition(date: dispo.getDate(), value: [false,false,false,true], FSID: dispo.FSID))

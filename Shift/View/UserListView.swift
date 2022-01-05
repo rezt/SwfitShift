@@ -10,12 +10,8 @@ import SwiftUI
 
 struct UserListView: View {
     
-    @ObservedObject var userListViewModel: UserListViewModel
+    @StateObject var userListViewModel = UserListViewModel()
     @StateObject var registerViewModel = RegisterViewModel()
-    
-    init(userListViewModel: UserListViewModel) {
-        self.userListViewModel = userListViewModel
-    }
     
     var body: some View {
         NavigationLink(destination: UserView(userListViewModel: userListViewModel), isActive: $userListViewModel.showUser) {}
@@ -35,7 +31,12 @@ struct UserListView: View {
                     }
                 }
             }
-        }
+        }.onAppear(perform: {
+            userListViewModel.loadEmployees()
+        })
+        .onDisappear(perform: {
+            userListViewModel.detachEmployees()
+        })
     }
     
     @ViewBuilder

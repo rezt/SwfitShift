@@ -12,7 +12,7 @@ struct UserView: View {
     
     @ObservedObject var userViewModel: UserViewModel
     @ObservedObject var userListViewModel: UserListViewModel
-    @State var selectedRole: String = "test"
+    @State private var selectedRole: String = "test"
     @Environment(\.presentationMode) var presentationMode
     
     init(userListViewModel: UserListViewModel) {

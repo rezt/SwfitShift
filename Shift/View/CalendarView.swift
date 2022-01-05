@@ -9,13 +9,7 @@ import SwiftUI
 
 struct CalendarView: View {
     
-    var currentUser: User
     @ObservedObject var calendarViewModel: CalendarViewModel
-    
-    init(calendarViewModel: CalendarViewModel, _ user: User) {
-        self.calendarViewModel = calendarViewModel
-        self.currentUser = user
-    }
     
     var drag: some Gesture {
         DragGesture(minimumDistance: 30, coordinateSpace: .local)
@@ -112,12 +106,18 @@ struct CalendarView: View {
                 }
             }
             
-            if currentUser.role == K.FStore.Employees.roles[0] || currentUser.role == K.FStore.Employees.roles[1] {
-                Button(action: {calendarViewModel.enterNew(userRole: currentUser.role)}) {
+            if UserService.shared.currentUser.role == K.FStore.Employees.roles[0] || UserService.shared.currentUser.role == K.FStore.Employees.roles[1] {
+                Button(action: {calendarViewModel.enterNew(userRole: UserService.shared.currentUser.role)}) {
                     Text("Add shift")
                 }
             }
         }
+        .onAppear(perform: {
+            calendarViewModel.loadEmployees()
+        })
+        .onDisappear(perform: {
+            calendarViewModel.detachEmployees()
+        })
         .gesture(drag)
     }
     
@@ -134,7 +134,7 @@ struct CalendarView: View {
                     Text("\nWork as: \(shift.role)\nFrom: \(shift.getStartDateTime()[0]):\(shift.getStartDateTime()[1])\nTo: \(shift.getEndDateTime()[0]):\(shift.getEndDateTime()[1])")
                         .font(.title3.bold())
                         .foregroundColor(.white)
-                    if shift.employee != currentUser.uid {
+                    if shift.employee != UserService.shared.currentUser.uid {
                         Button(action: {calendarViewModel.takeShift(shift)}) {
                             Text("Take the shift")
                         }
@@ -143,7 +143,7 @@ struct CalendarView: View {
                             Text("Up for grabs")
                         }
                     }
-                    if currentUser.role == K.FStore.Employees.roles[0] || currentUser.role == K.FStore.Employees.roles[1] {
+                    if UserService.shared.currentUser.role == K.FStore.Employees.roles[0] || UserService.shared.currentUser.role == K.FStore.Employees.roles[1] {
                         Button(action: {calendarViewModel.enter(shift: shift)}) {
                             Text("Edit shift")
                         }

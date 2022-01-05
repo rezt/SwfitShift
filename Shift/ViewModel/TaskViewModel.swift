@@ -20,7 +20,6 @@ final class TaskViewModel: ObservableObject {
     }
     
     func editTask() {
-        print(task)
         edit = !edit
     }
 }

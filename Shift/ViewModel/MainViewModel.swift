@@ -11,10 +11,11 @@ import SwiftUI
 
 class MainViewModel: ObservableObject {
     
-    var employees: [User] = []
     @Published var goToDisposition: Bool = false
     @Published var goToUsers: Bool = false
     @Published var goToPresets: Bool = false
+    
+    private var employees: [User] = []
     
     typealias LoadEmployeesClosure = (Array<User>?) -> Void
     
@@ -24,10 +25,6 @@ class MainViewModel: ObservableObject {
                 completionHandler(result!)
             }
         }
-    }
-    
-    func getEmployees() -> [User] {
-        return employees
     }
     
     func showDisposition() {
@@ -42,8 +39,4 @@ class MainViewModel: ObservableObject {
         goToPresets = !goToPresets
     }
     
-    func loadData() {
-        DataViewModel.shared.loadPresets()
-        DataViewModel.shared.loadEmployees()
-    }
 }

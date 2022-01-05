@@ -23,6 +23,19 @@ final class UserListViewModel: ObservableObject {
         employees = users
     }
     
+    func loadEmployees() {
+        WebService.shared.loadEmployees() { result in
+            if result != nil {
+                self.employees = result!
+            }
+        }
+    }
+    
+    func detachEmployees() {
+        WebService.shared.detachListner(WebService.shared.employeeListner)
+    }
+
+    
     func getRoleOf(user: User) {
         userRoles.append(UserRole(uid: user.uid, role: user.role))
     }
