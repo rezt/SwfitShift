@@ -20,8 +20,6 @@ final class CalendarViewModel: ObservableObject {
     @Published var currentMonth: Int = 0
     @Published var canEdit: Bool = false
     
-    var webService = WebService()
-    
     func update(_ user: User) {
         self.currentUser = user
     }
@@ -35,26 +33,26 @@ final class CalendarViewModel: ObservableObject {
     }
     
     func saveShift(_ newShift: Shift) {
-        webService.saveShift(newShift)
+        WebService.shared.saveShift(newShift)
     }
     
     func deleteShift(_ shift: Shift) {
-        webService.deleteShift(shift)
+        WebService.shared.deleteShift(shift)
     }
     
     func loadShifts(){
         print(currentUser.role)
-        webService.loadShifts(role: currentUser.role, uid: currentUser.uid) { result in
+        WebService.shared.loadShifts(role: currentUser.role, uid: currentUser.uid) { result in
             self.shifts = result!
         }
     }
     
     func changeStateOfShift(_ shift: Shift) {
-        webService.changeStateOfShift(shift)
+        WebService.shared.changeStateOfShift(shift)
     }
     
     func takeShift(_ shift: Shift) {
-        webService.takeShift(uid: currentUser.uid, shift: shift)
+        WebService.shared.takeShift(uid: currentUser.uid, shift: shift)
     }
     
     func enter(shift: Shift) {

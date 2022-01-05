@@ -10,7 +10,6 @@ import Foundation
 final class UserViewModel: ObservableObject {
     @Published var user: User?
     @Published var edit: Bool = false
-    var webService = WebService()
     
     init(withUser newUser: User) {
         self.user = newUser
@@ -21,7 +20,7 @@ final class UserViewModel: ObservableObject {
     }
     
     func saveUser(withRole role: String) {
-        webService.saveUser(user!, selectedRole: role)
+        WebService.shared.saveUser(user!, selectedRole: role)
     }
     
 }

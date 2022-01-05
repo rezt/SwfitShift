@@ -15,6 +15,7 @@ struct MainView: View {
     @StateObject var taskListViewModel = TaskListViewModel()
     @StateObject var dispositionViewModel = DispositionViewModel()
     @StateObject var userListViewModel = UserListViewModel()
+    @StateObject var presetViewModel = PresetViewModel()
     
     init(_ user: User) {
         print(user)
@@ -28,6 +29,7 @@ struct MainView: View {
                 NavigationLink(destination: ShiftView(currentUser, shiftViewModel: calendarViewModel.shiftViewModel, calendarViewModel: calendarViewModel), isActive: $calendarViewModel.showShift) {}
                 NavigationLink(destination: DispositionView(dispositionViewModel: dispositionViewModel), isActive: $mainViewModel.goToDisposition) {}
                 NavigationLink(destination: UserListView(userListViewModel: userListViewModel), isActive: $mainViewModel.goToUsers) {}
+                NavigationLink(destination: PresetView(presetViewModel: presetViewModel), isActive: $mainViewModel.goToPresets) {}
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 20) {
                         HStack {
@@ -40,7 +42,12 @@ struct MainView: View {
                                 Button {
                                     mainViewModel.showUserManagement()
                                 } label: {
-                                    Text("Users management")
+                                    Text("Users...")
+                                }
+                                Button {
+                                    mainViewModel.showPresets()
+                                } label: {
+                                    Text("Presets...")
                                 }
                             }
                         }
@@ -64,7 +71,7 @@ struct MainView: View {
                     userListViewModel.setEmployees(result!)
                     calendarViewModel.setEmployees(result!)
                 }
-                
+                mainViewModel.loadData()
             }
     }
 }

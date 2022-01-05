@@ -13,10 +13,8 @@ class LoginViewModel: ObservableObject {
     @Published var isLoggedIn: Bool = false
     @Published var user = User(login: "", name: "", role: "", uid: "", FSID: "")
     
-    let webService = WebService()
-    
     func login(withEmail email: String, withPassword password: String) {
-        webService.login(withEmail: email, withPassword: password) { result in
+        WebService.shared.login(withEmail: email, withPassword: password) { result in
             if result != nil {
                 self.user = result!
                 self.isLoggedIn = true

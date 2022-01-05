@@ -140,6 +140,12 @@ struct ShiftView: View {
                                     Text("✏️ Edit shift")
                                         .foregroundColor(.black)
                                 }
+//                                Button {
+//                                    shiftViewModel.addPreset()
+//                                } label: {
+//                                    Text("🗂 Add preset")
+//                                        .foregroundColor(.black)
+//                                }
                             }
                         }
                         if shiftViewModel.shift?.FSID != "" {

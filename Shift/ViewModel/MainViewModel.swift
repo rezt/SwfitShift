@@ -14,12 +14,12 @@ class MainViewModel: ObservableObject {
     var employees: [User] = []
     @Published var goToDisposition: Bool = false
     @Published var goToUsers: Bool = false
-    var webService = WebService()
+    @Published var goToPresets: Bool = false
     
     typealias LoadEmployeesClosure = (Array<User>?) -> Void
     
     func loadEmployees(completionHandler: @escaping LoadEmployeesClosure) {
-        webService.loadEmployees() { result in
+        WebService.shared.loadEmployees() { result in
             if result != nil {
                 completionHandler(result!)
             }
@@ -36,5 +36,14 @@ class MainViewModel: ObservableObject {
     
     func showUserManagement() {
         goToUsers = !goToUsers
+    }
+    
+    func showPresets() {
+        goToPresets = !goToPresets
+    }
+    
+    func loadData() {
+        DataViewModel.shared.loadPresets()
+        DataViewModel.shared.loadEmployees()
     }
 }

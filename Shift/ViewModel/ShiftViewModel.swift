@@ -22,24 +22,14 @@ final class ShiftViewModel: ObservableObject {
     @Published var canEdit: Bool
     @Published var edit: Bool = false
     var todayDisposition: Disposition?
-    
-    var webService = WebService()
-    
+        
     typealias UpdateFieldsClosure = (Array<String?>) -> Void
     typealias UsePresetClosure = (Array<Date>?) -> Void
-    
-//    func loadEmployees(completionHandler: @escaping (Bool) -> Void) {
-//        webService.loadEmployees() { result in
-//            if result != nil {
-//                self.employees = result!
-//            }
-//        }
-//    }
     
     func loadDisposition(date: Date) {
         let result1 = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: date)
         let result2 = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: date)
-        webService.loadDay(forDay: [result1!, result2!]) { result in
+        WebService.shared.loadDay(forDay: [result1!, result2!]) { result in
             if result != nil {
                 print("day: \(result)")
                 self.todayDisposition = result![0]
@@ -48,8 +38,12 @@ final class ShiftViewModel: ObservableObject {
         }
     }
     
+    func addPresets() {
+        
+    }
+    
     func loadPresets(currentDate: Date) {
-        webService.loadPresets { result in
+        WebService.shared.loadPresets { result in
             self.presets = result!
         }
     }
@@ -114,7 +108,7 @@ final class ShiftViewModel: ObservableObject {
 //    }
     
     func updateFields(completionHandler: @escaping UpdateFieldsClosure) {
-        webService.getDetails(forUserID: shift!.employee) { result in
+        WebService.shared.getDetails(forUserID: shift!.employee) { result in
             completionHandler([result![0].name, result![0].role])
         }
     }

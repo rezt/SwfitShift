@@ -16,16 +16,6 @@ final class DispositionViewModel: ObservableObject {
     @Published var thisMonth: [Disposition] = []
     @Published var userDisposition: [PersonalDisposition] = []
     @Published var isManager: Bool = false
-//    @Published var presets: [Preset] = []
-    var webService = WebService()
-    
-//    func loadEmployees() {
-//        webService.loadEmployees() { result in
-//            if result != nil {
-//                self.employees = result!
-//            }
-//        }
-//    }
     
     func update(_ user: User) {
         self.currentUser = user
@@ -64,7 +54,7 @@ final class DispositionViewModel: ObservableObject {
 
         for _ in 0..<i {
             
-            webService.generateDisposition(lastDate: lastDate, uids: uids)
+            WebService.shared.generateDisposition(lastDate: lastDate, uids: uids)
             
             lastDate = Calendar.current.date(byAdding: .day, value: 1, to: lastDate)!
         }
@@ -95,7 +85,7 @@ final class DispositionViewModel: ObservableObject {
         
         let newDispo = Disposition(date: dispo!.date, available: newAvailable, notPreferred: newNotPreferred, unavailable: newUnavailable, unknown: newUnknown, FSID: newDisposition.FSID)
         
-        webService.modifyDisposition(newDispo: newDispo, FSID: newDisposition.FSID)
+        WebService.shared.modifyDisposition(newDispo: newDispo, FSID: newDisposition.FSID)
     }
     
     func cleanup() {
@@ -119,7 +109,7 @@ final class DispositionViewModel: ObservableObject {
                 validUID.contains($0)
             }
             
-            webService.cleanup(day: day, newAvailable: newAvailable, newNotPreferred: newNotPreferred, newUnavailable: newUnavailable, newUnknown: newUnknown)
+            WebService.shared.cleanup(day: day, newAvailable: newAvailable, newNotPreferred: newNotPreferred, newUnavailable: newUnavailable, newUnknown: newUnknown)
         }
     }
     
@@ -138,7 +128,7 @@ final class DispositionViewModel: ObservableObject {
     }
     
     func loadDisposition() { // Load only shifts specified to user or user's role
-        webService.loadDisposition() { result in
+        WebService.shared.loadDisposition() { result in
             self.thisMonth = result!
             self.userDisposition = []
             self.getPersonalDisposition()

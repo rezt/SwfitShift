@@ -9,6 +9,9 @@ import Foundation
 import Firebase
 
 class WebService {
+    
+    static let shared = WebService()
+    
     let db = Firestore.firestore()
     
     typealias LoginClosure = (User?) -> Void

@@ -20,22 +20,20 @@ final class TaskListViewModel: ObservableObject {
     @Published var showFinished: Bool = true
     @Published var showTasks: Bool = false
     
-    var webService = WebService()
-    
     func update(_ user: User) {
         self.currentUser = user
     }
     
     func saveTask(_ newTask: Task) {
-        webService.saveTask(newTask)
+        WebService.shared.saveTask(newTask)
     }
     
     func deleteTask(_ task: Task) {
-        webService.deleteTask(task)
+        WebService.shared.deleteTask(task)
     }
     
     func loadTasks() {
-        webService.loadTasks(role: currentUser.role) { result in
+        WebService.shared.loadTasks(role: currentUser.role) { result in
             self.tasks = result!
         }
     }

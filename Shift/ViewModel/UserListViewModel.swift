@@ -15,18 +15,9 @@ final class UserListViewModel: ObservableObject {
     @Published var showUser: Bool = false
     @Published var showRegister: Bool = false
     var userViewModel = UserViewModel(withUser: User(login: "", name: "", role: "", uid: "", FSID: ""))
-    var webService = WebService()
     
     init() {
     }
-    
-//    func loadEmployees() {
-//        webService.loadEmployees() { result in
-//            if result != nil {
-//                self.employees = result!
-//            }
-//        }
-//    }
     
     func setEmployees(_ users: [User]) {
         employees = users
@@ -54,6 +45,6 @@ final class UserListViewModel: ObservableObject {
     }
     
     func disable(user: User) {
-        webService.disable(user: user)
+        WebService.shared.disable(user: user)
     }
 }
