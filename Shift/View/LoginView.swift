@@ -66,7 +66,6 @@ struct CustomViewModifier: ViewModifier {
             .foregroundColor(textColor)
             .overlay(RoundedRectangle(cornerRadius: roundedCornes)
                         .stroke(LinearGradient(gradient: Gradient(colors: [startColor, endColor]), startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 5))
-        
             .shadow(radius: 10)
     }
 }

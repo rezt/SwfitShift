@@ -27,9 +27,9 @@ struct ShiftView: View {
     @Environment(\.presentationMode) var presentationMode
     
     init(shiftViewModel: ShiftViewModel, calendarViewModel: CalendarViewModel) {
-        UITableView.appearance().backgroundColor = .clear
         self.shiftViewModel = shiftViewModel
         self.calendarViewModel = calendarViewModel
+        UITableView.appearance().backgroundColor = .black
     }
     
     var body: some View {
@@ -42,7 +42,6 @@ struct ShiftView: View {
                                 Text(preset.name).foregroundColor(.black).tag(preset.name)
                             }
                         }.onChange(of: selectedPreset) { preset in
-                            
                             self.usingPreset = true
                         }
                         Picker(selection: $selectedEmployee, label: Text("📌 Employee:").foregroundColor(.black)) {
@@ -84,18 +83,21 @@ struct ShiftView: View {
                             DatePicker("🗓 Start date", selection: $startDate, displayedComponents: [.date, .hourAndMinute])
                                 .foregroundColor(.black)
                                 .onChange(of: startDate, perform: { value in
+                                    shiftViewModel.detachDisposition()
                                     shiftViewModel.loadDisposition(date: value)
                                     presetDate = startDate
                                 })
                             DatePicker("🗓 End date", selection: $endDate, in: startDate... , displayedComponents: [.date, .hourAndMinute])
                                 .foregroundColor(.black)
                                 .onChange(of: endDate, perform: { value in
+                                    shiftViewModel.detachDisposition()
                                     shiftViewModel.loadDisposition(date: value)
                                 })
                         } else {
                             DatePicker("🗓 Select date", selection: $presetDate, displayedComponents: [.date])
                                 .foregroundColor(.black)
                                 .onChange(of: presetDate, perform: { value in
+                                    shiftViewModel.detachDisposition()
                                     shiftViewModel.loadDisposition(date: value)
                                 })
                         }
@@ -152,7 +154,7 @@ struct ShiftView: View {
                         }
                     } else { // User view
                         Button {
-                            
+                            // APN functionality to be added at a later date.
                         } label: {
                             Text("✅ Ready for the next stage")
                                 .foregroundColor(.black)
@@ -184,7 +186,7 @@ struct ShiftView: View {
                     shiftViewModel.detachDisposition()
                     shiftViewModel.detachPresets()
                 }
-                
+            
         }
     }
 }

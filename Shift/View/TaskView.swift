@@ -13,17 +13,17 @@ struct TaskView: View {
     
     @ObservedObject var taskViewModel: TaskViewModel
     @ObservedObject var taskListViewModel: TaskListViewModel
-    @State private var titleField: String = "title"
-    @State private var statusField: String = "status"
-    @State private var descriptionField: String = "description"
-    @State private var selectedTeam: String = "test"
+    @State private var titleField: String = ""
+    @State private var statusField: String = ""
+    @State private var descriptionField: String = ""
+    @State private var selectedTeam: String = ""
     @State private var selectedTeamName: String = ""
     @State private var deadline: Date = Date()
     @State private var alreadySeen: Bool = false
     @Environment(\.presentationMode) var presentationMode
     
     init(taskViewModel: TaskViewModel, taskListViewModel: TaskListViewModel){
-        UITableView.appearance().backgroundColor = .clear
+        UITableView.appearance().backgroundColor = .black
         self.taskViewModel = taskViewModel
         self.taskListViewModel = taskListViewModel
     }

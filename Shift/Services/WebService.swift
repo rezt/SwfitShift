@@ -62,11 +62,11 @@ class WebService {
                        let role = data[K.FStore.Employees.role] as? String,
                        let uid = data[K.FStore.Employees.uid] as? String {
                         result.append(User(login: login, name: name, role: role, uid: uid, FSID: document.documentID))
-                            if result.isEmpty {
-                                completionHandler(nil)
-                            } else {
-                                completionHandler(result)
-                            }
+                        if result.isEmpty {
+                            completionHandler(nil)
+                        } else {
+                            completionHandler(result)
+                        }
                     }
                 }
             }
@@ -77,7 +77,7 @@ class WebService {
     func loadEmployees(completionHandler: @escaping UsersClosure) {
         employeeListner = db.collection(K.FStore.Employees.collection).addSnapshotListener { (querySnapshot, error) in
             var result = [User]()
-
+            
             if let e = error {
                 print("There was an issue retriving shift data from Firestore. \(e)")
             } else {
@@ -105,25 +105,25 @@ class WebService {
     
     func createUser(_ newUser: User, email: String, password: String) {
         Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
-                    if let err = error {
-                        print("Error updating document: \(err)")
-                    }else{
-                        print("Document successfully updated!")
-                        var ref: DocumentReference? = nil
-                        ref = self.db.collection(K.FStore.Employees.collection).addDocument(data: [
-                            K.FStore.Employees.login: newUser.login,
-                            K.FStore.Employees.name: newUser.name,
-                            K.FStore.Employees.role: newUser.role,
-                            K.FStore.Employees.uid: result!.user.uid
-                        ]) { err in
-                            if let err = err {
-                                print("Error adding document: \(err)")
-                            } else {
-                                print("User added with ID: \(ref!.documentID)")
-                            }
-                        }
+            if let err = error {
+                print("Error updating document: \(err)")
+            }else{
+                print("Document successfully updated!")
+                var ref: DocumentReference? = nil
+                ref = self.db.collection(K.FStore.Employees.collection).addDocument(data: [
+                    K.FStore.Employees.login: newUser.login,
+                    K.FStore.Employees.name: newUser.name,
+                    K.FStore.Employees.role: newUser.role,
+                    K.FStore.Employees.uid: result!.user.uid
+                ]) { err in
+                    if let err = err {
+                        print("Error adding document: \(err)")
+                    } else {
+                        print("User added with ID: \(ref!.documentID)")
                     }
-                 }
+                }
+            }
+        }
     }
     
     func saveUser(_ newUser: User, selectedRole: String) {
@@ -259,7 +259,7 @@ class WebService {
                         if let startDate = data[K.FStore.Presets.start] as? Timestamp,
                            let endDate = data[K.FStore.Presets.end] as? Timestamp,
                            let name = data[K.FStore.Presets.name] as? String {
-                            let newPreset = Preset(startDate: startDate, endDate: endDate, name: name)
+                            let newPreset = Preset(startDate: startDate, endDate: endDate, name: name, FSID: doc.documentID)
                             result.append(newPreset)
                             if result.isEmpty {
                                 completionHandler(nil)
@@ -269,6 +269,31 @@ class WebService {
                         }
                     }
                 }
+            }
+        }
+    }
+    
+    func savePreset(_ newPreset: Preset) {
+        var ref: DocumentReference? = nil
+        ref = db.collection(K.FStore.Presets.collection).addDocument(data: [
+            K.FStore.Presets.name: newPreset.name,
+            K.FStore.Presets.start: newPreset.startDate,
+            K.FStore.Presets.end: newPreset.endDate
+        ]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            } else {
+                print("Document added with ID: \(ref!.documentID)")
+            }
+        }
+    }
+    
+    func deletePreset(_ preset: Preset) {
+        db.collection(K.FStore.Presets.collection).document(preset.FSID).delete() { err in
+            if let err = err {
+                print("Error removing document: \(err)")
+            } else {
+                print("Document successfully removed!")
             }
         }
     }
@@ -517,7 +542,7 @@ class WebService {
     }
     
     func loadTasks(role: String, completionHandler: @escaping TasksClosure) {
-    tasksListner = db.collection(K.FStore.Tasks.collection).whereField(K.FStore.Tasks.team, isEqualTo: role)
+        tasksListner = db.collection(K.FStore.Tasks.collection).whereField(K.FStore.Tasks.team, isEqualTo: role)
             .addSnapshotListener { (querySnapshot, error) in
                 var result = [Task]()
                 

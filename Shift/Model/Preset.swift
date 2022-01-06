@@ -12,6 +12,7 @@ struct Preset: Hashable {
     let startDate: Timestamp
     let endDate: Timestamp
     let name: String
+    let FSID: String
     
     
     func getStartDateTime() -> [String] {

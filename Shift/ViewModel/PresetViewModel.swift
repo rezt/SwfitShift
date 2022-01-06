@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import Firebase
 
 class PresetViewModel: ObservableObject {
     
     @Published var presets: [Preset] = []
+    var preset: Preset = Preset(startDate: Timestamp(date: Date()), endDate: Timestamp(date: Date()), name: "", FSID: "")
     
     func setPresets(_ presets: [Preset]) {
         self.presets = presets
@@ -21,11 +23,20 @@ class PresetViewModel: ObservableObject {
         }
     }
     
+    func detachPresets() {
+        WebService.shared.detachListner(WebService.shared.presetListner)
+    }
+    
     func addPreset() {
         
     }
     
-    func detachPresets() {
-        WebService.shared.detachListner(WebService.shared.presetListner)
+    func delete(_ preset: Preset) {
+        WebService.shared.deletePreset(preset)
     }
+    
+    func save(_ preset: Preset) {
+        WebService.shared.savePreset(preset)
+    }
+    
 }
