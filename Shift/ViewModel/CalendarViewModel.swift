@@ -28,7 +28,7 @@ final class CalendarViewModel: ObservableObject {
     }
     
     func detachEmployees() {
-        WebService.shared.detachListner(WebService.shared.employeeListner)
+        WebService.shared.detachListener(WebService.shared.employeeListener)
     }
     
     func loadShifts(){
@@ -39,7 +39,7 @@ final class CalendarViewModel: ObservableObject {
     }
     
     func detachShifts() {
-        WebService.shared.detachListner(WebService.shared.shiftsListner)
+        WebService.shared.detachListener(WebService.shared.shiftsListener)
     }
     
     func saveShift(_ newShift: Shift) {

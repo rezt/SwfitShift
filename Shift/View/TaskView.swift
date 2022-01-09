@@ -61,7 +61,7 @@ struct TaskView: View {
                         .foregroundColor(.black)
                     Text("📋 Description:\n\n\(taskViewModel.task?.description ?? "description")\n")
                         .foregroundColor(.black)
-                    Text("🗓 Due to:\n\n\(taskViewModel.task?.getDeadline() ?? Date())\n")
+                        Text("🗓 Due to:\n\n\(taskViewModel.task?.getDeadlineFormatted() ?? Date().formatted())\n")
                         .foregroundColor(.black)
                     }
                 } header: {

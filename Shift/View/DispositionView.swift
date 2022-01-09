@@ -44,7 +44,7 @@ struct DispositionView: View {
                             .frame(minWidth: 88)
                     }.padding()
                     ForEach(dispositionViewModel.userDisposition, id: \.self) { value in
-                        dayView(index: dispositionViewModel.userDisposition.firstIndex(of: value)! )
+                        dayCard(index: dispositionViewModel.userDisposition.firstIndex(of: value)! )
                     }
                 }
             }
@@ -60,7 +60,7 @@ struct DispositionView: View {
     }
     
     @ViewBuilder
-    func dayView(index: Int) -> some View {
+    func dayCard(index: Int) -> some View {
         HStack {
             Toggle(isOn: Binding(get: {
                 return dispositionViewModel.userDisposition[index].value[0]
@@ -94,8 +94,6 @@ struct DispositionView: View {
                 .frame(minWidth: 88)
                 .foregroundColor(.white)
         }.padding()
-        
-        
     }
     
 }

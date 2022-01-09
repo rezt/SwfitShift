@@ -44,7 +44,7 @@ final class ShiftViewModel: ObservableObject {
     }
     
     func detachDisposition() {
-        WebService.shared.detachListner(WebService.shared.dayListner)
+        WebService.shared.detachListener(WebService.shared.dayListener)
     }
     
     func loadPresets(currentDate: Date) {
@@ -54,7 +54,7 @@ final class ShiftViewModel: ObservableObject {
     }
     
     func detachPresets() {
-        WebService.shared.detachListner(WebService.shared.presetListner)
+        WebService.shared.detachListener(WebService.shared.presetListener)
     }
     
     func sortEmployees() {

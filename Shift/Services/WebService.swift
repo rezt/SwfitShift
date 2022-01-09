@@ -14,12 +14,12 @@ class WebService {
     
     let db = Firestore.firestore()
     
-    var presetListner: ListenerRegistration?
-    var employeeListner: ListenerRegistration?
-    var shiftsListner: ListenerRegistration?
-    var tasksListner: ListenerRegistration?
-    var dispositionListner: ListenerRegistration?
-    var dayListner: ListenerRegistration?
+    var presetListener: ListenerRegistration?
+    var employeeListener: ListenerRegistration?
+    var shiftsListener: ListenerRegistration?
+    var tasksListener: ListenerRegistration?
+    var dispositionListener: ListenerRegistration?
+    var dayListener: ListenerRegistration?
     
     typealias LoginClosure = (User?) -> Void
     typealias UsersClosure = (Array<User>?) -> Void
@@ -75,7 +75,7 @@ class WebService {
     }
     
     func loadEmployees(completionHandler: @escaping UsersClosure) {
-        employeeListner = db.collection(K.FStore.Employees.collection).addSnapshotListener { (querySnapshot, error) in
+        employeeListener = db.collection(K.FStore.Employees.collection).addSnapshotListener { (querySnapshot, error) in
             var result = [User]()
             
             if let e = error {
@@ -184,11 +184,14 @@ class WebService {
         }
     }
     
-    func loadDisposition(completionHandler: @escaping DispositionClosure) { // Load only shifts specified to user or user's role
+    func loadDisposition(completionHandler: @escaping DispositionClosure) {
         
         let futureDate = Calendar.current.date(byAdding: .day, value: 31, to: Date())
         
-        dispositionListner = db.collection(K.FStore.Disposition.collection).whereField("date", isGreaterThanOrEqualTo: Date()).whereField("date", isLessThanOrEqualTo: futureDate!).addSnapshotListener { (querySnapshot, error) in
+        dispositionListener = db.collection(K.FStore.Disposition.collection)
+            .whereField("date", isGreaterThanOrEqualTo: Date())
+            .whereField("date", isLessThanOrEqualTo: futureDate!)
+            .addSnapshotListener { (querySnapshot, error) in
             var result = [Disposition]()
             
             if let e = error {
@@ -202,7 +205,12 @@ class WebService {
                            let unavailable = data[K.FStore.Disposition.unavailable] as? [String],
                            let unknown = data[K.FStore.Disposition.unknown] as? [String],
                            let date = data[K.FStore.Disposition.date] as? Timestamp {
-                            let newDisposition = Disposition(date: date, available: available, notPreferred: notPreferred, unavailable: unavailable, unknown: unknown, FSID: doc.documentID)
+                            let newDisposition = Disposition(date: date,
+                                                             available: available,
+                                                             notPreferred: notPreferred,
+                                                             unavailable: unavailable,
+                                                             unknown: unknown,
+                                                             FSID: doc.documentID)
                             result.append(newDisposition)
                             if result.isEmpty {
                                 completionHandler(nil)
@@ -218,7 +226,7 @@ class WebService {
     
     func loadDay(forDay day: [Date], completionHandler: @escaping DispositionClosure) {
         
-        dayListner = db.collection(K.FStore.Disposition.collection).whereField("date", isGreaterThanOrEqualTo: day[0]).whereField("date", isLessThanOrEqualTo: day[1]).addSnapshotListener  { (querySnapshot, error) in
+        dayListener = db.collection(K.FStore.Disposition.collection).whereField("date", isGreaterThanOrEqualTo: day[0]).whereField("date", isLessThanOrEqualTo: day[1]).addSnapshotListener  { (querySnapshot, error) in
             var result = [Disposition]()
             
             if let e = error {
@@ -247,7 +255,7 @@ class WebService {
     }
     
     func loadPresets(completionHandler: @escaping PresetClosure) {
-        presetListner = db.collection(K.FStore.Presets.collection).addSnapshotListener { (querySnapshot, error) in
+        presetListener = db.collection(K.FStore.Presets.collection).addSnapshotListener { (querySnapshot, error) in
             var result = [Preset]()
             
             if let e = error {
@@ -298,9 +306,9 @@ class WebService {
         }
     }
     
-    func detachListner(_ toDetach: ListenerRegistration?) {
-        if let listner = toDetach {
-            listner.remove()
+    func detachListener(_ toDetach: ListenerRegistration?) {
+        if let listener = toDetach {
+            listener.remove()
         }
     }
     
@@ -378,7 +386,7 @@ class WebService {
     }
     
     func loadShiftsAdmin(completionHandler: @escaping ShiftsClosure) { // Load all shifts
-        shiftsListner = db.collection(K.FStore.Shifts.collection).addSnapshotListener { (querySnapshot, error) in
+        shiftsListener = db.collection(K.FStore.Shifts.collection).addSnapshotListener { (querySnapshot, error) in
             var result = [Shift]()
             
             if let e = error {
@@ -407,7 +415,7 @@ class WebService {
     }
     
     func loadShiftsNormal(role: String, uid: String, completionHandler: @escaping ShiftsClosure) { // Load only shifts specified to user or user's role
-        shiftsListner = db.collection(K.FStore.Shifts.collection).whereField(K.FStore.Shifts.employee, isEqualTo: uid).addSnapshotListener { (querySnapshot, error) in
+        shiftsListener = db.collection(K.FStore.Shifts.collection).whereField(K.FStore.Shifts.employee, isEqualTo: uid).addSnapshotListener { (querySnapshot, error) in
             var shifts = [Shift]()
             
             if let e = error {
@@ -438,7 +446,7 @@ class WebService {
     }
     
     func loadShiftsRole(role: String, completionHandler: @escaping ShiftsClosure) {
-        shiftsListner = db.collection(K.FStore.Shifts.collection).whereField(K.FStore.Shifts.state, isEqualTo: true).whereField(K.FStore.Shifts.role, isEqualTo: role).addSnapshotListener { (querySnapshot, error) in
+        shiftsListener = db.collection(K.FStore.Shifts.collection).whereField(K.FStore.Shifts.state, isEqualTo: true).whereField(K.FStore.Shifts.role, isEqualTo: role).addSnapshotListener { (querySnapshot, error) in
             var result = [Shift]()
             
             if let e = error {
@@ -542,7 +550,7 @@ class WebService {
     }
     
     func loadTasks(role: String, completionHandler: @escaping TasksClosure) {
-        tasksListner = db.collection(K.FStore.Tasks.collection).whereField(K.FStore.Tasks.team, isEqualTo: role)
+        tasksListener = db.collection(K.FStore.Tasks.collection).whereField(K.FStore.Tasks.team, isEqualTo: role)
             .addSnapshotListener { (querySnapshot, error) in
                 var result = [Task]()
                 

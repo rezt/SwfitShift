@@ -35,7 +35,7 @@ final class TaskListViewModel: ObservableObject {
     }
     
     func detachTasks() {
-        WebService.shared.detachListner(WebService.shared.tasksListner)
+        WebService.shared.detachListener(WebService.shared.tasksListener)
     }
     
     func getCurrentTasks() {

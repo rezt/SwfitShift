@@ -32,7 +32,7 @@ final class UserListViewModel: ObservableObject {
     }
     
     func detachEmployees() {
-        WebService.shared.detachListner(WebService.shared.employeeListner)
+        WebService.shared.detachListener(WebService.shared.employeeListener)
     }
 
     

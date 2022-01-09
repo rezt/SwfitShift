@@ -19,4 +19,11 @@ struct Task: Hashable {
     func getDeadline() -> Date {
         return deadline.dateValue()
     }
+    
+    func getDeadlineFormatted() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy HH:mm"
+        let date = formatter.string(from: deadline.dateValue())
+        return date
+    }
 }

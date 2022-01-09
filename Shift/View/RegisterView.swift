@@ -12,10 +12,9 @@ struct RegisterView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @ObservedObject var registerViewModel: RegisterViewModel
-    @State private var loginField: String = "login"
-    @State private var nameField: String = "name"
-    @State private var emailField: String = "email"
-    @State private var descriptionField: String = "description"
+    @State private var loginField: String = ""
+    @State private var nameField: String = ""
+    @State private var emailField: String = ""
     @State private var selectedRole: String = K.FStore.Employees.roles[0]
     @State private var password1: String = ""
     @State private var password2: String = ""
@@ -29,33 +28,29 @@ struct RegisterView: View {
     var body: some View {
         ZStack {
             Color(.black).ignoresSafeArea()
-            VStack {
-                Group {
-                    Text("📌 Login:")
-                        .foregroundColor(.white)
-                    TextField("Login...", text: $loginField)
-                        .foregroundColor(.white)
-                    Text("📌 Name:")
-                        .foregroundColor(.white)
-                    TextField("Name...", text: $nameField)
-                        .foregroundColor(.white)
-                    Text("✉️ Email:")
-                        .foregroundColor(.white)
-                    TextField("Email...", text: $emailField)
-                        .foregroundColor(.white)
-                }
-                Group {
-                    Text("🔒 Password (at least 8 characters):")
-                        .foregroundColor(.white)
-                    SecureField("Enter password", text: $password1).foregroundColor(.white)
-                    Text("🔓 Repeat password:")
-                        .foregroundColor(.white)
-                    SecureField("Repeat password", text: $password2).foregroundColor(.white)
-                    Picker(selection: $selectedRole, label: Text("🏆 Role:").foregroundColor(.white)) {
-                        ForEach(K.FStore.Employees.roles, id: \.self) { role in
-                            Text(role).foregroundColor(.white).tag(role)
+            Form {
+                Section {
+                    Group {
+                        Text("📌 Login:")
+                        TextField("Login...", text: $loginField)
+                        Text("📌 Name:")
+                        TextField("Name...", text: $nameField)
+                        Text("✉️ Email:")
+                        TextField("Email...", text: $emailField)
+                    }
+                    Group {
+                        Text("🔒 Password (at least 8 characters):")
+                        SecureField("Enter password", text: $password1).foregroundColor(.white)
+                        Text("🔓 Repeat password:")
+                        SecureField("Repeat password", text: $password2).foregroundColor(.white)
+                        Picker(selection: $selectedRole, label: Text("🏆 Role:").foregroundColor(.white)) {
+                            ForEach(K.FStore.Employees.roles, id: \.self) { role in
+                                Text(role).tag(role)
+                                }
                             }
-                        }
+                    }
+                }
+                Section {
                     Button {
                         let result = RegisterViewModel.check(password: password1, with: password2, email: emailField)
                         switch result {

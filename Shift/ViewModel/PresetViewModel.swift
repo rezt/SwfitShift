@@ -24,7 +24,7 @@ class PresetViewModel: ObservableObject {
     }
     
     func detachPresets() {
-        WebService.shared.detachListner(WebService.shared.presetListner)
+        WebService.shared.detachListener(WebService.shared.presetListener)
     }
     
     func addPreset() {

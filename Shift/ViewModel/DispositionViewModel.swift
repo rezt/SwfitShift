@@ -34,12 +34,20 @@ final class DispositionViewModel: ObservableObject {
         }
     }
     
+    func loadDisposition() {
+        WebService.shared.loadDisposition() { result in
+            self.thisMonth = result!
+            self.userDisposition = []
+            self.getPersonalDisposition()
+        }
+    }
+    
     func detachEmployees() {
-        WebService.shared.detachListner(WebService.shared.employeeListner)
+        WebService.shared.detachListener(WebService.shared.employeeListener)
     }
     
     func detachDispostion() {
-        WebService.shared.detachListner(WebService.shared.dispositionListner)
+        WebService.shared.detachListener(WebService.shared.dispositionListener)
     }
     
     func getDate(from date: Date) -> String {
@@ -140,22 +148,6 @@ final class DispositionViewModel: ObservableObject {
             }
         }
     }
-    
-    func loadDisposition() { // Load only shifts specified to user or user's role
-        WebService.shared.loadDisposition() { result in
-            self.thisMonth = result!
-            self.userDisposition = []
-            self.getPersonalDisposition()
-        }
-    }
-    
-    
-    
-//    func loadPresets() {
-//        webService.loadPresets { result in
-//            self.presets = result!
-//        }
-//    }
     
     func printDispo() {
         print(thisMonth)
