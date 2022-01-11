@@ -9,10 +9,6 @@ import Foundation
 
 struct K {
     static let appName = "Swift Shift"
-    static let cellIdentifier = "ReusableCell"
-    static let cellNibName = "MessageCell"
-    static let registerSegue = "RegisterToChat"
-    static let loginSegue = "LoginToSwiftShift"
     
 //    struct BrandColors {
 //        static let purple = "BrandPurple"
@@ -22,12 +18,45 @@ struct K {
 //    }
     
     struct FStore {
-        static let collectionNameShifts = "shifts"
-        static let collectionNameEmployees = "employees"
-        static let employeeField = "employee"
-        static let startField = "startDate"
-        static let endField = "endDate"
-        static let roleField = "role"
+        struct Shifts {
+            static let collection = "shifts"
+            static let employee = "employee"
+            static let start = "startDate"
+            static let end = "endDate"
+            static let role = "role"
+            static let state = "upForGrabs"
+        }
+        struct Employees {
+            static let collection = "employees"
+            static let login = "login"
+            static let name = "name"
+            static let role = "role"
+            static let uid = "uid"
+            static let roles = ["Admin", "Manager", "Cashier"]
+        }
+        struct Tasks {
+            static let collection = "tasks"
+            static let deadline = "deadline"
+            static let description = "description"
+            static let status = "status"
+            static let team = "team"
+            static let title = "title"
+            static let states = ["To do", "In progress", "Done"]
+        }
+        struct Disposition {
+            static let collection = "disposition"
+            static let date = "date"
+            static let available = "available"
+            static let notPreferred = "notPreferred"
+            static let unavailable = "unavailable"
+            static let unknown = "unknown"
+        }
+        struct Presets {
+            static let collection = "presets"
+            static let start = "startDate"
+            static let end = "endDate"
+            static let name = "name"
+        }
     }
     
     struct calendar {

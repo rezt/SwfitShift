@@ -8,11 +8,13 @@
 import Foundation
 import FirebaseFirestore
 
-struct Shift {
+struct Shift: Hashable {
     let employee: String
     let endDate: Timestamp
     let role: String
     let startDate: Timestamp
+    let upForGrabs: Bool
+    let FSID: String
     
     func getEndDate() -> Date {
         return endDate.dateValue()
@@ -36,4 +38,17 @@ struct Shift {
         return date.components(separatedBy: " ")
     }
     
+    func getStartDateFormatted() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy HH:mm"
+        let date = formatter.string(from: startDate.dateValue())
+        return date
+    }
+    
+    func getEndDateFormatted() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy HH:mm"
+        let date = formatter.string(from: endDate.dateValue())
+        return date
+    }
 }

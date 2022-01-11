@@ -8,20 +8,17 @@
 import Foundation
 import Firebase
 
-extension LoginView {
-    class LoginViewModel: ObservableObject {
-        @Published var isLoggedIn: Bool = false
-        
-        func login(withEmail email: String, withPassword password: String) {
-            Auth.auth().signIn(withEmail: email, password: password) {authResult, error in
-                if let e = error {
-                    print(e.localizedDescription)
-                } else {
-                    self.isLoggedIn = true
-                    print("test")
-                }
+
+class LoginViewModel: ObservableObject {
+    @Published var isLoggedIn: Bool = false
+    
+    func login(withEmail email: String, withPassword password: String) {
+        WebService.shared.login(withEmail: email, withPassword: password) { result in
+            if result != nil {
+                UserService.shared.currentUser = result!
+                self.isLoggedIn = true
             }
         }
-        
     }
+    
 }

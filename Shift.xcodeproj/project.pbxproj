@@ -7,29 +7,66 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6803A3CA274B9C3D00DC770C /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6803A3C9274B9C3D00DC770C /* MainViewModel.swift */; };
+		6803A3CC274B9D8800DC770C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6803A3CB274B9D8800DC770C /* User.swift */; };
 		68122CA4271C2359000CCD38 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68122CA3271C2359000CCD38 /* LoginViewModel.swift */; };
 		6831B75D2727159700EFF1FF /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6831B75C2727159700EFF1FF /* CalendarViewModel.swift */; };
+		684BB809277B174A006DF6FD /* UserListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684BB808277B174A006DF6FD /* UserListView.swift */; };
+		684BB80B277B19D3006DF6FD /* UserListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684BB80A277B19D3006DF6FD /* UserListViewModel.swift */; };
+		68667B35273EDC28003184E7 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68667B34273EDC28003184E7 /* Task.swift */; };
+		68667B39273F0464003184E7 /* TaskListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68667B38273F0464003184E7 /* TaskListViewModel.swift */; };
 		6866B26C2716D76D0045C250 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6866B26B2716D76D0045C250 /* GoogleService-Info.plist */; };
 		68745C852731326500C3C27A /* DateValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68745C842731326500C3C27A /* DateValue.swift */; };
+		68944CB8277CB5E500E31141 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68944CB7277CB5E500E31141 /* RegisterView.swift */; };
+		68944CBA277CBA3200E31141 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68944CB9277CBA3200E31141 /* RegisterViewModel.swift */; };
+		6899DC0D2734163D00B98FC0 /* TaskListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6899DC0C2734163D00B98FC0 /* TaskListView.swift */; };
+		689C26A027861ECD001255FB /* PresetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689C269F27861ECD001255FB /* PresetView.swift */; };
+		689C26A227861F08001255FB /* PresetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689C26A127861F08001255FB /* PresetViewModel.swift */; };
+		689C26A627863BB6001255FB /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689C26A527863BB6001255FB /* UserService.swift */; };
 		689E224727132CC80018F720 /* ShiftApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689E224627132CC80018F720 /* ShiftApp.swift */; };
 		689E224927132CC80018F720 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689E224827132CC80018F720 /* LoginView.swift */; };
 		689E224B27132CCA0018F720 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 689E224A27132CCA0018F720 /* Assets.xcassets */; };
 		689E224E27132CCA0018F720 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 689E224D27132CCA0018F720 /* Preview Assets.xcassets */; };
 		68A1BA0B272C3D6C007B19E9 /* Shift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A1BA0A272C3D6C007B19E9 /* Shift.swift */; };
 		68A1BA0D272C3FCF007B19E9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A1BA0C272C3FCF007B19E9 /* Constants.swift */; };
+		68ABDAE7275B789400A23482 /* ShiftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68ABDAE6275B789400A23482 /* ShiftViewModel.swift */; };
 		68AEC999271DE2820063B5EE /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AEC998271DE2820063B5EE /* CalendarView.swift */; };
 		68B01CBD2716CDFC009A3728 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B01CBC2716CDFC009A3728 /* MainView.swift */; };
+		68BD8980273F1A0900A48790 /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BD897F273F1A0900A48790 /* TaskView.swift */; };
+		68C9736A276B772C00A5BCAE /* DispositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C97369276B772C00A5BCAE /* DispositionView.swift */; };
+		68C9736C276B780A00A5BCAE /* DispositionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C9736B276B780A00A5BCAE /* DispositionViewModel.swift */; };
+		68C9736E276B787E00A5BCAE /* Disposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C9736D276B787E00A5BCAE /* Disposition.swift */; };
+		68DD3571277B1F41004DD979 /* UserRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DD3570277B1F41004DD979 /* UserRole.swift */; };
+		68DD3573277B27BF004DD979 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DD3572277B27BF004DD979 /* UserViewModel.swift */; };
+		68DD3575277B2864004DD979 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DD3574277B2864004DD979 /* UserView.swift */; };
+		68E194702780C28B00BA1B76 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E1946F2780C28B00BA1B76 /* WebService.swift */; };
+		68E6F1392779D94700EDE515 /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F1382779D94700EDE515 /* Preset.swift */; };
+		68E9A1002754DFDD007F71DD /* TaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E9A0FF2754DFDD007F71DD /* TaskViewModel.swift */; };
+		68E9A1022754E461007F71DD /* ShiftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E9A1012754E461007F71DD /* ShiftView.swift */; };
+		68EAC5BE276E5D160096486D /* PersonalDisposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EAC5BD276E5D160096486D /* PersonalDisposition.swift */; };
 		D736DA9AA42D46861EA7A877 /* Pods_Shift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E8B99B755D3635B7349E8FA /* Pods_Shift.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5E8B99B755D3635B7349E8FA /* Pods_Shift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		658410C08E8972FDE5DB241D /* Pods-Shift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shift.debug.xcconfig"; path = "Target Support Files/Pods-Shift/Pods-Shift.debug.xcconfig"; sourceTree = "<group>"; };
+		6803A3C9274B9C3D00DC770C /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		6803A3CB274B9D8800DC770C /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		68122CA3271C2359000CCD38 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		6831B75C2727159700EFF1FF /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
+		684BB808277B174A006DF6FD /* UserListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListView.swift; sourceTree = "<group>"; };
+		684BB80A277B19D3006DF6FD /* UserListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListViewModel.swift; sourceTree = "<group>"; };
+		68667B34273EDC28003184E7 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		68667B38273F0464003184E7 /* TaskListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewModel.swift; sourceTree = "<group>"; };
 		6866B26A2716D72C0045C250 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		6866B26B2716D76D0045C250 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		68745C842731326500C3C27A /* DateValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateValue.swift; sourceTree = "<group>"; };
+		68944CB7277CB5E500E31141 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		68944CB9277CBA3200E31141 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
+		6899DC0C2734163D00B98FC0 /* TaskListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListView.swift; sourceTree = "<group>"; };
+		689C269F27861ECD001255FB /* PresetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetView.swift; sourceTree = "<group>"; };
+		689C26A127861F08001255FB /* PresetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetViewModel.swift; sourceTree = "<group>"; };
+		689C26A527863BB6001255FB /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		689E224327132CC80018F720 /* Shift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		689E224627132CC80018F720 /* ShiftApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftApp.swift; sourceTree = "<group>"; };
 		689E224827132CC80018F720 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -37,8 +74,21 @@
 		689E224D27132CCA0018F720 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		68A1BA0A272C3D6C007B19E9 /* Shift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shift.swift; sourceTree = "<group>"; };
 		68A1BA0C272C3FCF007B19E9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		68ABDAE6275B789400A23482 /* ShiftViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftViewModel.swift; sourceTree = "<group>"; };
 		68AEC998271DE2820063B5EE /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		68B01CBC2716CDFC009A3728 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		68BD897F273F1A0900A48790 /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
+		68C97369276B772C00A5BCAE /* DispositionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispositionView.swift; sourceTree = "<group>"; };
+		68C9736B276B780A00A5BCAE /* DispositionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispositionViewModel.swift; sourceTree = "<group>"; };
+		68C9736D276B787E00A5BCAE /* Disposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Disposition.swift; sourceTree = "<group>"; };
+		68DD3570277B1F41004DD979 /* UserRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRole.swift; sourceTree = "<group>"; };
+		68DD3572277B27BF004DD979 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
+		68DD3574277B2864004DD979 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
+		68E1946F2780C28B00BA1B76 /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
+		68E6F1382779D94700EDE515 /* Preset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preset.swift; sourceTree = "<group>"; };
+		68E9A0FF2754DFDD007F71DD /* TaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewModel.swift; sourceTree = "<group>"; };
+		68E9A1012754E461007F71DD /* ShiftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftView.swift; sourceTree = "<group>"; };
+		68EAC5BD276E5D160096486D /* PersonalDisposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalDisposition.swift; sourceTree = "<group>"; };
 		8C0B88B656DCB2242646B7DD /* Pods-Shift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shift.release.xcconfig"; path = "Target Support Files/Pods-Shift/Pods-Shift.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -58,7 +108,16 @@
 			isa = PBXGroup;
 			children = (
 				68122CA3271C2359000CCD38 /* LoginViewModel.swift */,
+				6803A3C9274B9C3D00DC770C /* MainViewModel.swift */,
 				6831B75C2727159700EFF1FF /* CalendarViewModel.swift */,
+				68ABDAE6275B789400A23482 /* ShiftViewModel.swift */,
+				68667B38273F0464003184E7 /* TaskListViewModel.swift */,
+				68E9A0FF2754DFDD007F71DD /* TaskViewModel.swift */,
+				68C9736B276B780A00A5BCAE /* DispositionViewModel.swift */,
+				684BB80A277B19D3006DF6FD /* UserListViewModel.swift */,
+				68DD3572277B27BF004DD979 /* UserViewModel.swift */,
+				68944CB9277CBA3200E31141 /* RegisterViewModel.swift */,
+				689C26A127861F08001255FB /* PresetViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -88,6 +147,7 @@
 				6866B26B2716D76D0045C250 /* GoogleService-Info.plist */,
 				68B01CBF2716CF08009A3728 /* Model */,
 				68B01CBE2716CEFB009A3728 /* View */,
+				68E1946E2780C27900BA1B76 /* Services */,
 				68122CA2271C2333000CCD38 /* ViewModel */,
 				689E224A27132CCA0018F720 /* Assets.xcassets */,
 				68A1BA0C272C3FCF007B19E9 /* Constants.swift */,
@@ -108,9 +168,17 @@
 			isa = PBXGroup;
 			children = (
 				689E224627132CC80018F720 /* ShiftApp.swift */,
-				68B01CBC2716CDFC009A3728 /* MainView.swift */,
 				689E224827132CC80018F720 /* LoginView.swift */,
+				68B01CBC2716CDFC009A3728 /* MainView.swift */,
 				68AEC998271DE2820063B5EE /* CalendarView.swift */,
+				68E9A1012754E461007F71DD /* ShiftView.swift */,
+				6899DC0C2734163D00B98FC0 /* TaskListView.swift */,
+				68BD897F273F1A0900A48790 /* TaskView.swift */,
+				68C97369276B772C00A5BCAE /* DispositionView.swift */,
+				684BB808277B174A006DF6FD /* UserListView.swift */,
+				68DD3574277B2864004DD979 /* UserView.swift */,
+				68944CB7277CB5E500E31141 /* RegisterView.swift */,
+				689C269F27861ECD001255FB /* PresetView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -120,8 +188,23 @@
 			children = (
 				68A1BA0A272C3D6C007B19E9 /* Shift.swift */,
 				68745C842731326500C3C27A /* DateValue.swift */,
+				68667B34273EDC28003184E7 /* Task.swift */,
+				6803A3CB274B9D8800DC770C /* User.swift */,
+				68C9736D276B787E00A5BCAE /* Disposition.swift */,
+				68EAC5BD276E5D160096486D /* PersonalDisposition.swift */,
+				68E6F1382779D94700EDE515 /* Preset.swift */,
+				68DD3570277B1F41004DD979 /* UserRole.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		68E1946E2780C27900BA1B76 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				68E1946F2780C28B00BA1B76 /* WebService.swift */,
+				689C26A527863BB6001255FB /* UserService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		CFE9C6BE1322BB594EA0A0CF /* Pods */ = {
@@ -256,15 +339,40 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68DD3571277B1F41004DD979 /* UserRole.swift in Sources */,
+				68944CBA277CBA3200E31141 /* RegisterViewModel.swift in Sources */,
 				6831B75D2727159700EFF1FF /* CalendarViewModel.swift in Sources */,
+				68ABDAE7275B789400A23482 /* ShiftViewModel.swift in Sources */,
+				68C9736C276B780A00A5BCAE /* DispositionViewModel.swift in Sources */,
+				68667B39273F0464003184E7 /* TaskListViewModel.swift in Sources */,
+				689C26A627863BB6001255FB /* UserService.swift in Sources */,
 				68AEC999271DE2820063B5EE /* CalendarView.swift in Sources */,
 				68122CA4271C2359000CCD38 /* LoginViewModel.swift in Sources */,
+				6899DC0D2734163D00B98FC0 /* TaskListView.swift in Sources */,
+				68944CB8277CB5E500E31141 /* RegisterView.swift in Sources */,
+				68667B35273EDC28003184E7 /* Task.swift in Sources */,
 				68A1BA0B272C3D6C007B19E9 /* Shift.swift in Sources */,
+				689C26A227861F08001255FB /* PresetViewModel.swift in Sources */,
+				68E9A1022754E461007F71DD /* ShiftView.swift in Sources */,
+				6803A3CA274B9C3D00DC770C /* MainViewModel.swift in Sources */,
+				68EAC5BE276E5D160096486D /* PersonalDisposition.swift in Sources */,
+				6803A3CC274B9D8800DC770C /* User.swift in Sources */,
+				68BD8980273F1A0900A48790 /* TaskView.swift in Sources */,
+				68E194702780C28B00BA1B76 /* WebService.swift in Sources */,
 				689E224927132CC80018F720 /* LoginView.swift in Sources */,
 				68B01CBD2716CDFC009A3728 /* MainView.swift in Sources */,
 				68745C852731326500C3C27A /* DateValue.swift in Sources */,
 				689E224727132CC80018F720 /* ShiftApp.swift in Sources */,
+				68C9736A276B772C00A5BCAE /* DispositionView.swift in Sources */,
+				684BB809277B174A006DF6FD /* UserListView.swift in Sources */,
+				68E9A1002754DFDD007F71DD /* TaskViewModel.swift in Sources */,
+				689C26A027861ECD001255FB /* PresetView.swift in Sources */,
+				68C9736E276B787E00A5BCAE /* Disposition.swift in Sources */,
+				68E6F1392779D94700EDE515 /* Preset.swift in Sources */,
+				684BB80B277B19D3006DF6FD /* UserListViewModel.swift in Sources */,
+				68DD3573277B27BF004DD979 /* UserViewModel.swift in Sources */,
 				68A1BA0D272C3FCF007B19E9 /* Constants.swift in Sources */,
+				68DD3575277B2864004DD979 /* UserView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

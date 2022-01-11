@@ -7,7 +7,6 @@ target 'Shift' do
 
   # Pods for Shift
 pod 'Firebase/Analytics'
-
 pod 'Firebase/Auth'
 pod 'Firebase/Firestore'
 

@@ -9,7 +9,8 @@ import SwiftUI
 import Firebase
 
 struct LoginView: View {
-    @StateObject private var auth = LoginViewModel()
+    
+    @StateObject var loginViewModel = LoginViewModel()
     @State private var email: String = "admin@test.pl"
     @State private var password: String = "adminadmin"
     
@@ -19,7 +20,7 @@ struct LoginView: View {
                 Color.black
                     .ignoresSafeArea()
                 VStack {
-                    NavigationLink(destination: MainView(), isActive: $auth.isLoggedIn) {EmptyView()}
+                    NavigationLink(destination: MainView(), isActive: $loginViewModel.isLoggedIn) {}
                     Spacer()
                     Text("Swift Shift")
                         .bold()
@@ -27,26 +28,25 @@ struct LoginView: View {
                         .foregroundColor(.white)
                     Spacer()
                     Text("Login:").bold().font(.largeTitle).foregroundColor(.white)
-                        TextField("", text: $email)
-                            .textContentType(.emailAddress)
-                            .keyboardType(.emailAddress)
-                            .autocapitalization(.none)
-                            .disableAutocorrection(true)
-                            .modifier(CustomViewModifier(roundedCornes: 5, startColor: .purple, endColor: .indigo, textColor: .white))
-                            .padding()
-                        Text("Password:").bold().font(.largeTitle).foregroundColor(.white)
-                        SecureField("PASSWORD", text: $password)
-                            .modifier(CustomViewModifier(roundedCornes: 5, startColor: .purple, endColor: .indigo, textColor: .white))
-                            .padding()
-                    
-                    
-                    Button(action: {auth.login(withEmail: email, withPassword: password)}) {
+                    TextField("", text: $email)
+                        .textContentType(.emailAddress)
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
+                        .modifier(CustomViewModifier(roundedCornes: 5, startColor: .purple, endColor: .indigo, textColor: .white))
+                        .padding()
+                    Text("Password:").bold().font(.largeTitle).foregroundColor(.white)
+                    SecureField("PASSWORD", text: $password)
+                        .modifier(CustomViewModifier(roundedCornes: 5, startColor: .purple, endColor: .indigo, textColor: .white))
+                        .padding()
+                    Button(action: {loginViewModel.login(withEmail: email, withPassword: password)}) {
                         Text("Log in").font(.title)
                     }
                     Spacer()
                 }
-            }.navigationTitle("Login")
-        }
+            }
+        }.navigationBarHidden(true)
+        
         
     }
 }
@@ -66,15 +66,6 @@ struct CustomViewModifier: ViewModifier {
             .foregroundColor(textColor)
             .overlay(RoundedRectangle(cornerRadius: roundedCornes)
                         .stroke(LinearGradient(gradient: Gradient(colors: [startColor, endColor]), startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 5))
-        
             .shadow(radius: 10)
-    }
-}
-
-
-
-struct LoginView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginView()
     }
 }
