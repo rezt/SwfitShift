@@ -15,7 +15,7 @@ final class RegisterViewModel: ObservableObject {
         case email = "Error: Wrong email format"
         case different = "Error: Passwords are different"
         case short = "Error: Password is too short"
-        case letterCase = "Error: Password has to contain lower AND upper cased characters"
+//        case letterCase = "Error: Password has to contain lower AND upper cased characters"
         case good = ""
     }
     

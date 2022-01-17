@@ -45,7 +45,6 @@ struct CalendarView: View {
                 
             }
             .padding(.horizontal)
-            //Day view
             
             HStack {
                 ForEach(K.calendar.days, id: \.self){ day in
@@ -69,7 +68,6 @@ struct CalendarView: View {
                 }
             }
             .onChange(of: calendarViewModel.currentMonth, perform: { newValue in
-                // Update month
                 calendarViewModel.currentDate = calendarViewModel.getCurrentMonth()
             })
             
@@ -153,8 +151,8 @@ struct CalendarView: View {
                         .font(.title3.bold())
                         .foregroundColor(.white)
                 }
+            }
         }
-    }
     }
     
     @ViewBuilder
@@ -200,8 +198,6 @@ struct CalendarView: View {
             .padding(.vertical, 8)
             .frame(height: 60, alignment: .top)
         }
-        
-//        .transition(AnyTransition.opacity.combined(with: .move(edge: .leading)))
     }
 }
 

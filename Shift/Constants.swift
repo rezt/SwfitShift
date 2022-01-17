@@ -10,13 +10,6 @@ import Foundation
 struct K {
     static let appName = "Swift Shift"
     
-//    struct BrandColors {
-//        static let purple = "BrandPurple"
-//        static let lightPurple = "BrandLightPurple"
-//        static let blue = "BrandBlue"
-//        static let lighBlue = "BrandLightBlue"
-//    }
-    
     struct FStore {
         struct Shifts {
             static let collection = "shifts"

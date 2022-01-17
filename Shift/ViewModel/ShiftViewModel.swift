@@ -29,7 +29,6 @@ final class ShiftViewModel: ObservableObject {
         self.shift = newShift
         self.canEdit = flag
         self.employees = newEmployees
-//        loadDisposition(date: newShift.startDate.dateValue())
     }
     
     func loadDisposition(date: Date) {

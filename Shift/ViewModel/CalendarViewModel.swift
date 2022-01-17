@@ -83,8 +83,6 @@ final class CalendarViewModel: ObservableObject {
         return calendar.isDate(date1, inSameDayAs: date2)
     }
     
-    // TODO: Collapse these two into one function:
-    
     func getYearMonth() -> [String] {
         let formatter = DateFormatter()
         formatter.dateFormat = "YYYY MMMM"
